@@ -402,8 +402,6 @@ class Net_SmartIRC_base
             // to SMARTIRC_BROWSEROUT (makes browser friendly output)
             $this->setLogdestination(SMARTIRC_BROWSEROUT);
         }
-        
-        
     }
     
     /**
@@ -1201,7 +1199,7 @@ class Net_SmartIRC_base
         
         return false;
     }
-
+    
     /**
      * goes into receive mode
      *
@@ -1212,6 +1210,28 @@ class Net_SmartIRC_base
      * @access public
      */
     function listen()
+    {
+        if ($this->_state() == SMARTIRC_STATE_CONNECTED) {
+            while ($this->_state() == SMARTIRC_STATE_CONNECTED) {
+                $this->_rawreceive();
+            }
+            
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * goes into receive mode _only_ for one pass
+     *
+     * Goes into receive mode. It will return when one pass is complete.
+     * Use this when you want to connect to multiple IRC servers.
+     *
+     * @return boolean
+     * @access public
+     */
+    function listenOnce()
     {
         if ($this->_state() == SMARTIRC_STATE_CONNECTED) {
             $this->_rawreceive();
@@ -1682,7 +1702,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * goes into main idle loop for waiting messages from the IRC server
+     * goes into main receive mode _once_ per call and waits for messages from the IRC server
      *
      * @return void
      * @access private
@@ -1692,121 +1712,120 @@ class Net_SmartIRC_base
         $lastpart = '';
         $rawdataar = array();
         
-        while ($this->_state() == SMARTIRC_STATE_CONNECTED) {
-            $this->_checkbuffer();
+        $this->_checkbuffer();
+        
+        $timeout = $this->_selecttimeout();
+        if ($this->_usesockets == true) {
+            $sread = array($this->_socket);
+            $result = @socket_select($sread, $w = null, $e = null, 0, $timeout*1000);
             
-            $timeout = $this->_selecttimeout();
-            if ($this->_usesockets == true) {
-                $sread = array($this->_socket);
-                $result = @socket_select($sread, $w = null, $e = null, 0, $timeout*1000);
-                
-                if ($result == 1) {
-                    // the socket got data to read
-                    $rawdata = @socket_read($this->_socket, 10240);
-                } else if ($result === false) {
-                    // panic! panic! something went wrong!
-                    $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket_select() returned false, something went wrong! Reason: '.socket_strerror(socket_last_error()), __FILE__, __LINE__);
-                    exit;
-                } else {
-                    // no data
-                    $rawdata = null;
-                }
+            if ($result == 1) {
+                // the socket got data to read
+                $rawdata = @socket_read($this->_socket, 10240);
+            } else if ($result === false) {
+                // panic! panic! something went wrong!
+                $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket_select() returned false, something went wrong! Reason: '.socket_strerror(socket_last_error()), __FILE__, __LINE__);
+                exit;
             } else {
-                usleep($this->_receivedelay*1000);
-                $rawdata = @fread($this->_socket, 10240);
+                // no data
+                $rawdata = null;
+            }
+        } else {
+            usleep($this->_receivedelay*1000);
+            $rawdata = @fread($this->_socket, 10240);
+        }
+        
+        $this->_checktimer();
+        $this->_checktimeout();
+        
+        if ($rawdata !== null && !empty($rawdata)) {
+            $this->_lastrx = time();
+            $rawdata = str_replace("\r", '', $rawdata);
+            $rawdata = $lastpart.$rawdata;
+            
+            $lastpart = substr($rawdata, strrpos($rawdata ,"\n")+1);
+            $rawdata = substr($rawdata, 0, strrpos($rawdata ,"\n"));
+            $rawdataar = explode("\n", $rawdata);
+        }
+        
+        // loop through our received messages
+        while (count($rawdataar) > 0) {
+            $rawline = array_shift($rawdataar);
+            $validmessage = false;
+            
+            $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: received: "'.$rawline.'"', __FILE__, __LINE__);
+            
+            // building our data packet
+            $ircdata = &new Net_SmartIRC_data();
+            $ircdata->rawmessage = $rawline;
+            $lineex = explode(' ', $rawline);
+            $ircdata->rawmessageex = $lineex;
+            $messagecode = $lineex[0];
+            
+            if (substr($rawline, 0, 1) == ':') {
+                $validmessage = true;
+                $line = substr($rawline, 1);
+                $lineex = explode(' ', $line);
+                
+                // conform to RFC 2812
+                $from = $lineex[0];
+                $messagecode = $lineex[1];
+                $exclamationpos = strpos($from, '!');
+                $atpos = strpos($from, '@');
+                $colonpos = strpos($line, ':');
+                
+                $ircdata->nick = substr($from, 0, $exclamationpos);
+                $ircdata->ident = substr($from, $exclamationpos+1, ($atpos-$exclamationpos)-1);
+                $ircdata->host = substr($from, $atpos+1);
+                $ircdata->type = $this->_gettype($rawline);
+                $ircdata->from = $from;
+                if ($colonpos !== false) {
+                    $ircdata->message = substr($line, $colonpos+1);
+                    $ircdata->messageex = explode(' ', $ircdata->message);
+                }
+                
+                if ($ircdata->type & (SMARTIRC_TYPE_CHANNEL|
+                                SMARTIRC_TYPE_ACTION|
+                                SMARTIRC_TYPE_MODECHANGE|
+                                SMARTIRC_TYPE_KICK|
+                                SMARTIRC_TYPE_PART|
+                                SMARTIRC_TYPE_JOIN)) {
+                    $ircdata->channel = $lineex[2];
+                } else if ($ircdata->type & (SMARTIRC_TYPE_WHO|
+                                    SMARTIRC_TYPE_BANLIST|
+                                    SMARTIRC_TYPE_TOPIC|
+                                    SMARTIRC_TYPE_CHANNELMODE)) {
+                    $ircdata->channel = $lineex[3];
+                } else if ($ircdata->type & SMARTIRC_TYPE_NAME) {
+                    $ircdata->channel = $lineex[4];
+                }
+                
+                if ($ircdata->channel !== null) {
+                    if (substr($ircdata->channel, 0, 1) == ':') {
+                        $ircdata->channel = substr($ircdata->channel, 1);
+                    }
+                }
+                
+                $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: ircdata nick: "'.$ircdata->nick.
+                                                            '" ident: "'.$ircdata->ident.
+                                                            '" host: "'.$ircdata->host.
+                                                            '" type: "'.$ircdata->type.
+                                                            '" from: "'.$ircdata->from.
+                                                            '" channel: "'.$ircdata->channel.
+                                                            '" message: "'.$ircdata->message.
+                                                            '"', __FILE__, __LINE__);
             }
             
-            $this->_checktimer();
-            $this->_checktimeout();
+            // lets see if we have a messagehandler for it
+            $this->_handlemessage($messagecode, $ircdata);
             
-            if ($rawdata !== null && !empty($rawdata)) {
-                $this->_lastrx = time();
-                $rawdata = str_replace("\r", '', $rawdata);
-                $rawdata = $lastpart.$rawdata;
-                
-                $lastpart = substr($rawdata, strrpos($rawdata ,"\n")+1);
-                $rawdata = substr($rawdata, 0, strrpos($rawdata ,"\n"));
-                $rawdataar = explode("\n", $rawdata);
+            if ($validmessage == true) {
+                // now the actionhandlers are comming
+                $this->_handleactionhandler($ircdata);
             }
             
-            // loop through our received messages
-            while (count($rawdataar) > 0) {
-                $rawline = array_shift($rawdataar);
-                $validmessage = false;
-                
-                $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: received: "'.$rawline.'"', __FILE__, __LINE__);
-                
-                // building our data packet
-                $ircdata = &new Net_SmartIRC_data();
-                $ircdata->rawmessage = $rawline;
-                $lineex = explode(' ', $rawline);
-                $ircdata->rawmessageex = $lineex;
-                $messagecode = $lineex[0];
-                
-                if (substr($rawline, 0, 1) == ':') {
-                    $validmessage = true;
-                    $line = substr($rawline, 1);
-                    $lineex = explode(' ', $line);
-                    
-                    // conform to RFC 2812
-                    $from = $lineex[0];
-                    $messagecode = $lineex[1];
-                    $exclamationpos = strpos($from, '!');
-                    $atpos = strpos($from, '@');
-                    $colonpos = strpos($line, ':');
-                    
-                    $ircdata->nick = substr($from, 0, $exclamationpos);
-                    $ircdata->ident = substr($from, $exclamationpos+1, ($atpos-$exclamationpos)-1);
-                    $ircdata->host = substr($from, $atpos+1);
-                    $ircdata->type = $this->_gettype($rawline);
-                    $ircdata->from = $from;
-                    if ($colonpos !== false) {
-                        $ircdata->message = substr($line, $colonpos+1);
-                        $ircdata->messageex = explode(' ', $ircdata->message);
-                    }
-                    
-                    if ($ircdata->type & (SMARTIRC_TYPE_CHANNEL|
-                                 SMARTIRC_TYPE_ACTION|
-                                 SMARTIRC_TYPE_MODECHANGE|
-                                 SMARTIRC_TYPE_KICK|
-                                 SMARTIRC_TYPE_PART|
-                                 SMARTIRC_TYPE_JOIN)) {
-                        $ircdata->channel = $lineex[2];
-                    } else if ($ircdata->type & (SMARTIRC_TYPE_WHO|
-                                        SMARTIRC_TYPE_BANLIST|
-                                        SMARTIRC_TYPE_TOPIC|
-                                        SMARTIRC_TYPE_CHANNELMODE)) {
-                        $ircdata->channel = $lineex[3];
-                    } else if ($ircdata->type & SMARTIRC_TYPE_NAME) {
-                        $ircdata->channel = $lineex[4];
-                    }
-                    
-                    if ($ircdata->channel !== null) {
-                        if (substr($ircdata->channel, 0, 1) == ':') {
-                            $ircdata->channel = substr($ircdata->channel, 1);
-                        }
-                    }
-                    $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: ircdata nick: "'.$ircdata->nick.
-                                                             '" ident: "'.$ircdata->ident.
-                                                             '" host: "'.$ircdata->host.
-                                                             '" type: "'.$ircdata->type.
-                                                             '" from: "'.$ircdata->from.
-                                                             '" channel: "'.$ircdata->channel.
-                                                             '" message: "'.$ircdata->message.
-                                                             '"', __FILE__, __LINE__);
-                }
-                
-                // lets see if we have a messagehandler for it
-                $this->_handlemessage($messagecode, $ircdata);
-                
-                if ($validmessage == true) {
-                    // now the actionhandlers are comming
-                    $this->_handleactionhandler($ircdata);
-                }
-                
-                if (isset($ircdata)) {
-                    unset($ircdata);
-                }
+            if (isset($ircdata)) {
+                unset($ircdata);
             }
         }
     }
@@ -2026,7 +2045,9 @@ class Net_SmartIRC_base
         if (preg_match('/^:.* PRIVMSG .* :'.chr(1).'ACTION .*'.chr(1).'$/', $line) == 1) {
             return SMARTIRC_TYPE_ACTION;
         } else if (preg_match('/^:.* PRIVMSG .* :'.chr(1).'.*'.chr(1).'$/', $line) == 1) {
-            return SMARTIRC_TYPE_CTCP;
+            return (SMARTIRC_TYPE_CTCP_REQUEST|SMARTIRC_TYPE_CTCP);
+        } else if (preg_match('/^:.* NOTICE .* :'.chr(1).'.*'.chr(1).'$/', $line) == 1) {
+            return (SMARTIRC_TYPE_CTCP_REPLY|SMARTIRC_TYPE_CTCP);
         } else if (preg_match('/^:.* PRIVMSG (\&|\#|\+|\!).* :.*$/', $line) == 1) {
             return SMARTIRC_TYPE_CHANNEL;
         } else if (preg_match('/^:.* PRIVMSG .*:.*$/', $line) == 1) {
@@ -2206,7 +2227,7 @@ class Net_SmartIRC_base
     function _adduser(&$channel, &$newuser)
     {
         $lowerednick = strtolower($newuser->nick);
-        if (isset($channel->users[$lowerednick])) {
+        if ($this->isJoined($channel->name, $newuser->nick)) {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: updating user: '.$newuser->nick.' on channel: '.$channel->name, __FILE__, __LINE__);
             
             // lets update the existing user
