@@ -24,6 +24,8 @@ fixes:
    Fixed bug which caused fatal errors with ChannelSync enabled
    (closes sf.net bug  #705269).
    Fixed bug in _event_mode(), unhandled modes were stored wrong.
+   Fixed bug in _event_rpl_namreply(), which caused that the first char of the first nick
+   of a namreply got cut (closes sf.net bug #747832).
  - fixed bug in _checktimer()
    Which caused problems when a timehandler is unregistered.
  - fixed _gettye()
