@@ -41,23 +41,6 @@ class Net_SmartIRC_messagehandler
         }
     }
     
-    function _privmsg(&$irc, &$ircdata)
-    {
-        if ($ircdata->type == SMARTIRC_TYPE_CTCP) {
-            if (substr($ircdata->message, 1, 4) == 'PING') {
-                $irc->message(SMARTIRC_TYPE_CTCP, $ircdata->nick, 'PING '.substr($ircdata->message, 5, -1));
-            } elseif (substr($ircdata->message, 1, 7) == 'VERSION') {
-                $smartircversion = SMARTIRC_VERSIONSTRING.' by Mirco "MEEBEY" Bauer <http://www.meebey.net>';
-                if(!empty($irc->_ctcpversion))
-                    $versionstring = $irc->_ctcpversion.' | using '.$smartircversion;
-                else
-                    $versionstring = $smartircversion;
-                
-                $irc->message(SMARTIRC_TYPE_CTCP, $ircdata->nick, 'VERSION '.$versionstring);
-            }
-        }
-    }
-    
     function _join(&$irc, &$ircdata)
     {
         if ($irc->_channelsynching == true) {
@@ -207,6 +190,23 @@ class Net_SmartIRC_messagehandler
             }
             
             unset($channel);
+        }
+    }
+    
+    function _privmsg(&$irc, &$ircdata)
+    {
+        if ($ircdata->type == SMARTIRC_TYPE_CTCP) {
+            if (substr($ircdata->message, 1, 4) == 'PING') {
+                $irc->message(SMARTIRC_TYPE_CTCP, $ircdata->nick, 'PING '.substr($ircdata->message, 5, -1));
+            } elseif (substr($ircdata->message, 1, 7) == 'VERSION') {
+                if (!empty($irc->_ctcpversion)) {
+                    $versionstring = $irc->_ctcpversion.' | using '.SMARTIRC_VERSIONSTRING;
+                } else {
+                    $versionstring = SMARTIRC_VERSIONSTRING;
+                }
+                
+                $irc->message(SMARTIRC_TYPE_CTCP, $ircdata->nick, 'VERSION '.$versionstring);
+            }
         }
     }
     
