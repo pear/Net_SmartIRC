@@ -1,0 +1,187 @@
+/**
+ * $Id$
+ * $Revision$
+ * $Author$
+ * $Date$
+ */
+
+v0.5.1
+------
+
+v0.5.0
+------
+fixes:
+ - fixed critical bug in the main _rawreceive() for() loop, messages were lost.
+
+changes:
+ - copyright year
+ - changed documentation tags in front of all methods to the phpDocumentator compatible format.
+ - improved connect() errorhandling.
+ - changed login() parameters to $nick, $realname, $usermode = 0, $username = null, $password = null.
+ - changed join() parameters to $channelarray, $key = null.
+ - changed kick() parameters to $channel, $nicknamearray, $reason = null.
+ - changed listenFor() parameters to $messagetype
+   return value is now the result, instead the of a reference to the result parameter.
+ - sendbuffer has now 3 queues: high, medium and low
+   high sends 2 messages, then 1 of medium
+   low is only send if high _and_ medium is empty.
+ - select() call for sockets is strongly optimized
+
+new:
+ - phpDocumentator package tags.
+ - include() for messagehandler.php (needed for the new API).
+ - setChannelSynching() method, for enabling the channel synching.
+ - setCtcpVersion() method, for changing the ctcp version reply string.
+ - setReceiveTimeout() method, for changing the receive timeout.
+ - setTransmitTimeout() method, for changing the transmit timeout.
+ - setAutoReconnect() method, for enabling the autoreconnect feature.
+ - channel variable, a reference to _channels because $object->channel("#chan")->topic is not possible in PHP4 (ZE1).
+ - reconnect() method, it will reconnect and also join all channels.
+ - channel() method, getting a reference to the channel, only if channelsynching is on.
+ - added ident, host, messageex and rawmessageex variables to the Net_SmartIRC_data class.
+ - class Net_SmartIRC_user, stores info about one user, only used if channelsynching is on.
+ - class Net_SmartIRC_channel, stores info about one channel, only used if channelsynching is on.
+
+v0.4.0
+------
+* phpSmartIRCclass.inc.php:
+ - fixed serious socket bug
+   The buffer of the socket got full because only 512 bytes were read at once,
+   which caused losing some IRC messages that are comming fast like the MOTD.
+   Now it will read 10240 bytes at once, and doesn't loose any IRC message.
+ - fixed sendbuffer
+   The sendbuffer will only be sent, when the class is fully connected and
+   registered on the IRC network. Before if a nickname collision happened,
+   all sent IRC commands from the buffer were ignored by the IRC server.
+ - fixed socket status
+   Socket handling is now compatible with PHP 4.3 dev.
+ - fixed $_nick
+   When the nickname got changed because of nickname is already in use,
+   $_nick  will be updated. (thanks for the hint to Andreas Streichardt).
+ - fixed actionhandler ids (unregister caused that the other ids were  changed).
+ - fixed TYPE_TOPIC to the right bitoperator value.
+ - added a reference to the IRC class in actionhandler callbacks
+   WARNING: all user writtin methods have to be changed!!
+   method( &$data ) _has to be changed_ to method( &$irc, &$data )
+   If you don't change those, your IRC scripts will _not_ work anymore!
+ - changed internal methodnames to _methodname
+ - changed sendbuffer
+   Now it uses configurable senddelay, instead of static 2 messages  
+   per second (send flood protection).
+ - changed TYPEs
+   All TYPE_* are now bitwise constants, register_actionhandler() can now
+   react to more than one message type.
+ - added TYPE_ACTION for those common /me messages.
+ - added timeevents   Added method register_timehandler()
+   unregister_timeid() and   reordertimehandler(). Those timehandler
+   can be used to call methods in specified intervalls, e.g. for
+   timeevents. Added needed class CphpSmartIRCclass_timehandler.
+ - moved all IRC related defines to defines.inc.php.
+ - changed if() elseif() structures where possible to switch() for
+   clearer/faster code.
+ - added more debug messages for actionhandler.
+ - added unregister_actionhandler() and unregister_actionid() method.
+   Also added needed reorderactionhandler(), which is called after an
+   unregister methods was called.
+ - added $data->channel to actionhandler callback.
+
+* defines.inc.php:
+ - initial import. 
+ - now all IRC related defines are now in this file instead of
+   phpSmartIRCclass.inc.php.
+
+* DOCUMENTATION:
+ - updated/added methods description
+
+* example.php:
+ - changed user function parameter to new style ( &$irc and &$data ).
+ - added TYPE_NOTICE to query_test example.
+
+v0.3.2
+------
+* phpSmartIRCclass.inc.php:
+ - Replaced all quotes by single quote where possible for speedup.
+ - Added _disconnecttime for doing a clean IRC quit.
+ - Added Zend IDE style documentation for parameter variables types
+   and method descriptions.
+ - Spaces in nickname and username will be automaticly removed.
+ - Nicknamecollisions are automaticly detected and nickname will be
+   changed to nickname with 3 random numbers.
+ - New method nicknameuse().
+ - Fixed a serious fsock bug.
+ - Added new type TYPE_ERROR.
+ - Fixed wrong usage of & when calling methods with params that are
+   called by reference.
+ - Fixed a debug message "DEBUG: disconnected", now it will only
+   occur when debug mode is enabled.
+ - listen_for() will now do a quickdisconnect, for a big speedup.
+ - Changed logging system, now with debug levels, default is
+   DEBUG_NOTICE.
+ - Added benchmark system, now its possible to time things for doing
+   optimizations.
+ - New methods: benchmark(), benchmarktstart(), benchmarkend()
+   and show_benchmark() for the benchmark system
+ - Added microint(), for getting the microtime as float, needed for
+   the benchmarks.
+ - Added a couple of log() calls, for different debug levels.
+ - fsockets now runs in non blocking mode, because of broken?
+   getstatus for fsockets.
+ - Added mode() method, for chaning modes of a user or channel.
+ - Added op() and deop() method.  Added ban() and unban() method
+   (thx for diff file to Peter Petermann).
+
+* DOCUMENTATION:
+ - added documentation for new logging system
+ - added the whole DEBUG_* list
+
+* HOWTO:
+ - changed parameter description for debug()
+
+* example.php:
+ - replaced all quotes by singlequotes where possible.
+ - fixed wrong usage of message()
+
+* example2.php:
+ - replaced all quotes by singlquotes where possible.
+ - added benchmark test to the example
+
+v0.3.0
+-----
+* phpSmartIRCclass.inc.php:
+ - added "Ping? Pong!" log message for debugging
+ - added real linux/windows syslog logging
+   to setlogdestination().
+ - new method listen_for() makes it possible
+   to show irc related information on a homepage, like how many users
+   on a channel are.
+
+* HOWTO:
+ - added how to run/call the selfwritten bot
+
+* DOCUMENTATION:
+ - added (missing) explaination for new methods
+
+* example2.php:
+ - new examplefile with the new listen_for() method
+
+v0.2.6
+------
+* phpSmartIRCclass.inc.php:
+ - phpSmartIRCclass.inc renamed to
+   phpSmartIRCclass.inc.php because of security reasons
+ - changed function_exists() to get_loaded_extensions() for
+   checking if the PHP build has real socket support
+ - log() changed to create Linux style formated logs
+ - new methods for logging (daemon style)
+   log() for add log entries setlogdestination() can be STDOUT or FILE
+   setlogfile() sets the file
+ - changed received data processing in rawreceive()
+
+* HOWTO:
+ - added a mini howto for using the class
+
+* DOCUMENTATION:
+ - added class documentation of the project
+
+* CREDITS:
+ - added credits file
