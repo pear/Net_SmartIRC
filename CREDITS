@@ -53,4 +53,9 @@ D: fixed several bugs
 
 N: Ronald Hummelink
 E: ronaldhummelink@users.sourceforge.net
+D: reconnect delay patch (sf.net patch #883820)
 D: autoretry patch (sf.net patch #883821)
+
+N: Anatoly Techtonik
+E: techtonik@users.sourceforge.net
+D: load socket extension patch (sf.net patch #911993)

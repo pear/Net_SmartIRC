@@ -5,6 +5,32 @@
  * $Date$
  */
 
+v0.6.0:
+------
+fixes:
+ - renamed Net_SmartIRC_base::Net_SmartIRC to Net_SmartIRC_base::Net_SmartIRC_base
+   a PHP4 bug made it work, in PHP5 its fixed and doesn't (closes PEAR bug #1466, sf.net patch #967067)
+
+changes:
+ - applied load socket extension patch (sf.net patch #911993) from Anatoly Techtonik <techtonik@users.sourceforge.net>
+   if the socket extension is not loaded, it will now try to load it for *nix and windows.
+
+new:
+ - applied reconnect delay patch (sf.net patch #883820) from Ronald Hummelink <ronaldhummelink@users.sourceforge.net>
+   added setReconnectdelay() method, allows delay between reconnects. This reduces CPU load and prevents DoS.
+ - applied autoretry patch (sf.net patch #883821) from Ronald Hummelink <ronaldhummelink@users.sourceforge.net>
+   added setAutoRetryMax() method, makes connect retries cleaner.
+
+v0.5.6:
+------
+fixes:
+ - renamed Net_SmartIRC_base::Net_SmartIRC to Net_SmartIRC_base::Net_SmartIRC_base
+   a PHP4 bug made it work, in PHP5 its fixed and doesn't (closes PEAR bug #1466, sf.net patch #967067)
+
+changes:
+ - applied load socket extension patch (sf.net patch #911993) from Anatoly Techtonik <techtonik@users.sourceforge.net>
+   if the socket extension is not loaded, it will now try to load it for *nix and windows.
+   
 v0.5.5:
 -------
 fixes:
