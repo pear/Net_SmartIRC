@@ -146,7 +146,7 @@ new:
  - added channel key syncing in _mode().
  - when an actionhandler message regex has a leading '/' then the regex is used as it is,
    this allows complex perl regex's.
- - added message type SMARTIRC_TYPE_CTCP_REQUEST and SMARTIRC_CTCTP_REPLY for more advanced CTCP.
+ - added message type SMARTIRC_TYPE_CTCP_REQUEST and SMARTIRC_CTCP_REPLY for more advanced CTCP.
  - added new log destinations SMARTIRC_NONE and SMARTIRC_BROWSEROUT
    (for firendly browserouput). When the script is called from a browser,
    the BROWSEROUT will automatic be used (closed sf.net bug #708155).
