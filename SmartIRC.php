@@ -1401,10 +1401,10 @@ class Net_SmartIRC
         $this->listen();
         $result = $listenfor->result;
         
-	if (isset($listenfor)) {
-	    unset($listenfor);
-	}
-	
+        if (isset($listenfor)) {
+            unset($listenfor);
+        }
+        
         return $result;
     }
     
@@ -1427,10 +1427,10 @@ class Net_SmartIRC
         $id = $this->_actionhandlerid++;
         $newactionhandler = &new Net_SmartIRC_actionhandler();
         
-	if (!$newactionhandler) {
-	    return false;
-	}
-	
+        if (!$newactionhandler) {
+            return false;
+        }
+        
         $newactionhandler->id = $id;
         $newactionhandler->type = $handlertype;
         $newactionhandler->message = $regexhandler;
@@ -1455,7 +1455,7 @@ class Net_SmartIRC
     function unregisterActionhandler($handlertype, $regexhandler, &$object, $methodname)
     {
         $handler = &$this->_actionhandler;
-	$handlercount = count($handler);
+        $handlercount = count($handler);
         
         for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
@@ -1467,9 +1467,9 @@ class Net_SmartIRC
                 $id = $handlerobject->id;
                 
                 if (isset($this->_actionhandler[$i])) {
-	            unset($this->_actionhandler[$i]);
-		}
-		
+                    unset($this->_actionhandler[$i]);
+                }
+                
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler('.$id.') unregistered');
                 $this->_reorderactionhandler();
                 return true;
@@ -1490,15 +1490,15 @@ class Net_SmartIRC
     function unregisterActionid($id)
     {
         $handler = &$this->_actionhandler;
-	$handlercount = count($handler);
+        $handlercount = count($handler);
         for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->id == $id) {
-		if (isset($this->_actionhandler[$i])) {
+                if (isset($this->_actionhandler[$i])) {
                     unset($this->_actionhandler[$i]);
-	    	}
-	    	
+                }
+                
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler('.$id.') unregistered');
                 $this->_reorderactionhandler();
                 return true;
@@ -1529,8 +1529,8 @@ class Net_SmartIRC
         
         if (!$newtimehandler) {
             return false;
-	}
-	
+        }
+        
         $newtimehandler->id = $id;
         $newtimehandler->interval = $interval;
         $newtimehandler->object = &$object;
@@ -1558,15 +1558,15 @@ class Net_SmartIRC
     function unregisterTimeid($id)
     {
         $handler = &$this->_timehandler;
-		$handlercount = count($handler);
+        $handlercount = count($handler);
         for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->id == $id) {
-		if (isset($this->_timehandler[$i])) {
-	            unset($this->_timehandler[$i]);
-		}
-		
+                if (isset($this->_timehandler[$i])) {
+                    unset($this->_timehandler[$i]);
+                }
+                
                 $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: timehandler('.$id.') unregistered');
                 $this->_reordertimehandler();
                 $this->_updatemintimer();
@@ -1579,23 +1579,24 @@ class Net_SmartIRC
     }
     
     // experimentel feature, do not use it yet!
-    function loadModule($filename)
+    function loadModule($name)
     {
-        $fullfilename = 'modules/'.$filename;
-        if (@file_exists($fullfilename)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: loading module '.$filename);
-            include_once($fullfilename);
+        $filename = '/home/meebey/data/projects/SmartIRC/cvs-php/pear/Net_SmartIRC/SmartIRC/modules/'.$name.'.php';
+        if (file_exists($filename)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: loading module '.$name);
+            include_once($filename);
             // now we have to check what we included
             // TODO: later
             
-            $extpos = strpos($filename, '.php');
-            $classname = substr($filename, 0, strlen($filename)-$extpos);
+            $classname = 'Net_SmartIRC_module_'.$name;
             
-            if ($found_name && $found_description && $found_autor) {
+            if (class_exists($classname)) {
+                $module = &new $classname;
+                $module->module_init($this);
                 return true;
-            } else {
-                return false;
             }
+            
+            return false;
         } else {
             $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: couldn\'t loading module '.$filename.' file doesn\'t exist');
             return false;
@@ -1891,8 +1892,8 @@ class Net_SmartIRC
                 }
                 
                 if (isset($ircdata)) {
-	            unset($ircdata);
-	    	}
+                    unset($ircdata);
+                }
             }
         }
     }
@@ -2234,7 +2235,7 @@ class Net_SmartIRC
     function _handleactionhandler(&$ircdata)
     {
         $handler = &$this->_actionhandler;
-		$handlercount = count($handler);
+        $handlercount = count($handler);
         for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
             
@@ -2395,7 +2396,7 @@ class Net_SmartIRC
     // </private methods>
     
     function isError($object) {
-	return (bool)(is_object($object) && (get_class($object) == 'net_smartirc_error'));  
+        return (bool)(is_object($object) && (get_class($object) == 'net_smartirc_error'));  
     }
 
     function &throwError($message) {
