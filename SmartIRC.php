@@ -2302,36 +2302,25 @@ class Net_SmartIRC
             
             $methodname = strtolower($this->nreplycodes[$messagecode]);
             $_methodname = '_'.$methodname;
-            
-            // if exist, call internal method for the handling
-            if (@method_exists($messagehandlerobject, $_methodname)) {
-                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling internal method "'.get_class($messagehandlerobject).'->'.$_methodname.'" (by numeric)');
-                $messagehandlerobject->$_methodname($this, $ircdata);
-                $found = true;
-            }
-            
-            // if exist, call user defined method for the handling
-            if (@method_exists($messagehandlerobject, $methodname)) {
-                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling userdefined method "'.get_class($messagehandlerobject).'->'.$methodname.'" (by numeric)');
-                $messagehandlerobject->$methodname($this,$ircdata);
-                $found = true;
-            }
+            $_codetype = 'by numeric';
         } else if (is_string($messagecode)) { // its not numericcode so already a name/string
             $methodname = strtolower($messagecode);
             $_methodname = '_'.$methodname;
+            $_codetype = 'by string';
+        }
+
+        // if exists call internal method for the handling
+        if (@method_exists($messagehandlerobject, $_methodname)) {
+           $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling internal method "'.get_class($messagehandlerobject). "->{$_methodname}\" ({$_codetype})");
+           $messagehandlerobject->$_methodname($this, $ircdata);
+           $found = true;
+        }
             
-            // same as above
-            if (@method_exists($messagehandlerobject, $_methodname)) {
-                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling internal method "'.get_class($messagehandlerobject).'->'.$_methodname.'" (by string)');
-                $messagehandlerobject->$_methodname($this, $ircdata);
-                $found = true;
-            }
-            
-            if (@method_exists($messagehandlerobject, $methodname)) {
-                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling userdefined method "'.get_class($messagehandlerobject).'->'.$methodname.'" (by string)');
-                $messagehandlerobject->$methodname($this, $ircdata);
-                $found = true;
-            }
+        // if exist, call user defined method for the handling
+        if (@method_exists($messagehandlerobject, $methodname)) {
+           $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling user defined method "'.get_class($messagehandlerobject)."->{$_methodname}\" ({$_codetype})");
+           $messagehandlerobject->$methodname($this, $ircdata);
+           $found = true;
         }
         
         if ($found == false) {
