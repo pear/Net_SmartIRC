@@ -197,7 +197,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         if ($mode[$i] == 'b') {
                             $hostmask = array_shift($parameters);
                             if ($add) {
-                                $irc->log(SMARTIRC_DEBUG_CHANNELSYCNING, 'DEBUG_CHANNELSYNCING: adding ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
+                                $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
                                 $channel->bans[$hostmask] = true;
                             }
                             if ($remove) {
