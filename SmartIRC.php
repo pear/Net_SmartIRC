@@ -440,8 +440,14 @@ class Net_SmartIRC_base
             } else {
                 $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket extension not loaded, trying to load it...', __FILE__, __LINE__);
                 
-                if (@dl('socket')) {
-                    $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket extension succesfull loaded', __FILE__, __LINE__);
+                if (strtoupper(substr(PHP_OS, 0,3) == 'WIN')) {
+                    $load_status = @dl('php_sockets.dll');
+                } else {
+                    $load_status = @dl('sockets.so');
+                }
+ 
+                if ($load_status) {
+                    $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket extension succesfully loaded', __FILE__, __LINE__);
                     $this->_usesockets = true;
                 } else {
                     $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: couldn\'t load the socket extension', __FILE__, __LINE__);
