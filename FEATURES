@@ -23,7 +23,7 @@ Full featurelist of Net_SmartIRC
 - autoretry for connecting to IRC servers
 - debugging/logging system with log levels (destination can be file, stdout, syslog or browserout)
 - supports fsocks and PHP socket extension
-- supports PHP 4.1.x to 4.3.2
+- supports PHP 4.1.x to 4.3.2 (also PHP 5.0.0b1)
 - sendbuffer with a queue that has 3 priority levels (high, medium, low) plus a bypass level (critical)
 - channel syncing (tracking of users/modes/topic etc in objects)
 - user syncing (tracking the user in channels, nick/ident/host/realname/server/hopcount in objects)
