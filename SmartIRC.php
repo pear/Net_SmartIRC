@@ -337,7 +337,7 @@ class Net_SmartIRC
     function Net_SmartIRC()
     {
         ob_implicit_flush(true);
-        set_time_limit(0);
+        @set_time_limit(0);
         ignore_user_abort(true);
         $this->_messagebuffer[SMARTIRC_CRITICAL] = array();
         $this->_messagebuffer[SMARTIRC_HIGH] = array();
@@ -365,7 +365,7 @@ class Net_SmartIRC
     function setUseSockets($boolean)
     {
         if ($boolean === true) {
-            if (extension_loaded('sockets')) {
+            if (@extension_loaded('sockets')) {
                 $this->_usesockets = true;
             } else {
                 $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket extension not loaded, trying to load it...');
@@ -779,7 +779,7 @@ class Net_SmartIRC
         }
         
         $this->_lastrx = time();
-        $this->_lasttx = time();
+        $this->_lasttx = $this->_lastrx;
         $this->_updatestate();
         
         if ($result !== false) {
@@ -809,7 +809,7 @@ class Net_SmartIRC
             
             if ($this->_usesockets == true) {
                 @socket_shutdown($this->_socket);
-                socket_close($this->_socket);
+                @socket_close($this->_socket);
             } else {
                 fclose($this->_socket);
             }
@@ -971,7 +971,7 @@ class Net_SmartIRC
             $channelarray = array($channelarray);
         }
         
-        $channellist = implode($channelarray, ',');
+        $channellist = implode(',', $channelarray);
         
         if ($key !== null) {
             $this->_send('JOIN '.$channellist.' '.$key);
@@ -994,7 +994,7 @@ class Net_SmartIRC
             $channelarray = array($channelarray);
         }
         
-        $channellist = implode($channelarray, ',');
+        $channellist = implode(',', $channelarray);
         
         if ($reason !== null) {
             $this->_send('PART '.$channellist.' :'.$reason);
@@ -1018,7 +1018,7 @@ class Net_SmartIRC
             $nicknamearray = array($nicknamearray);
         }
         
-        $nicknamelist = implode($nicknamearray, ',');
+        $nicknamelist = implode(',', $nicknamearray);
         
         if ($reason !== null) {
             $this->_send('KICK '.$channel.' '.$nicknamelist.' :'.$reason, SMARTIRC_CRITICAL);
@@ -1044,7 +1044,7 @@ class Net_SmartIRC
                 $channelarray = array($channelarray);
             }
             
-            $channellist = implode($channelarray, ',');
+            $channellist = implode(',', $channelarray);
             $this->_send('LIST '.$channellist);
         } else {
             $this->_send('LIST');
@@ -1067,7 +1067,7 @@ class Net_SmartIRC
                 $channelarray = array($channelarray);
             }
             
-            $channellist = implode($channelarray, ',');
+            $channellist = implode(',', $channelarray);
             $this->_send('NAMES '.$channellist);
         } else {
             $this->_send('NAMES');
@@ -1401,7 +1401,9 @@ class Net_SmartIRC
         $this->registerActionhandler($messagetype, '.*', $listenfor, 'handler');
         $this->listen();
         $result = $listenfor->result;
-        unset($listenfor);
+		if(isset($listenfor)) {
+	        unset($listenfor);
+		}
         return $result;
     }
     
@@ -1423,6 +1425,9 @@ class Net_SmartIRC
     {
         $id = $this->_actionhandlerid++;
         $newactionhandler = &new Net_SmartIRC_actionhandler();
+		if(!$newactionhandler) {
+			return false;
+		}
         $newactionhandler->id = $id;
         $newactionhandler->type = $handlertype;
         $newactionhandler->message = $regexhandler;
@@ -1447,7 +1452,8 @@ class Net_SmartIRC
     function unregisterActionhandler($handlertype, $regexhandler, &$object, $methodname)
     {
         $handler = &$this->_actionhandler;
-        for ($i=0; $i<count($handler); $i++) {
+		$handlercount = count($handler);
+        for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->type == $handlertype &&
@@ -1455,7 +1461,9 @@ class Net_SmartIRC
                 $handlerobject->method == $methodname) {
                 
                 $id = $handlerobject->id;
-                unset($this->_actionhandler[$i]);
+				if(isset($this->_actionhandler[$i])) {
+	                unset($this->_actionhandler[$i]);
+				}
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler('.$id.') unregistered');
                 $this->_reorderactionhandler();
                 return true;
@@ -1476,11 +1484,14 @@ class Net_SmartIRC
     function unregisterActionid($id)
     {
         $handler = &$this->_actionhandler;
-        for ($i=0; $i<count($handler); $i++) {
+		$handlercount = count($handler);
+        for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->id == $id) {
-                unset($this->_actionhandler[$i]);
+				if(isset($this->_actionhandler[$i])) {
+					unset($this->_actionhandler[$i]);
+				}
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler('.$id.') unregistered');
                 $this->_reorderactionhandler();
                 return true;
@@ -1508,6 +1519,9 @@ class Net_SmartIRC
     {
         $id = $this->_timehandlerid++;
         $newtimehandler = &new Net_SmartIRC_timehandler();
+		if(!$newtimehandler) {
+			return false;
+		}
         $newtimehandler->id = $id;
         $newtimehandler->interval = $interval;
         $newtimehandler->object = &$object;
@@ -1535,11 +1549,14 @@ class Net_SmartIRC
     function unregisterTimeid($id)
     {
         $handler = &$this->_timehandler;
-        for ($i=0; $i<count($handler); $i++) {
+		$handlercount = count($handler);
+        for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->id == $id) {
-                unset($this->_timehandler[$i]);
+				if(isset($this->_timehandler[$i])) {
+	                unset($this->_timehandler[$i]);
+				}
                 $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: timehandler('.$id.') unregistered');
                 $this->_reordertimehandler();
                 $this->_updatemintimer();
@@ -1554,15 +1571,16 @@ class Net_SmartIRC
     // experimentel feature, do not use it yet!
     function loadModule($filename)
     {
-        if (file_exists($filename)) {
+        if (@file_exists($filename)) {
             $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: loading module '.$filename);
             // before we load/include something, we should check what it is
             $file = file($filename);
+			$filecount = count($file);
             $found_name = false;
             $found_description = false;
             $found_autor = false;
             
-            for ($i=0;$i < count($file); $i++) {
+            for ($i=0;$i<$filecount; $i++) {
                 $line = $file[$i];
                 $lineex = explode(' ', $line);
                 switch($lineex[0]) {
@@ -1693,14 +1711,14 @@ class Net_SmartIRC
         if (!$this->_loggedin) {
             return;
         }
-            
-        for ($i=0; $i<count($this->_timehandler); $i++) {
+        $timehandlercount = count($this->_timehandler);
+        for ($i=0; $i<$timehandlercount; $i++) {
             $handlerobject = &$this->_timehandler[$i];
             if ($this->_microint() >= ($handlerobject->lastmicrotimestamp+($handlerobject->interval/1000))) {
                 $methodobject = &$handlerobject->object;
                 $method = $handlerobject->method;
                     
-                if (method_exists($methodobject, $method)) {
+                if (@method_exists($methodobject, $method)) {
                     $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: calling method "'.get_class($methodobject).'->'.$method.'"');
                     $methodobject->$method($this);
                 }
@@ -1876,8 +1894,9 @@ class Net_SmartIRC
                     // now the actionhandlers are comming
                     $this->_handleactionhandler($ircdata);
                 }
-                
-                unset($ircdata);
+                if(isset($ircdata)) {
+	                unset($ircdata);
+				}
             }
         }
     }
@@ -2174,14 +2193,14 @@ class Net_SmartIRC
             $_methodname = '_'.$methodname;
             
             // if exist, call internal method for the handling
-            if (method_exists($messagehandlerobject, $_methodname)) {
+            if (@method_exists($messagehandlerobject, $_methodname)) {
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling internal method "'.get_class($messagehandlerobject).'->'.$_methodname.'" (by numeric)');
                 $messagehandlerobject->$_methodname($this, $ircdata);
                 $found = true;
             }
             
             // if exist, call user defined method for the handling
-            if (method_exists($messagehandlerobject, $methodname)) {
+            if (@method_exists($messagehandlerobject, $methodname)) {
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling userdefined method "'.get_class($messagehandlerobject).'->'.$methodname.'" (by numeric)');
                 $messagehandlerobject->$methodname($this,$ircdata);
                 $found = true;
@@ -2191,13 +2210,13 @@ class Net_SmartIRC
             $_methodname = '_'.$methodname;
             
             // same as above
-            if (method_exists($messagehandlerobject, $_methodname)) {
+            if (@method_exists($messagehandlerobject, $_methodname)) {
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling internal method "'.get_class($messagehandlerobject).'->'.$_methodname.'" (by string)');
                 $messagehandlerobject->$_methodname($this, $ircdata);
                 $found = true;
             }
             
-            if (method_exists($messagehandlerobject, $methodname)) {
+            if (@method_exists($messagehandlerobject, $methodname)) {
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling userdefined method "'.get_class($messagehandlerobject).'->'.$methodname.'" (by string)');
                 $messagehandlerobject->$methodname($this, $ircdata);
                 $found = true;
@@ -2219,7 +2238,8 @@ class Net_SmartIRC
     function _handleactionhandler(&$ircdata)
     {
         $handler = &$this->_actionhandler;
-        for ($i=0; $i<count($handler); $i++) {
+		$handlercount = count($handler);
+        for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
             
             if (($handlerobject->type & $ircdata->type) &&
@@ -2230,7 +2250,7 @@ class Net_SmartIRC
                 $methodobject = &$handlerobject->object;
                 $method = $handlerobject->method;
                 
-                if (method_exists($methodobject, $method)) {
+                if (@method_exists($methodobject, $method)) {
                     $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: calling method "'.get_class($methodobject).'->'.$method.'"');
                     $methodobject->$method($this, $ircdata);
                 } else {
