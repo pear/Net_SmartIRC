@@ -836,6 +836,8 @@ class Net_SmartIRC_base
             $line !== null) {
             $file = basename($file);
             $entry = $file.'('.$line.') '.$entry;
+        } else {
+            $entry = 'unknown(0) '.$entry;
         }
         
         $formatedentry = date('M d H:i:s ').$entry;
@@ -1627,7 +1629,7 @@ class Net_SmartIRC_base
                     $nick = substr($from, 0, $exclamationpos);
                     $ident = substr($from, $exclamationpos+1, ($atpos-$exclamationpos)-1);
                     $host = substr($from, $atpos+1);
-                    $message = substr(implode(array_slice($lineex, 3), ' '), 1);
+                    $message = substr($line, strpos($line, ':')+1);
                     $type = $this->_gettype($rawline);
                     
                     $ircdata->from = $from;
