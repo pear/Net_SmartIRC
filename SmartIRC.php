@@ -297,20 +297,32 @@ class Net_SmartIRC
     var $_autoretry = false;
     
     /**
+     * All IRC replycodes, the index is the replycode name.
+     *
+     * @see $SMARTIRC_replycodes
      * @var array
-     * @access private
+     * @access public
      */
     var $replycodes;
     
     /**
+     * All numeric IRC replycodes, the index is the numeric replycode.
+     *
+     * @see $SMARTIRC_nreplycodes
      * @var array
-     * @access private
+     * @access public
      */
     var $nreplycodes;
     
     /**
+     * Stores all channels in this array where we are joined, works only if channelsynching is activated.
+     * Eg. for accessing a user, use it like this: (in this example the SmartIRC object is stored in $irc)
+     * $irc->channel['#test']->users['meebey']->nick;
+     *
+     * @see Net_SmartIRC_channel
+     * @see Net_SmartIRC_user
      * @var array
-     * @access private
+     * @access public
      */
     var $channel;
     
@@ -378,6 +390,7 @@ class Net_SmartIRC
      * A full list of avialable debug levels see 'Debug Levels'.
      * Default: SMARTIRC_DEBUG_NOTICE
      *
+     * @see DOCUMENTATION
      * @param integer $level
      * @return void
      * @access public
@@ -439,6 +452,7 @@ class Net_SmartIRC
      * SMARTIRC_SYSLOG for sending the log to the syslog
      * Default: SMARTIRC_STDOUT
      *
+     * @see SMARTIRC_STDOUT
      * @param integer $type must be on of the constants
      * @return void
      * @access public
@@ -645,6 +659,7 @@ class Net_SmartIRC
      * SMARTIRC_DEBUG_TIMEHANDLER
      * SMARTIRC_DEBUG_MESSAGEHANDLER
      *
+     * @see SMARTIRC_DEBUG_NOTICE
      * @param integer $level bit constants (SMARTIRC_DEBUG_*)
      * @param string $entry the new log entry
      * @return void
@@ -866,6 +881,7 @@ class Net_SmartIRC
      *
      * Sends a message to a channel or user.
      *
+     * @see DOCUMENTATION
      * @param integer $type specifies the type, like QUERY/ACTION or CTCP see 'Message Types'
      * @param string $destination can be a user or channel
      * @param string $message the message
@@ -1302,6 +1318,7 @@ class Net_SmartIRC
      * Registers an actionhandler in Net_SmartIRC for calling it later.
      * The actionhandler id is needed for unregistering the actionhandler.
      *
+     * @see example.php
      * @param integer $handlertype bits constants, see in this documentation Message Types
      * @param string $regexhandler the message that has to be in the IRC message in regex syntax
      * @param object $object a reference to the objects of the method
@@ -1387,6 +1404,7 @@ class Net_SmartIRC
      * Registers a timehandler in Net_SmartIRC, which will be called in the specified interval.
      * The timehandler id is needed for unregistering the timehandler.
      *
+     * @see example7.php
      * @param integer $interval interval time in milliseconds
      * @param object $object a reference to the objects of the method
      * @param string $methodname the methodname that will be called when the handler happens
@@ -1416,6 +1434,7 @@ class Net_SmartIRC
     /**
      * unregisters an existing timehandler via the id
      *
+     * @see example7.php
      * @param integer $id
      * @return boolean
      * @access public
