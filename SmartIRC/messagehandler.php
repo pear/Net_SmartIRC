@@ -48,7 +48,9 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: joining channel: '.$ircdata->channel, __FILE__, __LINE__);
                 $channel = &new Net_SmartIRC_channel();
                 $channel->name = $ircdata->channel;
-                $channel->synctime_start = $this->_microint();
+                $microint = $this->_microint();
+                $channel->synctime_start = $microint;
+                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synctime_start for '.$ircdata->channel.' set to: '.$microint, __FILE__, __LINE__);
                 $this->_channels[strtolower($channel->name)] = &$channel;
                 
                 // the class will get his own who data from the whole who channel list
@@ -398,10 +400,16 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_rpl_endofbanlist(&$ircdata)
     {
         if ($this->_channelsyncing == true && $this->isJoined($ircdata->channel)) {
-            $channel = &$this->_channels[strtolower($ircdata->channel)];
-            $channel->synctime_stop = $this->_microint();
-            $channel->synctime = ((float)$channel->synctime_stop - (float)$channel->synctime_start);
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel.' in '.round($channel->synctime, 2).' secs', __FILE__, __LINE__);
+            $channel = &$this->getChannel($ircdata->channel);
+            if ($channel->synctime_stop == 0) {
+                // we received end of banlist and the stop timestamp is not set yet
+                $microint = $this->_microint();
+                $channel->synctime_stop = $microint;
+                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synctime_stop for '.$ircdata->channel.' set to: '.$microint, __FILE__, __LINE__);
+                
+                $channel->synctime = ((float)$channel->synctime_stop - (float)$channel->synctime_start);
+                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel.' in '.round($channel->synctime, 2).' secs', __FILE__, __LINE__);
+            }
         }
     }
     
