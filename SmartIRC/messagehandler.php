@@ -200,6 +200,17 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                             $channel->key = '';
                         }
                     break;
+                    case 'l':
+                        if ($add) {
+                            $limit = array_shift($parameters);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: stored user limit for: '.$channel->name, __FILE__, __LINE__);
+                            $channel->user_limit = $limit;
+                        }
+                        if ($remove) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removed user limit for: '.$channel->name, __FILE__, __LINE__);
+                            $channel->user_limit = false;
+                        }
+                    break;
                     default:
                         // channel modes
                         if ($mode[$i] == 'b') {
