@@ -31,17 +31,24 @@ include_once('../SmartIRC.php');
 $irc = &new Net_SmartIRC();
 $irc->startBenchmark();
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
-$irc->useSockets(TRUE);
+$irc->setUseSockets(TRUE);
 $irc->setBenchmark(TRUE);
 $irc->connect('irc.freenet.de', 6667);
-$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 'Net_SmartIRC');
+$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 0, 'Net_SmartIRC');
 $irc->getList('#debian.de');
-$resultar = array();
-$irc->listenFor(SMARTIRC_TYPE_LIST, $resultar);
+$resultar = $irc->listenFor(SMARTIRC_TYPE_LIST);
 $irc->disconnect();
 $irc->stopBenchmark();
 
-$resultex = explode(' ', $resultar[0]);
-$count = $resultex[1];
+if (is_array($resultar)) {
+    $resultex = explode(' ', $resultar[0]);
+    $count = $resultex[1];
+    ?>
+        <B>On our IRC Channel #debian.de are <? echo $count; ?> Users</B>
+    <?
+} else {
+    ?>
+        <B>An error occured, please check the specified server and settings<B>
+    <?
+}
 ?>
-<B>On our IRC Channel #debian.de are <? echo $count; ?> Users</B>
