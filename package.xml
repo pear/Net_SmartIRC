@@ -16,7 +16,7 @@ Featurelist:
 - detects and changes nickname on nickname collisions
 - time events
 - full object oriented programmed
-- autoreconnect
+- autoreconnect, if connection is lost
 - autoretry for connecting to IRC servers
 - debugging/logging system
 - supports fsocks and PHP socket extension
@@ -54,10 +54,33 @@ Featurelist:
     <release>
         <version>0.5.1</version>
         <state>stable</state>
-        <date>2003-01-14</date>
+        <date>2003-01-17</date>
         <notes>
-XXX
-        </notes>
+ChangeLog of 0.5.1
+------------------
+
+fixes:
+ - major bugs in ChannelSynching fixed.
+ - fsocks support fixed.
+ - setUseSocket() method fixed.
+   If false was passed as parameter, it tried to load the socket extension.
+   Also warnings are now suppressed with @ in front of dl().
+ - fixed a typo in reconnect().
+ - missing SMARTIRC_DEBUG_CHANNELSYNCHING constant added.
+ 
+changes:
+ - new design for HTML documentation used (PEAR template).
+ - moved all examples to their own directory (examples/).
+ - moved the documentation to docs/HTML/.
+ - added new file descriptions to README.
+ - removed not needed parts of DOCUMENTATION (most is now in the HTML version).
+ - updated the HTML documentation.
+ 
+new:
+ - example5/6/7.php added.
+ - setAutoRetry() method added.
+   Autoretrying of connecting to the IRC server, is now supported.
+         </notes>
         
         <filelist>
             <dir name="/" baseinstalldir="Net">
@@ -84,108 +107,74 @@ XXX
                     <file>DOCUMENTATION</file>
                     <file>HOWTO</file>
                     <dir name="HTML" role="doc">
-                        <file>errors.html</file>
-                        <file>index.html</file>
-                        <file>layout.css</file>
                         <file>classtrees_Net_SmartIRC.html</file>
-                        <file>li_Net_SmartIRC.html</file>
                         <file>elementindex.html</file>
                         <file>elementindex_Net_SmartIRC.html</file>
-                        <file>style.css</file>
-                        <dir name="Net_SmartIRC" role="doc">
-                            <file>Net_SmartIRC.html</file>
-                            <file>Net_SmartIRC_actionhandler.html</file>
-                            <file>Net_SmartIRC_channel.html</file>
-                            <file>Net_SmartIRC_data.html</file>
-                            <file>Net_SmartIRC_listenfor.html</file>
-                            <file>Net_SmartIRC_messagehandler.html</file>
-                            <file>Net_SmartIRC_timehandler.html</file>
-                            <file>Net_SmartIRC_user.html</file>
-                            <file>mybot.html</file>
-                            <file>_SmartIRC_SmartIRC_php.html</file>
-                            <file>_SmartIRC_SmartIRC_defines_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example2_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example3_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example4_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example5_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example6_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example_php.html</file>
-                            <file>_SmartIRC_SmartIRC_messagehandler_php.html</file>
+                        <file>errors.html</file>
+                        <file>index.html</file>
+                        <file>li_Net_SmartIRC.html</file>
+                        <file>ric_CHANGELOG.html</file>
+                        <file>ric_README.html</file>
+                        <dir name="media" role="doc">
+                            <file>background.png</file>
+                            <file>empty.png</file>
+                            <file>style.css</file>
+                            <file>style.css.PHPEditBackup</file>
+                            <dir name="images" role="doc">
+                                <file>L.png</file>
+                                <file>T.png</file>
+                                <file>leftbg.gif</file>
+                                <file>Class.gif</file>
+                                <file>Constant.gif</file>
+                                <file>Constants.gif</file>
+                                <file>Constructor.gif</file>
+                                <file>Destructor.gif</file>
+                                <file>Disk.gif</file>
+                                <file>FolderClosed.gif</file>
+                                <file>FolderOpened.gif</file>
+                                <file>Functions.gif</file>
+                                <file>GhostClass.gif</file>
+                                <file>I.png</file>
+                                <file>Lminus.png</file>
+                                <file>Lplus.png</file>
+                                <file>PrivateDataMember.gif</file>
+                                <file>PrivateMethod.gif</file>
+                                <file>ProtectedMethod.gif</file>
+                                <file>ProtectedProperty.gif</file>
+                                <file>PublicDataMember.gif</file>
+                                <file>PublicMethod.gif</file>
+                                <file>classFolder.gif</file>
+                                <file>Tplus.png</file>
+                                <file>Thumbs.db</file>
+                                <file>minus.gif</file>
+                                <file>msgError.gif</file>
+                                <file>Tminus.png</file>
+                                <file>msgFatalError.gif</file>
+                                <file>msgHint.gif</file>
+                                <file>Types.gif</file>
+                                <file>PrivateProperty.gif</file>
+                                <file>msgInformation.gif</file>
+                                <file>Variable.gif</file>
+                                <file>msgWarning.gif</file>
+                                <file>Vars.gif</file>
+                                <file>ProtectedDataMember.gif</file>
+                                <file>openfoldericon.png</file>
+                                <file>blank.png</file>
+                                <file>pearlogo.gif</file>
+                                <file>plus.gif</file>
+                                <file>spacer.gif</file>
+                                <file>foldericon.png</file>
+                                <file>error.gif</file>
+                                <file>file.png</file>
+                                <file>PublicProperty.gif</file>
+                            </dir>
+                            <dir name="lib" role="doc">
+                                <file>classTree.js</file>
+                                <file>tab.webfx.css</file>
+                                <file>tabpane.js</file>
+                                <file>ua.js</file>
+                            </dir>
                         </dir>
-                    </dir>
-                </dir>
-            </dir>
-        </filelist>
-    </release>
-    
-    <release>
-        <version>0.5.0</version>
-        <state>beta</state>
-        <date>2003-01-06</date>
-        <notes>
-Initial release as PEAR package
-this project is former known as phpSmartIRCclass
-(beta because of first release in PEAR, the project itself is stable)
-
-ChangeLog:
-  fixes:
-  - copyright year
-  - fixed critical bug in the main _rawreceive() for() loop, messages were lost.
-  
-  changes:
-  - changed documentation tags in front of all methods to the phpDocumentator compatible format.
-  - improved connect() errorhandling.
-  - changed login() parameters to $nick, $realname, $usermode = 0, $username = null, $password = null.
-  - changed join() parameters to $channelarray, $key = null.
-  - changed kick() parameters to $channel, $nicknamearray, $reason = null.
-  - changed listenFor() parameters to $messagetype
-    return value is now the result, instead the of a reference to the result parameter.
-  - sendbuffer has now 3 queues: high, medium and low
-    high sends 2 messages, then 1 of medium
-    low is only send if high _and_ medium is empty.
-  - select() call for sockets is strongly optimized
-  
-  new:
-  - phpDocumentator package tags.
-  - include() for messagehandler.php (needed for the new API).
-  - setChannelSynching() method, for enabling the channel synching.
-  - setCtcpVersion() method, for changing the ctcp version reply string.
-  - setReceiveTimeout() method, for changing the receive timeout.
-  - setTransmitTimeout() method, for changing the transmit timeout.
-  - setAutoReconnect() method, for enabling the autoreconnect feature.
-  - channel variable, a reference to _channels because $object->channel("#chan")->topic is not possible in PHP4 (ZE1).
-  - reconnect() method, it will reconnect and also join all channels.
-  - channel() method, getting a reference to the channel, only if channelsynching is on.
-  - added ident, host, messageex and rawmessageex variables to the Net_SmartIRC_data class.
-  - class Net_SmartIRC_user, stores info about one user, only used if channelsynching is on.
-  - class Net_SmartIRC_channel, stores info about one channel, only used if channelsynching is on.
-        </notes>
-        <filelist>
-            <dir name="/" baseinstalldir="Net">
-                <file role="php">SmartIRC.php</file>
-                <dir name="SmartIRC">
-                    <file role="php">defines.php</file>
-                    <file role="php">messagehandler.php</file>
-                    <file role="doc">example.php</file>
-                    <file role="doc">example2.php</file>
-                    <file role="doc">example3.php</file>
-                    <file role="doc">example4.php</file>
-                    <file role="doc">CHANGELOG</file>
-                    <file role="doc">CREDITS</file>
-                    <file role="doc">DOCUMENTATION</file>
-                    <file role="doc">README</file>
-                    <file role="doc">HOWTO</file>
-                    <file role="doc">FEATURES</file>
-                    <file role="doc">LICENSE</file>
-                    <dir name="docs" role="doc">
-                        <file>errors.html</file>
-                        <file>index.html</file>
-                        <file>layout.css</file>
-                        <file>classtrees_Net_SmartIRC.html</file>
-                        <file>li_Net_SmartIRC.html</file>
-                        <file>elementindex.html</file>
-                        <file>elementindex_Net_SmartIRC.html</file>
-                        <file>style.css</file>
                         <dir name="Net_SmartIRC" role="doc">
                             <file>Net_SmartIRC.html</file>
                             <file>Net_SmartIRC_actionhandler.html</file>
@@ -196,15 +185,16 @@ ChangeLog:
                             <file>Net_SmartIRC_timehandler.html</file>
                             <file>Net_SmartIRC_user.html</file>
                             <file>mybot.html</file>
-                            <file>_SmartIRC_SmartIRC_php.html</file>
-                            <file>_SmartIRC_SmartIRC_defines_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example2_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example3_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example4_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example5_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example6_php.html</file>
-                            <file>_SmartIRC_SmartIRC_example_php.html</file>
-                            <file>_SmartIRC_SmartIRC_messagehandler_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_defines_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_example2_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_example3_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_example4_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_example5_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_example6_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_example7_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_example_php.html</file>
+                            <file>_SmartIRC-0.5.1_SmartIRC_messagehandler_php.html</file>
                         </dir>
                     </dir>
                 </dir>
@@ -216,51 +206,30 @@ ChangeLog:
         <release>
             <version>0.5.1</version>
             <state>stable</state>
-            <date>2003-01-14</date>
+            <date>2003-01-17</date>
             <notes>
-            XXX
-            </notes>
-        </release>
-    </changelog>
-    
-    <changelog>
-        <release>
-            <version>0.5.0</version>
-            <state>beta</state>
-            <date>2003-01-06</date>
-            <notes>
-  fixes:
-  - copyright year
-  - fixed critical bug in the main _rawreceive() for() loop, messages were lost.
-  
-  changes:
-  - changed documentation tags in front of all methods to the phpDocumentator compatible format.
-  - improved connect() errorhandling.
-  - changed login() parameters to $nick, $realname, $usermode = 0, $username = null, $password = null.
-  - changed join() parameters to $channelarray, $key = null.
-  - changed kick() parameters to $channel, $nicknamearray, $reason = null.
-  - changed listenFor() parameters to $messagetype
-    return value is now the result, instead the of a reference to the result parameter.
-  - sendbuffer has now 3 queues: high, medium and low
-    high sends 2 messages, then 1 of medium
-    low is only send if high _and_ medium is empty.
-  - select() call for sockets is strongly optimized
-  
-  new:
-  - phpDocumentator package tags.
-  - include() for messagehandler.php (needed for the new API).
-  - setChannelSynching() method, for enabling the channel synching.
-  - setCtcpVersion() method, for changing the ctcp version reply string.
-  - setReceiveTimeout() method, for changing the receive timeout.
-  - setTransmitTimeout() method, for changing the transmit timeout.
-  - setAutoReconnect() method, for enabling the autoreconnect feature.
-  - channel variable, a reference to _channels because $object->channel("#chan")->topic is not possible in PHP4 (ZE1).
-  - reconnect() method, it will reconnect and also join all channels.
-  - channel() method, getting a reference to the channel, only if channelsynching is on.
-  - added ident, host, messageex and rawmessageex variables to the Net_SmartIRC_data class.
-  - class Net_SmartIRC_user, stores info about one user, only used if channelsynching is on.
-  - class Net_SmartIRC_channel, stores info about one channel, only used if channelsynching is on.
-            </notes>
+fixes:
+ - major bugs in ChannelSynching fixed.
+ - fsocks support fixed.
+ - setUseSocket() method fixed.
+   If false was passed as parameter, it tried to load the socket extension.
+   Also warnings are now suppressed with @ in front of dl().
+ - fixed a typo in reconnect().
+ - missing SMARTIRC_DEBUG_CHANNELSYNCHING constant added.
+ 
+changes:
+ - new design for HTML documentation used (PEAR template).
+ - moved all examples to their own directory (examples/).
+ - moved the documentation to docs/HTML/.
+ - added new file descriptions to README.
+ - removed not needed parts of DOCUMENTATION (most is now in the HTML version).
+ - updated the HTML documentation.
+ 
+new:
+ - example5/6/7.php added.
+ - setAutoRetry() method added.
+   Autoretrying of connecting to the IRC server, is now supported.
+             </notes>
         </release>
     </changelog>
     
