@@ -889,6 +889,49 @@ class Net_SmartIRC_base
     }
     
     /**
+     * Returns a reference to the channel object of the specified channelname.
+     *
+     * @param string $channelname
+     * @return object
+     * @access public
+     */
+    function &getChannel($channelname)
+    {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: getChannel() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if (isJoined($channelname)) {
+            return $this->_channels[strtolower($channelname)];
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Returns a reference to the user object for the specified username and channelname.
+     *
+     * @param string $channelname
+     * @param string $username
+     * @return object
+     * @access public
+     */
+    function &getUser($channelname, $username)
+    {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: getUser() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if (isJoined($channelname, $username)) {
+            return $this->_channels[strtolower($channelname)]->users[strtolower($username)];
+        } else {
+            return false;
+        }
+    }
+    
+    /**
      * Creates the sockets and connects to the IRC server on the given port.
      *
      * @param string $address 
