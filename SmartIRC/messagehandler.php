@@ -176,11 +176,11 @@ class Net_SmartIRC_messagehandler
                     case 'k':
                         $key = array_shift($parameters);
                         if ($add) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: stored channel key for: '.$channel->name, __FILE__, __LINE__);
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: stored channel key for: '.$channel->name, __FILE__, __LINE__);
                             $channel->key = $key;
                         }
                         if ($remove) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: removed channel key for: '.$channel->name, __FILE__, __LINE__);
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: removed channel key for: '.$channel->name, __FILE__, __LINE__);
                             $channel->key = '';
                         }
                     break;
