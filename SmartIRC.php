@@ -799,6 +799,14 @@ class Net_SmartIRC
      */
     function log($level, $entry, $file = null, $line = null)
     {
+        // prechecks
+        if (!(is_number($level)) ||
+            !($level > SMARTIRC_DEBUG_NONE &&
+              $level < SMARTIRC_DEBUG_ALL)) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING!: invalid log level passed to log() ('.$level.')', __FILE__, __LINE__);
+            return;
+        }
+        
         if (!($level & $this->_debug) ||
              ($this->_logdestination == SMARTIRC_NONE)) {
             return;
