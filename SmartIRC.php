@@ -1339,7 +1339,7 @@ class Net_SmartIRC
         }
         
         if ($this->isJoined($channel, $nickname)) {
-            if ($this->_channels[$channel]->users[$nickname]->voice) {
+            if ($this->_channels[strtolower($channel)]->users[strtolower($nickname)]->voice) {
                 return true;
             }
         }
