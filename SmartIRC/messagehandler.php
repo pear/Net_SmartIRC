@@ -6,7 +6,7 @@
  * $Date$
  */
 /**
- * Copyright (c) 2002-2003-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
+ * Copyright (c) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
  * 
@@ -103,6 +103,7 @@ class Net_SmartIRC_messagehandler
     {
         if ($irc->_channelsynching == true) {
             $newnick = substr($ircdata->rawmessageex[2], 1);
+            $lowerednewnick = strtolower($newnick);
             
             foreach ($irc->_channels as $channelkey => $channelvalue) {
                 // loop through all channels
@@ -111,14 +112,15 @@ class Net_SmartIRC_messagehandler
                     
                     if ($ircdata->nick == $uservalue->nick) {
                         // found him
-                        // time for updating his nickname
-                        $channelvalue->users[$newnick] = $channelvalue->users[$ircdata->nick];
+                        // time for updating the object and his nickname
+                        $channelvalue->users[$lowerednewnick] = $channelvalue->users[$ircdata->nick];
+                        $channelvalue->users[$lowerednewnick]->nick = $newnick;
                         unset($channelvalue->users[$ircdata->nick]);
                         
                         // he was maybe op or voice, update comming
                         if (isset($channelvalue->ops[$ircdata->nick])) {
                             $channelvalue->ops[$newnick] = $channelvalue->ops[$ircdata->nick];
-                           unset($channelvalue->ops[$ircdata->nick]);
+                            unset($channelvalue->ops[$ircdata->nick]);
                         }
                         if (isset($channelvalue->voices[$ircdata->nick])) {
                             $channelvalue->voices[$newnick] = $channelvalue->voices[$ircdata->nick];
