@@ -1599,7 +1599,6 @@ class Net_SmartIRC_base
     {
         $newnickname = substr($this->_nick, 0, 5).rand(0, 999);
         $this->changeNick($newnickname, SMARTIRC_CRITICAL);
-        $this->_nick = $newnickname;
     }
     
     /**
