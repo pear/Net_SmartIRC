@@ -2338,7 +2338,7 @@ class Net_SmartIRC
             if (($handlerobject->type & $ircdata->type) &&
                 (preg_match($regex, $ircdata->message) == 1)) {
                 
-                $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler match found for id: '.$i.' type: '.$ircdata->type.' message: "'.$ircdata->message.'" regex: "'.$handlerobject->message.'"');
+                $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler match found for id: '.$i.' type: '.$ircdata->type.' message: "'.$ircdata->message.'" regex: "'.$regex.'"');
                 
                 $methodobject = &$handlerobject->object;
                 $method = $handlerobject->method;
