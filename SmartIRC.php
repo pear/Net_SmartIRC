@@ -1890,8 +1890,11 @@ class Net_SmartIRC_base
                 $messagecode = $lineex[1];
                 $exclamationpos = strpos($from, '!');
                 $atpos = strpos($from, '@');
-                $colonpos = strpos($line, ' :')+1;
-                
+                $colonpos = strpos($line, ' :');
+                if ($colonpos !== false) {
+                    // we want the exact position of ":" not beginning from the space
+                    $colonpos += 1;
+                }
                 $ircdata->nick = substr($from, 0, $exclamationpos);
                 $ircdata->ident = substr($from, $exclamationpos+1, ($atpos-$exclamationpos)-1);
                 $ircdata->host = substr($from, $atpos+1);
