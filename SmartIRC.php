@@ -505,7 +505,7 @@ class Net_SmartIRC
             $this->_channelsyncing = false;
         }
         
-        if ($this->_usersyncing == true) {
+        if ($this->_channelsyncing == true) {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: Channel syncing enabled', __FILE__, __LINE__);
         } else {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: Channel syncing disabled', __FILE__, __LINE__);
