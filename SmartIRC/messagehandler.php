@@ -5,9 +5,9 @@
  * $Author$
  * $Date$
  *
- * Copyright (c) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
+ * Copyright (c) 2002-2004 Mirco Bauer <meebey@meebey.net> <http://www.meebey.net>
  * 
- * Full LGPL License: <http://www.meebey.net/lgpl.txt>
+ * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
