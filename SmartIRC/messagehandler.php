@@ -50,11 +50,13 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $channel->name = $ircdata->channel;
                 $this->_channels[strtolower($channel->name)] = &$channel;
                 
+                // the class will get his own who data from the whole who channel list
                 $this->who($channel->name);
                 $this->mode($channel->name);
                 $this->ban($channel->name);
             } else {
-                $this->who($user->nick);
+                // the class didn't join but someone else, lets get his who data
+                $this->who($ircdata->nick);
             }
             
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '.$ircdata->nick.' joins channel: '.$ircdata->channel, __FILE__, __LINE__);
