@@ -369,6 +369,9 @@ class Net_SmartIRC
      */
     function Net_SmartIRC()
     {
+        // precheck
+        $this->_checkPHPVersion();
+        
         ob_implicit_flush(true);
         @set_time_limit(0);
         ignore_user_abort(true);
@@ -818,7 +821,7 @@ class Net_SmartIRC
         
         if ($file !== null &&
             $line !== null) {
-            $file = substr($file, strrpos($file, '/')+1);
+            $file = basename($file);
             $entry = $file.'('.$line.') '.$entry;
         }
         
@@ -1006,7 +1009,7 @@ class Net_SmartIRC
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: reconnecting...', __FILE__, __LINE__);
         
         // remember in which channels we are joined
-        $channels = array(array());
+        $channels = array();
         foreach ($this->_channels as $value) {
             if (empty($value->key)) {
                 $channels[] = array('name' => $value->name);
@@ -1863,7 +1866,7 @@ class Net_SmartIRC
     function _nicknameinuse()
     {
         $newnickname = substr($this->_nick, 0, 5).rand(0, 999);
-        $this->changeNick($newnickname);
+        $this->changeNick($newnickname, SMARTIRC_CRITICAL);
         $this->_nick = $newnickname;
     }
     
@@ -2051,7 +2054,7 @@ class Net_SmartIRC
                     $rawdata = null;
                 }
             } else {
-                usleep($timeout*1000);
+                usleep($this->_receivedelay*1000);
                 $rawdata = @fread($this->_socket, 10240);
             }
             
@@ -2405,6 +2408,7 @@ class Net_SmartIRC
             return true;
         } else {
             $this->_state = false;
+            $this->_loggedin = false;
             return false;
         }
     }
@@ -2687,6 +2691,9 @@ class Net_SmartIRC
     {
     }
     
+    function _checkPHPVersion()
+    {
+    }
     // </private methods>
     
     function isError($object) {
