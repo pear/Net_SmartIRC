@@ -1477,7 +1477,7 @@ class Net_SmartIRC
         $handler = &$this->_actionhandler;
         $handlercount = count($handler);
         
-        for ($i=0; $i<$handlercount; $i++) {
+        for ($i = 0; $i < $handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->type == $handlertype &&
@@ -1511,7 +1511,7 @@ class Net_SmartIRC
     {
         $handler = &$this->_actionhandler;
         $handlercount = count($handler);
-        for ($i=0; $i<$handlercount; $i++) {
+        for ($i = 0; $i < $handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->id == $id) {
@@ -1579,7 +1579,7 @@ class Net_SmartIRC
     {
         $handler = &$this->_timehandler;
         $handlercount = count($handler);
-        for ($i=0; $i<$handlercount; $i++) {
+        for ($i = 0; $i < $handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->id == $id) {
@@ -1665,12 +1665,12 @@ class Net_SmartIRC
     function unloadModule($name)
     {
         $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: unloading module: '.$name.'...');
-
+        
         $modulecount = count($this->_modules);
-        for ($i=0; $i < $modulecount; $i++) {
+        for ($i = 0; $i < $modulecount; $i++) {
             $module = &$this->_modules[$i];
             $modulename = get_class($module);
-
+            
             if ($modulename == 'net_smartirc_module_'.$name) {
                 $module->module_exit($this);
                 unset($this->_modules[$i]);
@@ -1783,7 +1783,7 @@ class Net_SmartIRC
             return;
         }
         $timehandlercount = count($this->_timehandler);
-        for ($i=0; $i<$timehandlercount; $i++) {
+        for ($i = 0; $i < $timehandlercount; $i++) {
             $handlerobject = &$this->_timehandler[$i];
             if ($this->_microint() >= ($handlerobject->lastmicrotimestamp+($handlerobject->interval/1000))) {
                 $methodobject = &$handlerobject->object;
@@ -2036,8 +2036,8 @@ class Net_SmartIRC
     function _updatemintimer()
     {
         $timerarray = array();
-        foreach ($this->_timehandler as $key) {
-            $timerarray[] = $key->interval;
+        foreach ($this->_timehandler as $values) {
+            $timerarray[] = $values->interval;
         }
         
         $result = array_multisort($timerarray, SORT_NUMERIC, SORT_ASC);
@@ -2326,7 +2326,7 @@ class Net_SmartIRC
     {
         $handler = &$this->_actionhandler;
         $handlercount = count($handler);
-        for ($i=0; $i<$handlercount; $i++) {
+        for ($i = 0; $i < $handlercount; $i++) {
             $handlerobject = &$handler[$i];
             
             if (substr($handlerobject->message, 0, 1) == '/') {
