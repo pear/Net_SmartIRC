@@ -115,4 +115,44 @@ ChangeLog:
     </filelist>
   </release>
   
+  <changelog>
+        <release>
+            <version>0.5.0</version>
+            <state>beta</state>
+            <date>2003-01-06</date>
+            <notes>
+  fixes:
+  - copyright year
+  - fixed critical bug in the main _rawreceive() for() loop, messages were lost.
+  
+  changes:
+  - changed documentation tags in front of all methods to the phpDocumentator compatible format.
+  - improved connect() errorhandling.
+  - changed login() parameters to $nick, $realname, $usermode = 0, $username = null, $password = null.
+  - changed join() parameters to $channelarray, $key = null.
+  - changed kick() parameters to $channel, $nicknamearray, $reason = null.
+  - changed listenFor() parameters to $messagetype
+    return value is now the result, instead the of a reference to the result parameter.
+  - sendbuffer has now 3 queues: high, medium and low
+    high sends 2 messages, then 1 of medium
+    low is only send if high _and_ medium is empty.
+  - select() call for sockets is strongly optimized
+  
+  new:
+  - phpDocumentator package tags.
+  - include() for messagehandler.php (needed for the new API).
+  - setChannelSynching() method, for enabling the channel synching.
+  - setCtcpVersion() method, for changing the ctcp version reply string.
+  - setReceiveTimeout() method, for changing the receive timeout.
+  - setTransmitTimeout() method, for changing the transmit timeout.
+  - setAutoReconnect() method, for enabling the autoreconnect feature.
+  - channel variable, a reference to _channels because $object->channel("#chan")->topic is not possible in PHP4 (ZE1).
+  - reconnect() method, it will reconnect and also join all channels.
+  - channel() method, getting a reference to the channel, only if channelsynching is on.
+  - added ident, host, messageex and rawmessageex variables to the Net_SmartIRC_data class.
+  - class Net_SmartIRC_user, stores info about one user, only used if channelsynching is on.
+  - class Net_SmartIRC_channel, stores info about one channel, only used if channelsynching is on.
+            </notes>
+        </release>
+    </changelog>
 </package>
