@@ -206,7 +206,7 @@ class Net_SmartIRC_messagehandler
     function _topic(&$irc, &$ircdata)
     {
         if ($irc->_channelsynching == true) {
-            $channel = &$irc->channel[$ircdata->rawmessageex[2]];
+            $channel = &$irc->_channels[strtolower($ircdata->rawmessageex[2])];
             $channel->topic = $ircdata->message;
         }
     }
