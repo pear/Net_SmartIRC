@@ -384,6 +384,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
     function changeNick($newnick, $priority = SMARTIRC_MEDIUM)
     {
         $this->_send('NICK '.$newnick, $priority);
+        $this->_nick = $newnick;
     }
     
     /**
