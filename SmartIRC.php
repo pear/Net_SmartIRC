@@ -163,7 +163,7 @@ class Net_SmartIRC
      * @var resource
      * @access private
      */
-    var $_logfilefp;
+    var $_logfilefp = 0;
     
     /**
      * @var string
@@ -968,7 +968,6 @@ class Net_SmartIRC
             
             $this->_updatestate();
             $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: disconnected', __FILE__, __LINE__);
-            
         } else {
             return false;
         }
