@@ -37,8 +37,9 @@ class mybot
 
     function query_test(&$irc, &$data)
     {
-        $irc->message(SMARTIRC_TYPE_CHANNEL, '#test', $data->nick.' said "'.$data->message.'" to me!');
-        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'I told everyone on #test what you said!');
+        // result is send to #smartirc-test (we don't want to spam #test)
+        $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $data->nick.' said "'.$data->message.'" to me!');
+        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'I told everyone on #smartirc-test what you said!');
     }
 }
 
@@ -50,6 +51,7 @@ $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^test', $
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^test', $bot, 'channel_test');
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 0, 'Net_SmartIRC');
+$irc->join('#smartirc-test');
 $irc->join('#test');
 $irc->listen();
 $irc->disconnect();
