@@ -578,11 +578,11 @@ class Net_SmartIRC_base
     function setLogdestination($type)
     {
         switch ($type) {
-            case (SMARTIRC_FILE ||
-                  SMARTIRC_STDOUT ||
-                  SMARTIRC_SYSLOG ||
-                  SMARTIRC_BROWSEROUT ||
-                  SMARTIRC_NONE):
+            case SMARTIRC_FILE:
+            case SMARTIRC_STDOUT:
+            case SMARTIRC_SYSLOG:
+            case SMARTIRC_BROWSEROUT:
+            case SMARTIRC_NONE:
                 $this->_logdestination = $type;
             break;
             default:
@@ -847,12 +847,12 @@ class Net_SmartIRC_base
                 if (!is_resource($this->_logfilefp)) {
                     if ($this->_logfilefp === null) {
                         // we reconncted and don't want to destroy the old log entries
-                        $this->_logfilefp = @fopen($this->_logfile,'a');
+                        $this->_logfilefp = fopen($this->_logfile,'a');
                     } else {
-                        $this->_logfilefp = @fopen($this->_logfile,'w');
+                        $this->_logfilefp = fopen($this->_logfile,'w');
                     }
                 }
-                @fwrite($this->_logfilefp, $formatedentry);
+                fwrite($this->_logfilefp, $formatedentry);
                 fflush($this->_logfilefp);
             break;
             case SMARTIRC_SYSLOG:
@@ -947,10 +947,10 @@ class Net_SmartIRC_base
         if ($this->_usesockets == true) {
             $this->log(SMARTIRC_DEBUG_SOCKET, 'DEBUG_SOCKET: using real sockets', __FILE__, __LINE__);
             $this->_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-            $result = @socket_connect($this->_socket, $this->_address, $this->_port);
+            $result = socket_connect($this->_socket, $this->_address, $this->_port);
         } else {
             $this->log(SMARTIRC_DEBUG_SOCKET, 'DEBUG_SOCKET: using fsockets', __FILE__, __LINE__);
-            $result = @fsockopen($this->_address, $this->_port, $errno, $errstr);
+            $result = fsockopen($this->_address, $this->_port, $errno, $errstr);
         }
         
         if ($result === false) {
@@ -1624,9 +1624,9 @@ class Net_SmartIRC_base
                 $this->_rawsend($data);
                 return true;
             break;
-            case (SMARTIRC_HIGH||
-                  SMARTIRC_MEDIUM||
-                  SMARTIRC_LOW):
+            case SMARTIRC_HIGH:
+            case SMARTIRC_MEDIUM:
+            case SMARTIRC_LOW:
                 $this->_messagebuffer[$priority][] = $data;
                 return true;
             break;
@@ -1742,9 +1742,9 @@ class Net_SmartIRC_base
             $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: sent: "'.$data.'"', __FILE__, __LINE__);
             
             if ($this->_usesockets == true) {
-                $result = @socket_write($this->_socket, $data.SMARTIRC_CRLF);
+                $result = socket_write($this->_socket, $data.SMARTIRC_CRLF);
             } else {
-                $result = @fwrite($this->_socket, $data.SMARTIRC_CRLF);
+                $result = fwrite($this->_socket, $data.SMARTIRC_CRLF);
             }
             
             
@@ -1775,11 +1775,11 @@ class Net_SmartIRC_base
         $timeout = $this->_selecttimeout();
         if ($this->_usesockets == true) {
             $sread = array($this->_socket);
-            $result = @socket_select($sread, $w = null, $e = null, 0, $timeout*1000);
+            $result = socket_select($sread, $w = null, $e = null, 0, $timeout*1000);
             
             if ($result == 1) {
                 // the socket got data to read
-                $rawdata = @socket_read($this->_socket, 10240);
+                $rawdata = socket_read($this->_socket, 10240);
             } else if ($result === false) {
                 // panic! panic! something went wrong!
                 $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket_select() returned false, something went wrong! Reason: '.socket_strerror(socket_last_error()), __FILE__, __LINE__);
@@ -1790,7 +1790,7 @@ class Net_SmartIRC_base
             }
         } else {
             usleep($this->_receivedelay*1000);
-            $rawdata = @fread($this->_socket, 10240);
+            $rawdata = fread($this->_socket, 10240);
         }
         
         $this->_checktimer();
