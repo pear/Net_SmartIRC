@@ -240,6 +240,34 @@ class Net_SmartIRC_base
     var $_channelsyncing = false;
     
     /**
+     * @var array
+     * @access private
+     */
+    var $_users = array();
+    
+    /**
+     * @var boolean
+     * @access private
+     */
+    var $_usersyncing = false;
+    
+    /**
+     * Stores the path to the modules that can be loaded.
+     *
+     * @var string
+     * @access privat
+     */
+    var $_modulepath = '';
+    
+    /**
+     * Stores all objects of the modules.
+     *
+     * @var string
+     * @access privat
+     */
+    var $_modules = array();
+    
+    /**
      * @var string
      * @access private
      */
@@ -335,6 +363,18 @@ class Net_SmartIRC_base
      * @access public
      */
     var $channel;
+    
+    /**
+     * Stores all users that had/have contact with us (channel/query/notice etc.), works only if usersyncing is activated.
+     * Eg. for accessing a user, use it like this: (in this example the SmartIRC object is stored in $irc)
+     * $irc->user['meebey']->host;
+     *
+     * @see setUserSyncing()
+     * @see Net_SmartIRC_ircuser
+     * @var array
+     * @access public
+     */
+    var $user;
     
     /**
      * Constructor. Initiales the messagebuffer and "links" the replycodes from
@@ -490,6 +530,31 @@ class Net_SmartIRC_base
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: Channel syncing enabled', __FILE__, __LINE__);
         } else {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: Channel syncing disabled', __FILE__, __LINE__);
+        }
+    }
+    
+    /**
+     * Enables/disables user syncing.
+     *
+     * User syncing means, all users we have or had contact with through channel, query or
+     * notice are tracked in the $irc->user array. This is very handy for botcoding.
+     *
+     * @param boolean $boolean
+     * @return void
+     * @access public
+     */
+    function setUserSyncing($boolean)
+    {
+        if (is_bool($boolean)) {
+            $this->_usersyncing = $boolean;
+        } else {
+            $this->_usersyncing = false;
+        }
+        
+        if ($this->_usersyncing == true) {
+            $this->log(SMARTIRC_DEBUG_USERSYNCING, 'DEBUG_USERSYNCING: User syncing enabled', __FILE__, __LINE__);
+        } else {
+            $this->log(SMARTIRC_DEBUG_USERSYNCING, 'DEBUG_USERSYNCING: User syncing disabled', __FILE__, __LINE__);
         }
     }
     
@@ -675,6 +740,18 @@ class Net_SmartIRC_base
         } else {
             $this->_txtimeout = 300;
         }
+    }
+    
+    /**
+     * Sets the paths for the modules.
+     *
+     * @param integer $path
+     * @return void
+     * @access public
+     */
+    function setModulepath($path)
+    {
+        $this->_modulepath = $path;
     }
     
     /**
@@ -1355,6 +1432,96 @@ class Net_SmartIRC_base
         }
         
         $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: could not find timehandler id: '.$id.' _not_ unregistered', __FILE__, __LINE__);
+        return false;
+    }
+    
+    function loadModule($name)
+    {
+        // is the module already loaded?
+        if (in_array($name, $this->_modules)) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING! module with the name "'.$name.'" already loaded!', __FILE__, __LINE__);
+            return false;
+        }
+        
+        $filename = $this->_modulepath.'/'.$name.'.php';
+        if (!file_exists($filename)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: couldn\'t load module "'.$filename.'" file doesn\'t exist', __FILE__, __LINE__);
+            return false;
+        }
+        
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: loading module: "'.$name.'"...', __FILE__, __LINE__);
+        // pray that there is no parse error, it will kill us!
+        include_once($filename);
+        $classname = 'Net_SmartIRC_module_'.$name;
+        
+        if (!class_exists($classname)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: class '.$classname.' not found in '.$filename, __FILE__, __LINE__);
+            return false;
+        }
+        
+        $methods = get_class_methods($classname);
+        if (!in_array('module_init', $methods)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method'.$classname.'::module_init not found, aborting...', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if (!in_array('module_exit', $methods)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method'.$classname.'::module_exit not found, aborting...', __FILE__, __LINE__);
+            return false;
+        }
+        
+        $vars = array_keys(get_class_vars($classname));
+        if (!in_array('name', $vars)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required variable '.$classname.'::name not found, aborting...', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if (!in_array('description', $vars)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required variable '.$classname.'::description not found, aborting...', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if (!in_array('author', $vars)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required variable '.$classname.'::author not found, aborting...', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if (!in_array('license', $vars)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required variable '.$classname.'::license not found, aborting...', __FILE__, __LINE__);
+            return false;
+        }
+        
+        // looks like the module satisfies us
+        $module = &new $classname;
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful created instance of: '.$classname, __FILE__, __LINE__);
+        
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: calling '.$classname.'::module_init()', __FILE__, __LINE__);
+        $module->module_init($this);
+        $this->_modules[$name] = &$module;
+        
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful loaded module: '.$name, __FILE__, __LINE__);
+        return true;
+    }
+    
+    function unloadModule($name)
+    {
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: unloading module: '.$name.'...', __FILE__, __LINE__);
+        
+        $modulecount = count($this->_modules);
+        for ($i = 0; $i < $modulecount; $i++) {
+            $module = &$this->_modules[$i];
+            $modulename = get_class($module);
+            
+            if ($modulename == 'net_smartirc_module_'.$name) {
+                $module->module_exit($this);
+                unset($this->_modules[$i]);
+                $this->_reordermodules();
+                $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful unloaded module: '.$name, __FILE__, __LINE__);
+                return true;
+            }
+        }
+        
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: couldn\'t unloaded module: '.$name.' (it\'s not loaded!)', __FILE__, __LINE__);
         return false;
     }
     
@@ -2181,6 +2348,30 @@ class Net_SmartIRC_base
         } else {
             return false;
         }
+    }
+    
+    function _addIrcUser()
+    {
+    }
+    
+    function _updateIrcUser()
+    {
+    }
+    
+    function _removeIrcUser()
+    {
+    }
+    
+    function _addChannelUser()
+    {
+    }
+    
+    function _updateChannelUser()
+    {
+    }
+    
+    function _removeChannelUser()
+    {
     }
     
     // </private methods>
