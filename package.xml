@@ -96,20 +96,50 @@ ChangeLog:
       <dir name="/" baseinstalldir="Net">
         <file role="php">SmartIRC.php</file>
         <dir name="SmartIRC">
-          <file role="php">defines.php</file>
-          <file role="php">messagehandler.php</file>
-          <file role="php">defines.php</file>
-          <file role="doc">example.php</file>
-          <file role="doc">example2.php</file>
-          <file role="doc">example3.php</file>
-          <file role="doc">example4.php</file>
-          <file role="doc">CHANGELOG</file>
-          <file role="doc">CREDITS</file>
-          <file role="doc">DOCUMENTATION</file>
-          <file role="doc">README</file>
-          <file role="doc">HOWTO</file>
-          <file role="doc">FEATURES</file>
-          <file role="doc">LICENSE</file>
+            <file role="php">defines.php</file>
+            <file role="php">messagehandler.php</file>
+            <file role="php">defines.php</file>
+            <file role="doc">example.php</file>
+            <file role="doc">example2.php</file>
+            <file role="doc">example3.php</file>
+            <file role="doc">example4.php</file>
+            <file role="doc">CHANGELOG</file>
+            <file role="doc">CREDITS</file>
+            <file role="doc">DOCUMENTATION</file>
+            <file role="doc">README</file>
+            <file role="doc">HOWTO</file>
+            <file role="doc">FEATURES</file>
+            <file role="doc">LICENSE</file>
+            <dir name="docs" role="doc">
+                <file>errors.html</file>
+                <file>index.html</file>
+                <file>layout.css</file>
+                <file>classtrees_Net_SmartIRC.html</file>
+                <file>li_Net_SmartIRC.html</file>
+                <file>elementindex.html</file>
+                <file>elementindex_Net_SmartIRC.html</file>
+                <file>style.css</file>
+                <dir name="Net_SmartIRC" role="doc">
+                    <file>Net_SmartIRC.html</file>
+                    <file>Net_SmartIRC_actionhandler.html</file>
+                    <file>Net_SmartIRC_channel.html</file>
+                    <file>Net_SmartIRC_data.html</file>
+                    <file>Net_SmartIRC_listenfor.html</file>
+                    <file>Net_SmartIRC_messagehandler.html</file>
+                    <file>Net_SmartIRC_timehandler.html</file>
+                    <file>Net_SmartIRC_user.html</file>
+                    <file>mybot.html</file>
+                    <file>_SmartIRC_SmartIRC_php.html</file>
+                    <file>_SmartIRC_SmartIRC_defines_php.html</file>
+                    <file>_SmartIRC_SmartIRC_example2_php.html</file>
+                    <file>_SmartIRC_SmartIRC_example3_php.html</file>
+                    <file>_SmartIRC_SmartIRC_example4_php.html</file>
+                    <file>_SmartIRC_SmartIRC_example5_php.html</file>
+                    <file>_SmartIRC_SmartIRC_example6_php.html</file>
+                    <file>_SmartIRC_SmartIRC_example_php.html</file>
+                    <file>_SmartIRC_SmartIRC_messagehandler_php.html</file>
+                </dir>
+            </dir>
         </dir>
       </dir>
     </filelist>
