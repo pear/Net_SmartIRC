@@ -14,10 +14,10 @@
  * Documenation, a HOWTO and examples are in SmartIRC included.
  *
  * Here you will find a service bot which I am also developing
- * <http://cvs.meebey.net/atbs> and <ttp://cvs.meebey.net/phpbitch>
+ * <http://cvs.meebey.net/atbs> and <http://cvs.meebey.net/phpbitch>
  * Latest versions of Net_SmartIRC you will find on the project homepage
  * or get it through PEAR since SmartIRC is an official PEAR package.
- * See <http://pear.php.net/package-info.php?pacid=146>.
+ * See <http://pear.php.net/Net_SmartIRC>.
  *
  * Official Projet Homepage: <http://sf.net/projects/phpsmartirc>
  *
@@ -25,7 +25,7 @@
  * 
  * Copyright (c) 2002-2003 Mirco 'meebey' Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
- * Full LGPL License: <http://www.meebey.net/lgpl.txt>
+ * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
