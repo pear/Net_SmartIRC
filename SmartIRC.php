@@ -1801,16 +1801,15 @@ class Net_SmartIRC_base
                             $ircdata->channel = substr($ircdata->channel, 1);
                         }
                     }
+                    $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: ircdata nick: "'.$ircdata->nick.
+                                                             '" ident: "'.$ircdata->ident.
+                                                             '" host: "'.$ircdata->host.
+                                                             '" type: "'.$ircdata->type.
+                                                             '" from: "'.$ircdata->from.
+                                                             '" channel: "'.$ircdata->channel.
+                                                             '" message: "'.$ircdata->message.
+                                                             '"', __FILE__, __LINE__);
                 }
-                
-                $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: ircdata nick: "'.$ircdata->nick.
-                                                         '" ident: "'.$ircdata->ident.
-                                                         '" host: "'.$ircdata->host.
-                                                         '" type: "'.$ircdata->type.
-                                                         '" from: "'.$ircdata->from.
-                                                         '" channel: "'.$ircdata->channel.
-                                                         '" message: "'.$ircdata->message.
-                                                         '"', __FILE__, __LINE__);
                 
                 // lets see if we have a messagehandler for it
                 $this->_handlemessage($messagecode, $ircdata);
