@@ -47,7 +47,8 @@ define('SMARTIRC_DEBUG_ACTIONHANDLER',    32);
 define('SMARTIRC_DEBUG_TIMEHANDLER',      64);
 define('SMARTIRC_DEBUG_MESSAGEHANDLER',   128);
 define('SMARTIRC_DEBUG_CHANNELSYNCHING',  256);
-define('SMARTIRC_DEBUG_ALL',              511);
+define('SMARTIRC_DEBUG_MODULES',          512);
+define('SMARTIRC_DEBUG_ALL',              1023);
 define('SMARTIRC_TYPE_UNKNOWN',        1);
 define('SMARTIRC_TYPE_CHANNEL',        2);
 define('SMARTIRC_TYPE_QUERY',          4);
@@ -76,6 +77,8 @@ define('SMARTIRC_TYPE_WHOIS',          16777216);
 define('SMARTIRC_TYPE_WHOWAS',         33554432);
 define('SMARTIRC_TYPE_USERMODE',       67108864);
 define('SMARTIRC_TYPE_CHANNELMODE',    134217728);
+define('SMARTIRC_TYPE_CTCP_REQUEST',   268435456);
+define('SMARTIRC_TYPE_CTCP_REPLY',     536870912);
 
 $SMARTIRC_replycodes = array(
 'RPL_WELCOME' =>              '001',
