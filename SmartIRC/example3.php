@@ -52,8 +52,7 @@ $irc->setChannelSynching(TRUE);
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!ops', $bot, 'op_list');
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 8, 'Net_SmartIRC');
-$irc->join('#smartirc-test');
-$irc->join('#test');
+$irc->join(array('#smartirc-test','#test'));
 $irc->listen();
 $irc->disconnect();
 ?>
