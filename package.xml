@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE package SYSTEM "../package.dtd">
 <package version="1.0">
-  <name>Net_SmartIRC</name>
-  <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
-  <description>
+    <name>Net_SmartIRC</name>
+    <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
+    <description>
 Net_SmartIRC is a PHP class for communication with IRC networks,
 which conforms to the RFC 2812 (IRC protocol).
 It's an API that handles all IRC protocol messages.
@@ -17,10 +17,11 @@ Featurelist:
 - time events
 - full object oriented programmed
 - autoreconnect
+- autoretry for connecting to IRC servers
 - debugging/logging system
 - supports fsocks and PHP socket extension
 - supports PHP 4.1.x to 4.3.0
-- sendbuffer with priority levels
+- sendbuffer with 3 priority levels
 - channel synching (tracking of users/modes/topic etc in variables)
 - IRC functions:
   op
@@ -39,22 +40,89 @@ Featurelist:
   topic
   nick
   invite
-  </description>
-  <license>LGPL</license>
-  <maintainers>
-    <maintainer>
-      <user>meebey</user>
-      <role>lead</role>
-      <name>Mirco MEEBEY Bauer</name>
-      <email>mail@meebey.net</email>
-    </maintainer>
-  </maintainers>
-  
-  <release>
-    <version>0.5.0</version>
-    <state>beta</state>
-    <date>2003-01-06</date>
-    <notes>
+    </description>
+    <license>LGPL</license>
+    <maintainers>
+        <maintainer>
+            <user>meebey</user>
+            <role>lead</role>
+            <name>Mirco MEEBEY Bauer</name>
+            <email>mail@meebey.net</email>
+        </maintainer>
+    </maintainers>
+    
+    <release>
+        <version>0.5.1</version>
+        <state>stable</state>
+        <date>2003-01-14</date>
+        <notes>
+XXX
+        </notes>
+        
+        <filelist>
+            <dir name="/" baseinstalldir="Net">
+                <file role="php">SmartIRC.php</file>
+                <file role="doc">README</file>
+                <file role="doc">CHANGELOG</file>
+                <file role="doc">CREDITS</file>
+                <file role="doc">FEATURES</file>
+                <file role="doc">LICENSE</file>
+                <dir name="SmartIRC">
+                    <file role="php">defines.php</file>
+                    <file role="php">messagehandler.php</file>
+                </dir>
+                <dir name="examples" role="doc">
+                    <file>example.php</file>
+                    <file>example2.php</file>
+                    <file>example3.php</file>
+                    <file>example4.php</file>
+                    <file>example5.php</file>
+                    <file>example6.php</file>
+                    <file>example7.php</file>
+                </dir>
+                <dir name="docs" role="doc">
+                    <file>DOCUMENTATION</file>
+                    <file>HOWTO</file>
+                    <dir name="HTML" role="doc">
+                        <file>errors.html</file>
+                        <file>index.html</file>
+                        <file>layout.css</file>
+                        <file>classtrees_Net_SmartIRC.html</file>
+                        <file>li_Net_SmartIRC.html</file>
+                        <file>elementindex.html</file>
+                        <file>elementindex_Net_SmartIRC.html</file>
+                        <file>style.css</file>
+                        <dir name="Net_SmartIRC" role="doc">
+                            <file>Net_SmartIRC.html</file>
+                            <file>Net_SmartIRC_actionhandler.html</file>
+                            <file>Net_SmartIRC_channel.html</file>
+                            <file>Net_SmartIRC_data.html</file>
+                            <file>Net_SmartIRC_listenfor.html</file>
+                            <file>Net_SmartIRC_messagehandler.html</file>
+                            <file>Net_SmartIRC_timehandler.html</file>
+                            <file>Net_SmartIRC_user.html</file>
+                            <file>mybot.html</file>
+                            <file>_SmartIRC_SmartIRC_php.html</file>
+                            <file>_SmartIRC_SmartIRC_defines_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example2_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example3_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example4_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example5_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example6_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example_php.html</file>
+                            <file>_SmartIRC_SmartIRC_messagehandler_php.html</file>
+                        </dir>
+                    </dir>
+                </dir>
+            </dir>
+        </filelist>
+    </release>
+    
+    <release>
+        <version>0.5.0</version>
+        <state>beta</state>
+        <date>2003-01-06</date>
+        <notes>
 Initial release as PEAR package
 this project is former known as phpSmartIRCclass
 (beta because of first release in PEAR, the project itself is stable)
@@ -91,61 +159,71 @@ ChangeLog:
   - added ident, host, messageex and rawmessageex variables to the Net_SmartIRC_data class.
   - class Net_SmartIRC_user, stores info about one user, only used if channelsynching is on.
   - class Net_SmartIRC_channel, stores info about one channel, only used if channelsynching is on.
-    </notes>
-    <filelist>
-      <dir name="/" baseinstalldir="Net">
-        <file role="php">SmartIRC.php</file>
-        <dir name="SmartIRC">
-            <file role="php">defines.php</file>
-            <file role="php">messagehandler.php</file>
-            <file role="php">defines.php</file>
-            <file role="doc">example.php</file>
-            <file role="doc">example2.php</file>
-            <file role="doc">example3.php</file>
-            <file role="doc">example4.php</file>
-            <file role="doc">CHANGELOG</file>
-            <file role="doc">CREDITS</file>
-            <file role="doc">DOCUMENTATION</file>
-            <file role="doc">README</file>
-            <file role="doc">HOWTO</file>
-            <file role="doc">FEATURES</file>
-            <file role="doc">LICENSE</file>
-            <dir name="docs" role="doc">
-                <file>errors.html</file>
-                <file>index.html</file>
-                <file>layout.css</file>
-                <file>classtrees_Net_SmartIRC.html</file>
-                <file>li_Net_SmartIRC.html</file>
-                <file>elementindex.html</file>
-                <file>elementindex_Net_SmartIRC.html</file>
-                <file>style.css</file>
-                <dir name="Net_SmartIRC" role="doc">
-                    <file>Net_SmartIRC.html</file>
-                    <file>Net_SmartIRC_actionhandler.html</file>
-                    <file>Net_SmartIRC_channel.html</file>
-                    <file>Net_SmartIRC_data.html</file>
-                    <file>Net_SmartIRC_listenfor.html</file>
-                    <file>Net_SmartIRC_messagehandler.html</file>
-                    <file>Net_SmartIRC_timehandler.html</file>
-                    <file>Net_SmartIRC_user.html</file>
-                    <file>mybot.html</file>
-                    <file>_SmartIRC_SmartIRC_php.html</file>
-                    <file>_SmartIRC_SmartIRC_defines_php.html</file>
-                    <file>_SmartIRC_SmartIRC_example2_php.html</file>
-                    <file>_SmartIRC_SmartIRC_example3_php.html</file>
-                    <file>_SmartIRC_SmartIRC_example4_php.html</file>
-                    <file>_SmartIRC_SmartIRC_example5_php.html</file>
-                    <file>_SmartIRC_SmartIRC_example6_php.html</file>
-                    <file>_SmartIRC_SmartIRC_example_php.html</file>
-                    <file>_SmartIRC_SmartIRC_messagehandler_php.html</file>
+        </notes>
+        <filelist>
+            <dir name="/" baseinstalldir="Net">
+                <file role="php">SmartIRC.php</file>
+                <dir name="SmartIRC">
+                    <file role="php">defines.php</file>
+                    <file role="php">messagehandler.php</file>
+                    <file role="doc">example.php</file>
+                    <file role="doc">example2.php</file>
+                    <file role="doc">example3.php</file>
+                    <file role="doc">example4.php</file>
+                    <file role="doc">CHANGELOG</file>
+                    <file role="doc">CREDITS</file>
+                    <file role="doc">DOCUMENTATION</file>
+                    <file role="doc">README</file>
+                    <file role="doc">HOWTO</file>
+                    <file role="doc">FEATURES</file>
+                    <file role="doc">LICENSE</file>
+                    <dir name="docs" role="doc">
+                        <file>errors.html</file>
+                        <file>index.html</file>
+                        <file>layout.css</file>
+                        <file>classtrees_Net_SmartIRC.html</file>
+                        <file>li_Net_SmartIRC.html</file>
+                        <file>elementindex.html</file>
+                        <file>elementindex_Net_SmartIRC.html</file>
+                        <file>style.css</file>
+                        <dir name="Net_SmartIRC" role="doc">
+                            <file>Net_SmartIRC.html</file>
+                            <file>Net_SmartIRC_actionhandler.html</file>
+                            <file>Net_SmartIRC_channel.html</file>
+                            <file>Net_SmartIRC_data.html</file>
+                            <file>Net_SmartIRC_listenfor.html</file>
+                            <file>Net_SmartIRC_messagehandler.html</file>
+                            <file>Net_SmartIRC_timehandler.html</file>
+                            <file>Net_SmartIRC_user.html</file>
+                            <file>mybot.html</file>
+                            <file>_SmartIRC_SmartIRC_php.html</file>
+                            <file>_SmartIRC_SmartIRC_defines_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example2_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example3_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example4_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example5_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example6_php.html</file>
+                            <file>_SmartIRC_SmartIRC_example_php.html</file>
+                            <file>_SmartIRC_SmartIRC_messagehandler_php.html</file>
+                        </dir>
+                    </dir>
                 </dir>
             </dir>
-        </dir>
-      </dir>
-    </filelist>
-  </release>
-  
-  <changelog>
+        </filelist>
+    </release>
+    
+    <changelog>
+        <release>
+            <version>0.5.1</version>
+            <state>stable</state>
+            <date>2003-01-14</date>
+            <notes>
+            XXX
+            </notes>
+        </release>
+    </changelog>
+    
+    <changelog>
         <release>
             <version>0.5.0</version>
             <state>beta</state>
@@ -185,4 +263,5 @@ ChangeLog:
             </notes>
         </release>
     </changelog>
+    
 </package>
