@@ -34,16 +34,16 @@ $irc->setUseSockets(TRUE);
 $irc->setBenchmark(TRUE);
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example2.php)', 0, 'Net_SmartIRC');
-$irc->getList('#debian.de');
+$irc->getList('#php');
 $resultar = $irc->listenFor(SMARTIRC_TYPE_LIST);
 $irc->disconnect();
 $irc->stopBenchmark();
 
 if (is_array($resultar)) {
-    $resultex = explode(' ', $resultar[0]);
-    $count = $resultex[1];
+    $ircdata = $resultar[0];
+    $count = $ircdata->rawmessageex[4];
     ?>
-        <B>On our IRC Channel #debian.de are <? echo $count; ?> Users</B>
+        <B>On the IRC Channel #php are <? echo $count; ?> Users</B>
     <?php
 } else {
     ?>
