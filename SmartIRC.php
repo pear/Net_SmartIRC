@@ -2672,13 +2672,13 @@ class Net_SmartIRC_channel
      * @var integer
      * @access public
      */
-    var $synctime_start;
+    var $synctime_start = 0;
     
     /**
      * @var integer
      * @access public
      */
-    var $synctime_stop;
+    var $synctime_stop = 0;
     
     /**
      * @var integer
