@@ -226,6 +226,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_privmsg(&$ircdata)
     {
         if ($ircdata->type == SMARTIRC_TYPE_CTCP) {
+            // substr must be 1,4 because of \001 in CTCP messages
             if (substr($ircdata->message, 1, 4) == 'PING') {
                 $this->message(SMARTIRC_TYPE_CTCP, $ircdata->nick, 'PING '.substr($ircdata->message, 5, -1));
             } elseif (substr($ircdata->message, 1, 7) == 'VERSION') {
