@@ -28,7 +28,7 @@
 define('SMARTIRC_CRLF',      "\r\n");
 define('SMARTIRC_UNUSED',    '*');
 define('SMARTIRC_STDOUT',        0);
-define('SMARTIRC_FILE',	         1);
+define('SMARTIRC_FILE',          1);
 define('SMARTIRC_SYSLOG',        2);
 define('SMARTIRC_BROWSEROUT',    3);
 define('SMARTIRC_NONE',          4);
