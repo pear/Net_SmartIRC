@@ -274,12 +274,6 @@ class Net_SmartIRC_base
     var $_ctcpversion;
     
     /**
-     * @var object
-     * @access private
-     */
-    var $_messagehandlerobject;
-    
-    /**
      * @var mixed
      * @access private
      */
@@ -395,7 +389,6 @@ class Net_SmartIRC_base
         $this->_messagebuffer[SMARTIRC_HIGH] = array();
         $this->_messagebuffer[SMARTIRC_MEDIUM] = array();
         $this->_messagebuffer[SMARTIRC_LOW] = array();
-        $this->_messagehandlerobject = &new Net_SmartIRC_messagehandler();
         $this->replycodes = &$GLOBALS['SMARTIRC_replycodes'];
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
         
@@ -1278,10 +1271,6 @@ class Net_SmartIRC_base
         $id = $this->_actionhandlerid++;
         $newactionhandler = &new Net_SmartIRC_actionhandler();
         
-        if (!$newactionhandler) {
-            return false;
-        }
-        
         $newactionhandler->id = $id;
         $newactionhandler->type = $handlertype;
         $newactionhandler->message = $regexhandler;
@@ -1383,10 +1372,6 @@ class Net_SmartIRC_base
     {
         $id = $this->_timehandlerid++;
         $newtimehandler = &new Net_SmartIRC_timehandler();
-        
-        if (!$newtimehandler) {
-            return false;
-        }
         
         $newtimehandler->id = $id;
         $newtimehandler->interval = $interval;
