@@ -833,7 +833,12 @@ class Net_SmartIRC
             break;
             case SMARTIRC_FILE:
                 if (!is_resource($this->_logfilefp)) {
-                    $this->_logfilefp = @fopen($this->_logfile,'w+');
+                    if ($this->_logfilefp === null) {
+                        // we reconncted and don't want to destroy the old log entries
+                        $this->_logfilefp = @fopen($this->_logfile,'a');
+                    } else {
+                        $this->_logfilefp = @fopen($this->_logfile,'w');
+                    }
                 }
                 @fwrite($this->_logfilefp, $formatedentry);
                 fflush($this->_logfilefp);
