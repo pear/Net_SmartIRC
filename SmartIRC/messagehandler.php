@@ -401,7 +401,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             $channel = &$this->_channels[strtolower($ircdata->channel)];
             $channel->synctime_stop = $this->_microint();
             $channel->synctime = ((float)$channel->synctime_stop - (float)$channel->synctime_start);
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel.' in '.number_format(($channel->synctime/1000), 2).' secs', __FILE__, __LINE__);
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel.' in '.round($channel->synctime, 2).' secs', __FILE__, __LINE__);
         }
     }
     
