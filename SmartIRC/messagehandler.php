@@ -139,7 +139,8 @@ class Net_SmartIRC_messagehandler
             $add = false;
             $remove = false;
             $channelmode = '';
-            for ($i=0; $i<strlen($mode); $i++) {
+            $modelength = strlen($mode);
+            for ($i = 0; $i < $modelength; $i++) {
                 switch($mode[$i]) {
                     case '-':
                         $remove = true;
@@ -264,7 +265,8 @@ class Net_SmartIRC_messagehandler
             $user->ircop = false;
             
             $usermode = $ircdata->rawmessageex[8];
-            for ($i=0; $i<strlen($usermode); $i++) {
+            $usermodelength = strlen($usermode);
+            for ($i = 0; $i < $usermodelength; $i++) {
                 switch ($usermode[$i]) {
                     case 'H':
                         $user->away = false;
@@ -297,7 +299,8 @@ class Net_SmartIRC_messagehandler
             $channel = &$irc->_channels[$ircdata->channel];
             
             $userarray = explode(' ',substr($ircdata->message, strpos($ircdata->message, ':')+1, -1));
-            for ($i = 0; $i < count($userarray); $i++) {
+            $userarraycount = count($userarray);
+            for ($i = 0; $i < $userarraycount; $i++) {
                 $user = &new Net_SmartIRC_user();
                 
                 $usermode = substr($userarray[$i], 0, 1);
