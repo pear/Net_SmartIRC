@@ -678,6 +678,11 @@ class Net_SmartIRC
             
         switch ($this->_logdestination) {
             case SMARTIRC_STDOUT:
+                if(isset($_SERVER)) {
+                    // the script is called from a browser, lets show the output browser friendly
+                    $formatedentry = '<pre>'.$formatedentry.'</pre>';
+                }
+                
                 echo($formatedentry);
                 flush();
             break;
@@ -751,7 +756,10 @@ class Net_SmartIRC
                 $error = $errstr.' ('.$errno.')';
             }
             
-            $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: couldn\'t connect to "'.$address.'" reason: "'.$error.'"');
+            $error_msg = 'couldn\'t connect to "'.$address.'" reason: "'.$error.'"';
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: '.$error_msg);
+            $this->throwError($error_msg);
+        
             if ($this->_autoretry == true) {
                 $this->reconnect();
             } else {
@@ -770,6 +778,10 @@ class Net_SmartIRC
         $this->_lastrx = time();
         $this->_lasttx = time();
         $this->_updatestate();
+        
+        if ($result !== false) {
+            return true;
+        }
     }
     
     /**
@@ -1267,20 +1279,67 @@ class Net_SmartIRC
     // </IRC methods>
     
     /**
-     * checks if the class is joined to the specified channel and returns the result
+     * checks if we or the given user is joined to the specified channel and returns the result
      *
      * @return boolean
      * @access public
      */
-    function isJoined($channel)
+    function isJoined($channel, $nickname = null)
     {
-        if (isset($this->_channels[$channel])) {
-            return true;
-        } else {
-            return false;
+        if ($nickname === null) {
+            $nickname = $this->_nick;
         }
+        
+        if (isset($this->_channels[$channel]->users[$nickname])) {
+            return true;
+        }
+        
+        return false;
     }
     
+    function isOp($channel, $nickname = null)
+    {
+        if ($nickname === null) {
+            $nickname = $this->_nick;
+        }
+        
+        if ($this->isJoined($channel, $nickname)) {
+            if ($this->_channels[$channel]->users[$nickname]->op) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    function isVoice($channel, $nickname = null)
+    {
+        if ($nickname === null) {
+            $nickname = $this->_nick;
+        }
+        
+        if ($this->isJoined($channel, $nickname)) {
+            if ($this->_channels[$channel]->users[$nickname]->voice) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    function isBanned($channel, $hostmask)
+    {
+        if ($this->isJoined($channel)) {
+            $result = array_search($hostmask, $this->_channels[$channel]->bans);
+            
+            if ($result !== false) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     /**
      * goes into receive mode
      *
@@ -1477,7 +1536,7 @@ class Net_SmartIRC
             $found_name = false;
             $found_description = false;
             $found_autor = false;
-
+            
             for ($i=0;$i < count($file); $i++) {
                 $line = $file[$i];
                 $lineex = explode(' ', $line);
@@ -2293,6 +2352,14 @@ class Net_SmartIRC
         }
     }
     // </private methods>
+    
+    function isError($object) {
+	return (bool)(is_object($object) && (get_class($object) == 'net_smartirc_error'));  
+    }
+
+    function &throwError($message) {
+        return new Net_SmartIRC_Error($message);
+    }
 }
 
 /**
@@ -2570,6 +2637,15 @@ class Net_SmartIRC_listenfor
         $irc->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: listenfor handler called');
         $this->result[] = $ircdata->message;
         $irc->disconnect(true);
+    }
+}
+
+class Net_SmartIRC_Error
+{
+    var $error_msg;
+
+    function Net_SmartIRC_Error($message) {
+        $this->error_msg = $message;
     }
 }
 ?>
