@@ -8,6 +8,37 @@ Net_SmartIRC is a PHP class for communication with IRC networks,
 which conforms to the RFC 2812 (IRC protocol).
 It's an API that handles all IRC protocol messages.
 This class is designed for creating IRC bots, chats and show irc related info on webpages.
+
+Featurelist:
+- actionhandler for the API
+- messagehandler for the API
+- send/receive floodprotection
+- detects and changes nickname on nickname collisions
+- time events
+- full object oriented programmed
+- autoreconnect
+- debugging/logging system
+- supports fsocks and PHP socket extension
+- supports PHP 4.1.x to 4.3.0
+- sendbuffer with priority levels
+- channel synching (tracking of users/modes/topic etc in variables)
+- IRC functions:
+  op
+  deop
+  voice
+  devoice
+  ban
+  unban
+  join
+  part
+  action
+  message
+  query
+  ctcp
+  mode
+  topic
+  nick
+  invite
   </description>
   <license>LGPL</license>
   <maintainers>
@@ -22,11 +53,44 @@ This class is designed for creating IRC bots, chats and show irc related info on
   <release>
     <version>0.5.0</version>
     <state>beta</state>
-    <date>2002-12-30</date>
+    <date>2003-01-06</date>
     <notes>
-This is the first release in PEAR,
+Initial release as PEAR package
 this project is former known as phpSmartIRCclass
 (beta because of first release in PEAR, the project itself is stable)
+
+ChangeLog:
+  fixes:
+  - copyright year
+  - fixed critical bug in the main _rawreceive() for() loop, messages were lost.
+  
+  changes:
+  - changed documentation tags in front of all methods to the phpDocumentator compatible format.
+  - improved connect() errorhandling.
+  - changed login() parameters to $nick, $realname, $usermode = 0, $username = null, $password = null.
+  - changed join() parameters to $channelarray, $key = null.
+  - changed kick() parameters to $channel, $nicknamearray, $reason = null.
+  - changed listenFor() parameters to $messagetype
+    return value is now the result, instead the of a reference to the result parameter.
+  - sendbuffer has now 3 queues: high, medium and low
+    high sends 2 messages, then 1 of medium
+    low is only send if high _and_ medium is empty.
+  - select() call for sockets is strongly optimized
+  
+  new:
+  - phpDocumentator package tags.
+  - include() for messagehandler.php (needed for the new API).
+  - setChannelSynching() method, for enabling the channel synching.
+  - setCtcpVersion() method, for changing the ctcp version reply string.
+  - setReceiveTimeout() method, for changing the receive timeout.
+  - setTransmitTimeout() method, for changing the transmit timeout.
+  - setAutoReconnect() method, for enabling the autoreconnect feature.
+  - channel variable, a reference to _channels because $object->channel("#chan")->topic is not possible in PHP4 (ZE1).
+  - reconnect() method, it will reconnect and also join all channels.
+  - channel() method, getting a reference to the channel, only if channelsynching is on.
+  - added ident, host, messageex and rawmessageex variables to the Net_SmartIRC_data class.
+  - class Net_SmartIRC_user, stores info about one user, only used if channelsynching is on.
+  - class Net_SmartIRC_channel, stores info about one channel, only used if channelsynching is on.
     </notes>
     <filelist>
       <dir name="/" baseinstalldir="Net">
@@ -37,6 +101,8 @@ this project is former known as phpSmartIRCclass
           <file role="php">defines.php</file>
           <file role="doc">example.php</file>
           <file role="doc">example2.php</file>
+          <file role="doc">example3.php</file>
+          <file role="doc">example4.php</file>
           <file role="doc">CHANGELOG</file>
           <file role="doc">CREDITS</file>
           <file role="doc">DOCUMENTATION</file>
