@@ -9,20 +9,24 @@ Full featurelist of Net_SmartIRC
 -------------------------------------
 
 - actionhandler for the API
+- messagehandler for the API
 - send/receive floodprotection
-- detects and changes nickname on nickname collision
+- detects and changes nickname on nickname collisions
 - time events
 - full object oriented programmed
-- auto reconnect
+- autoreconnect
 - debugging/logging system
 - supports fsocks and PHP socket extension
+- supports PHP 4.1.x to 4.3.0
+- sendbuffer with priority levels
+- channel synching (tracking of users/modes/topic etc in variables)
 - IRC functions:
   op
   deop
-  ban
-  unban
   voice
   devoice
+  ban
+  unban
   join
   part
   action
