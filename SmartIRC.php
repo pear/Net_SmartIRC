@@ -2792,7 +2792,7 @@ class Net_SmartIRC_listenfor
     function handler(&$irc, &$ircdata)
     {
         $irc->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: listenfor handler called', __FILE__, __LINE__);
-        $this->result[] = $ircdata->message;
+        $this->result[] = $ircdata;
         $irc->disconnect(true);
     }
 }
