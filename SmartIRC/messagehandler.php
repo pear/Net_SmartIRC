@@ -53,6 +53,8 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $this->who($channel->name);
                 $this->mode($channel->name);
                 $this->ban($channel->name);
+            } else {
+                $this->who($user->nick);
             }
             
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '.$ircdata->nick.' joins channel: '.$ircdata->channel, __FILE__, __LINE__);
@@ -63,7 +65,6 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             $user->host = $ircdata->host;
             
             $this->_adduser($channel, $user);
-            $this->who($user->nick);
         }
     }
     
@@ -208,7 +209,12 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                             }
                         } else {
                             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: storing unknown channelmode ('.$mode.') in channel->mode for: '.$channel->name, __FILE__, __LINE__);
-                            $channel->mode = str_replace($mode[$i], '', $channel->mode);
+                            if ($add) {
+                                $channel->mode .= $mode[$i];
+                            }
+                            if ($remove) {
+                                $channel->mode = str_replace($mode[$i], '', $channel->mode);
+                            }
                         }
                 }
             }
@@ -225,10 +231,10 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     
     function _event_privmsg(&$ircdata)
     {
-        if ($ircdata->type == SMARTIRC_TYPE_CTCP) {
+        if ($ircdata->type & SMARTIRC_TYPE_CTCP_REQUEST) {
             // substr must be 1,4 because of \001 in CTCP messages
             if (substr($ircdata->message, 1, 4) == 'PING') {
-                $this->message(SMARTIRC_TYPE_CTCP, $ircdata->nick, 'PING '.substr($ircdata->message, 5, -1));
+                $this->message(SMARTIRC_TYPE_CTCP_REPLY, $ircdata->nick, 'PING '.substr($ircdata->message, 5, -1));
             } elseif (substr($ircdata->message, 1, 7) == 'VERSION') {
                 if (!empty($this->_ctcpversion)) {
                     $versionstring = $this->_ctcpversion.' | using '.SMARTIRC_VERSIONSTRING;
@@ -236,7 +242,9 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     $versionstring = SMARTIRC_VERSIONSTRING;
                 }
                 
-                $this->message(SMARTIRC_TYPE_CTCP, $ircdata->nick, 'VERSION '.$versionstring);
+                $this->message(SMARTIRC_TYPE_CTCP_REPLY, $ircdata->nick, 'VERSION '.$versionstring);
+            } elseif (substr($ircdata->message, 1, 10) == 'CLIENTINFO') {
+                $this->message(SMARTIRC_TYPE_CTCP_REPLY, $ircdata->nick, 'CLIENTINFO PING VERSION CLIENTINFO');
             }
         }
     }
@@ -351,7 +359,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         if ($this->_channelsyncing == true) {
             $channel = &$this->_channels[strtolower($ircdata->channel)];
             
-            $userarray = explode(' ',substr($ircdata->message, strpos($ircdata->message, ':')+1, -1));
+            $userarray = explode(' ', substr($ircdata->message, 0, -1));
             $userarraycount = count($userarray);
             for ($i = 0; $i < $userarraycount; $i++) {
                 $user = &new Net_SmartIRC_channeluser();
