@@ -1298,7 +1298,7 @@ class Net_SmartIRC
             $nickname = $this->_nick;
         }
         
-        if (isset($this->_channels[$channel]->users[$nickname])) {
+        if (isset($this->_channels[strtolower($channel)]->users[strtolower($nickname)])) {
             return true;
         }
         
@@ -1318,7 +1318,7 @@ class Net_SmartIRC
         }
         
         if ($this->isJoined($channel, $nickname)) {
-            if ($this->_channels[$channel]->users[$nickname]->op) {
+            if ($this->_channels[strtolower($channel)]->users[strtolower($nickname)]->op) {
                 return true;
             }
         }
@@ -1356,7 +1356,7 @@ class Net_SmartIRC
     function isBanned($channel, $hostmask)
     {
         if ($this->isJoined($channel)) {
-            $result = array_search($hostmask, $this->_channels[$channel]->bans);
+            $result = array_search($hostmask, $this->_channels[strtolower($channel)]->bans);
             
             if ($result !== false) {
                 return true;
@@ -1576,12 +1576,12 @@ class Net_SmartIRC
             $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: loading module '.$filename);
             // before we load/include something, we should check what it is
             $file = file($filename);
-			$filecount = count($file);
+	    $filecount = count($file);
             $found_name = false;
             $found_description = false;
             $found_autor = false;
             
-			for ($i=1;$i<4; $i++) {
+	    for ($i=1;$i<4; $i++) {
                 $line = explode(' ',trim($file[$i]),2);
                 switch(trim($line[0])) {
                     case '$module[\'name\']':
