@@ -1,0 +1,35 @@
+/**
+ * $Id$
+ * $Revision$
+ * $Author$
+ * $Date$
+ */
+
+This is the creditslist for SmartIRC
+
+The fields are:
+(N) name 
+(E) email 
+(W) web-address
+(P) PGP key ID and fingerprint
+(D) description 
+(S) snail-mail address 
+---------------------------
+
+N: Mirco "MEEBEY" Bauer
+E: mail@meebey.net
+W: www.meebey.net
+D: Project Maintainer
+S: Kroonhorst 42
+S: 22549 Hamburg
+S: Germany
+
+N: Peter Petermann
+E: webmaster@cyberfly.net
+W: www.cyberfly.net
+D: ban/unban diffs
+
+N: Andreas Streichardt
+E: mop@spaceregents.de
+W: www.spaceregents.de
+D: several hints for bugfixes

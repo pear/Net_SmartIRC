@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "../package.dtd">
+<package version="1.0">
+  <name>Net_SmartIRC</name>
+  <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
+  <description>
+Net_SmartIRC is a PHP class for communication with IRC networks,
+which conforms to the RFC 2812 (IRC protocol).
+It's an API that handles all IRC protocol messages.
+This class is designed for creating IRC bots, chats and show irc related info on webpages.
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>meebey</user>
+      <role>lead</role>
+      <name>Mirco MEEBEY Bauer</name>
+      <email>mail@meebey.net</email>
+    </maintainer>
+  </maintainers>
+  
+  <release>
+    <version>0.4.1</version>
+    <state>beta</state>
+    <date>2002-12-13</date>
+    <notes>
+This is the first release in PEAR,
+this project is former known as phpSmartIRCclass
+(beta because of first release in PEAR, the project itself is stable)
+    </notes>
+    <filelist>
+      <dir name="/" baseinstalldir="Net">
+        <file role="php">SmartIRC.php</file>
+        <dir name="SmartIRC">
+          <file role="php">defines.php</file>
+          <file role="doc">example.php</file>
+          <file role="doc">example2.php</file>
+          <file role="doc">CHANGELOG</file>
+          <file role="doc">CREDITS</file>
+          <file role="doc">DOCUMENTATION</file>
+          <file role="doc">README</file>
+          <file role="doc">HOWTO</file>
+          <file role="doc">FEATURES</file>
+          <file role="doc">LICENSE</file>
+        </dir>
+      </dir>
+    </filelist>
+  </release>
+  
+</package>

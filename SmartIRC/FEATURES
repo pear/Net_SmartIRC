@@ -1,0 +1,34 @@
+/**
+ * $Id$
+ * $Revision$
+ * $Author$
+ * $Date$
+ */
+
+Full featurelist of Net_SmartIRC
+-------------------------------------
+
+- actionhandler for the API
+- send/receive floodprotection
+- detects and changes nickname on nickname collision
+- time events
+- full object oriented programmed
+- auto reconnect
+- debugging/logging system
+- supports fsocks and PHP socket extension
+- IRC functions:
+  op
+  deop
+  ban
+  unban
+  voice
+  devoice
+  join
+  part
+  action
+  message
+  query
+  ctcp
+  mode
+  topic
+  nick
