@@ -49,8 +49,13 @@ Featurelist:
             <name>Mirco MEEBEY Bauer</name>
             <email>mail@meebey.net</email>
         </maintainer>
+        <maintainer>
+            <user>nicos</user>
+            <role>developer</role>
+            <name>Nicolas CHAILLAN</name>
+            <email>nicos@php.net</email>
+        </maintainer>
     </maintainers>
-    
     <release>
         <version>0.5.1</version>
         <state>stable</state>
