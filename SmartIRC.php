@@ -1629,9 +1629,10 @@ class Net_SmartIRC_base
     {
         $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: unloading module: '.$name.'...', __FILE__, __LINE__);
         
-        $modulecount = count($this->_modules);
+        $modules_keys = array_keys($this->_modules);
+        $modulecount = count($modules_keys);
         for ($i = 0; $i < $modulecount; $i++) {
-            $module = &$this->_modules[$i];
+            $module = &$this->_modules[$modules_keys[$i]];
             $modulename = strtolower(get_class($module));
             
             if ($modulename == 'net_smartirc_module_'.$name) {
