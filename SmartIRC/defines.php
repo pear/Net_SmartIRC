@@ -82,6 +82,7 @@ define('SMARTIRC_TYPE_USERMODE',       67108864);
 define('SMARTIRC_TYPE_CHANNELMODE',    134217728);
 define('SMARTIRC_TYPE_CTCP_REQUEST',   268435456);
 define('SMARTIRC_TYPE_CTCP_REPLY',     536870912);
+define('SMARTIRC_TYPE_ALL',            1073741823);
 
 $SMARTIRC_replycodes = array(
 'RPL_WELCOME' =>              '001',
