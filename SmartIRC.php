@@ -1845,6 +1845,7 @@ class Net_SmartIRC_base
                 if ($ircdata->type & (SMARTIRC_TYPE_CHANNEL|
                                 SMARTIRC_TYPE_ACTION|
                                 SMARTIRC_TYPE_MODECHANGE|
+                                SMARTIRC_TYPE_TOPICCHANGE|
                                 SMARTIRC_TYPE_KICK|
                                 SMARTIRC_TYPE_PART|
                                 SMARTIRC_TYPE_JOIN)) {
