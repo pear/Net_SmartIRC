@@ -4,8 +4,7 @@
  * $Revision$
  * $Author$
  * $Date$
- */
-/**
+ *
  * Net_SmartIRC
  * Communication for PHP with IRC networks
  *

@@ -4,8 +4,7 @@
  * $Revision$
  * $Author$
  * $Date$
- */
-/**
+ *
  * Copyright (c) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
@@ -24,6 +23,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 // don't change this! unless you know what you do
 define('SMARTIRC_CRLF',    "\r\n");
 define('SMARTIRC_STDOUT',   0);
