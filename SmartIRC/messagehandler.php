@@ -61,7 +61,7 @@ class Net_SmartIRC_messagehandler
             $user->host = $ircdata->host;
             
             $irc->_adduser($channel, $user);
-            $irc->who($channel->name);
+            $irc->who($user->nick);
         }
     }
     
