@@ -4,8 +4,7 @@
  * $Revision$
  * $Author$
  * $Date$
- */
-/**
+ *
  * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
@@ -24,6 +23,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 // ---EXAMPLE OF HOW TO USE Net_SmartIRC---
 // this code shows how a mini php bot could be written
 include_once('../SmartIRC.php');
@@ -52,11 +52,17 @@ $bot = &new mybot();
 $irc = &new Net_SmartIRC();
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(TRUE);
-$irc->registerTimehandler(300, $bot, 'saytime');
-$saytime_once_id = $irc->registerTimehandler(10, $bot, 'saytime_once');
+
+// register saytime() to be called every 30 sec. (30,000 milliseconds)
+$irc->registerTimehandler(30000, $bot, 'saytime');
+
+// register saytime_once() to be called in 10 sec. (10,000 milliseconds) and save the assigned id
+// which is needed for unregistering the timehandler.
+$saytime_once_id = $irc->registerTimehandler(10000, $bot, 'saytime_once');
+
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!quit', $bot, 'quit');
 $irc->connect('irc.freenet.de', 6667);
-$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 8, 'Net_SmartIRC');
+$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example7.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));
 $irc->listen();
 $irc->disconnect();
