@@ -33,7 +33,7 @@ $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(TRUE);
 $irc->setBenchmark(TRUE);
 $irc->connect('irc.freenet.de', 6667);
-$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 0, 'Net_SmartIRC');
+$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example2.php)', 0, 'Net_SmartIRC');
 $irc->getList('#debian.de');
 $resultar = $irc->listenFor(SMARTIRC_TYPE_LIST);
 $irc->disconnect();
