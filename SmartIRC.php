@@ -678,7 +678,7 @@ class Net_SmartIRC
             
         switch ($this->_logdestination) {
             case SMARTIRC_STDOUT:
-                if(isset($_SERVER)) {
+                if(isset($_SERVER['REQUEST_METHOD'])) {
                     // the script is called from a browser, lets show the output browser friendly
                     $formatedentry = '<pre>'.$formatedentry.'</pre>';
                 }
@@ -758,10 +758,13 @@ class Net_SmartIRC
             
             $error_msg = 'couldn\'t connect to "'.$address.'" reason: "'.$error.'"';
             $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: '.$error_msg);
+            // TODO! muss return wert sein
             $this->throwError($error_msg);
-        
-            if ($this->_autoretry == true) {
+            
+            static $tries = 0;
+            if ($this->_autoretry == true && $this->$tries < 5) {
                 $this->reconnect();
+                $tries++;
             } else {
                 die();
             }
@@ -922,8 +925,12 @@ class Net_SmartIRC
             case SMARTIRC_TYPE_NOTICE:
                 $this->_send('NOTICE '.$destination.' :'.$message);
             break;
-            case SMARTIRC_TYPE_CTCP:
+            case SMARTIRC_TYPE_CTCP: // backwards compatibilty
+            case SMARTIRC_TYPE_CTCP_REPLY:
                 $this->_send('NOTICE '.$destination.' :'.chr(1).$message.chr(1));
+            break;
+            case SMARTIRC_TYPE_CTCP_REQUEST:
+                $this->_send('PRIVMSG '.$destination.' :'.chr(1).$message.chr(1));
             break;
             default:
                 return false;
@@ -1297,6 +1304,12 @@ class Net_SmartIRC
         return false;
     }
     
+    /**
+     * checks if we or the given user is opped on the specified channel and returns the result
+     *
+     * @return boolean
+     * @access public
+     */
     function isOp($channel, $nickname = null)
     {
         if ($nickname === null) {
@@ -1312,6 +1325,12 @@ class Net_SmartIRC
         return false;
     }
 
+    /**
+     * checks if we or the given user is voiced on the specified channel and returns the result
+     *
+     * @return boolean
+     * @access public
+     */
     function isVoice($channel, $nickname = null)
     {
         if ($nickname === null) {
@@ -1327,6 +1346,12 @@ class Net_SmartIRC
         return false;
     }
 
+    /**
+     * checks if the hostmask is on the specified channel banned and returns the result
+     *
+     * @return boolean
+     * @access public
+     */
     function isBanned($channel, $hostmask)
     {
         if ($this->isJoined($channel)) {
