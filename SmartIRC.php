@@ -240,18 +240,6 @@ class Net_SmartIRC_base
     var $_channelsyncing = false;
     
     /**
-     * @var array
-     * @access private
-     */
-    var $_users = array();
-    
-    /**
-     * @var boolean
-     * @access private
-     */
-    var $_usersyncing = false;
-    
-    /**
      * @var string
      * @access private
      */
@@ -318,24 +306,6 @@ class Net_SmartIRC_base
     var $_autoretry = false;
     
     /**
-     * Stores the path to the modules that can be loaded.
-     *
-     * @var string
-     * @access privat
-     */
-    var $_modulepath = '';
-        
-    /**
-     * Stores all objects of the modules.
-     *
-     * @var string
-     * @access privat
-     */
-    var $_modules = array();
-    
-    var $_messagehandlerclassname = 'Net_SmartIRC_messagehandler';
-    
-    /**
      * All IRC replycodes, the index is the replycode name.
      *
      * @see $SMARTIRC_replycodes
@@ -365,18 +335,6 @@ class Net_SmartIRC_base
      * @access public
      */
     var $channel;
-    
-    /**
-     * Stores all users that had/have contact with us (channel/query/notice etc.), works only if usersyncing is activated.
-     * Eg. for accessing a user, use it like this: (in this example the SmartIRC object is stored in $irc)
-     * $irc->user['meebey']->host;
-     *
-     * @see setUserSyncing()
-     * @see Net_SmartIRC_ircuser
-     * @var array
-     * @access public
-     */
-    var $user;
     
     /**
      * Constructor. Initiales the messagebuffer and "links" the replycodes from
@@ -532,31 +490,6 @@ class Net_SmartIRC_base
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: Channel syncing enabled', __FILE__, __LINE__);
         } else {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: Channel syncing disabled', __FILE__, __LINE__);
-        }
-    }
-    
-    /**
-     * Enables/disables user syncing.
-     *
-     * User syncing means, all users we have or had contact with through channel, query or
-     * notice are tracked in the $irc->user array. This is very handy for botcoding.
-     *
-     * @param boolean $boolean
-     * @return void
-     * @access public
-     */
-    function setUserSyncing($boolean)
-    {
-        if (is_bool($boolean)) {
-            $this->_usersyncing = $boolean;
-        } else {
-            $this->_usersyncing = false;
-        }
-        
-        if ($this->_usersyncing == true) {
-            $this->log(SMARTIRC_DEBUG_USERSYNCING, 'DEBUG_USERSYNCING: User syncing enabled', __FILE__, __LINE__);
-        } else {
-            $this->log(SMARTIRC_DEBUG_USERSYNCING, 'DEBUG_USERSYNCING: User syncing disabled', __FILE__, __LINE__);
         }
     }
     
@@ -742,18 +675,6 @@ class Net_SmartIRC_base
         } else {
             $this->_txtimeout = 300;
         }
-    }
-    
-    /**
-     * Sets the paths for the modules.
-     *
-     * @param integer $path
-     * @return void
-     * @access public
-     */
-    function setModulepath($path)
-    {
-        $this->_modulepath = $path;
     }
     
     /**
