@@ -941,7 +941,7 @@ class Net_SmartIRC
                 $this->_send('PRIVMSG '.$destination.' :'.$message, $priority);
             break;
             case SMARTIRC_TYPE_ACTION:
-                $this->_send('PRIVMSG '.$destination.' :'.chr(1).'ACTION '.$message, $priority);
+                $this->_send('PRIVMSG '.$destination.' :'.chr(1).'ACTION '.$message.chr(1), $priority);
             break;
             case SMARTIRC_TYPE_NOTICE:
                 $this->_send('NOTICE '.$destination.' :'.$message, $priority);
@@ -1764,7 +1764,7 @@ class Net_SmartIRC
                 $lastmicrotimestamp = $this->_microint();
                 $highsent = 0;
             } else if ($lowcount > 0) {
-                $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_HIGH]));
+                $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_LOW]));
                 $lastmicrotimestamp = $this->_microint();
             }
         }
