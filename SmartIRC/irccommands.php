@@ -41,7 +41,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
     function message($type, $destination, $messagearray, $priority = SMARTIRC_MEDIUM)
     {
         if (!is_array($messagearray)) {
-            $messagearray = array($messagearay);
+            $messagearray = array($messagearray);
         }
         
         switch ($type) {
