@@ -48,7 +48,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: joining channel: '.$ircdata->channel, __FILE__, __LINE__);
                 $channel = &new Net_SmartIRC_channel();
                 $channel->name = $ircdata->channel;
-                $channel->synctime_start = $this->_microint()/1000;
+                $channel->synctime_start = $this->_microint();
                 $this->_channels[strtolower($channel->name)] = &$channel;
                 
                 // the class will get his own who data from the whole who channel list
@@ -399,8 +399,8 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     {
         if ($this->_channelsyncing == true && $this->isJoined($ircdata->channel)) {
             $channel = &$this->_channels[strtolower($ircdata->channel)];
-            $channel->synctime = ($this->_microint()/1000) - $channel->synctime_start;
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel.' in '.round($channel->synctime/1000, 2).' secs', __FILE__, __LINE__);
+            $channel->synctime = $this->_microint() - $channel->synctime_start;
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel.' in '.number_format(($channel->synctime/1000), 2).' secs', __FILE__, __LINE__);
         }
     }
     
