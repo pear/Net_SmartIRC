@@ -1347,8 +1347,12 @@ class Net_SmartIRC
                                  SMARTIRC_TYPE_KICK|
                                  SMARTIRC_TYPE_PART))
                         $ircdata->channel = $lineex[2];
-                    elseif ($type & SMARTIRC_TYPE_JOIN)
-                        $ircdata->channel = substr($lineex[2], 1);
+                    elseif ($type & SMARTIRC_TYPE_JOIN) {
+                        if (substr($lineex[2], 0, 1) == ':')
+                            $ircdata->channel = substr($lineex[2], 1);
+                        else
+                            $ircdata->channel = $lineex[2];
+                    }
                     elseif ($type & (SMARTIRC_TYPE_WHO|
                                      SMARTIRC_TYPE_BANLIST|
                                      SMARTIRC_TYPE_TOPIC|
