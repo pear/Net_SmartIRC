@@ -1919,11 +1919,10 @@ class Net_SmartIRC
                 $rawdataar = explode("\n", $rawdata);
             }
             
-            $rawdataarcount = count($rawdataar);
             // loop through our received messages
-            for ($i = 0; $i < $rawdataarcount; $i++) {
+            while (count($rawdataar) > 0) {
                 $this->_lastrx = time();
-                $rawline = $rawdataar[$i];
+                $rawline = array_shift($rawdataar);
                 $validmessage = false;
                 
                 $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: received: "'.$rawline.'"');
