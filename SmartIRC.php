@@ -996,8 +996,8 @@ class Net_SmartIRC
      */
     function &channel($channelname)
     {
-        if (isset($this->_channels[$channelname])) {
-            return $this->_channels[$channelname];
+        if (isset($this->_channels[strtolower($channelname)])) {
+            return $this->_channels[strtolower($channelname)];
         } else {
             return false;
         }
@@ -2459,7 +2459,7 @@ class Net_SmartIRC
         $lowerednick = strtolower($nick);
         
         if ($this->_nick == $nick) {
-            unset($this->_channels[$ircdata->channel]);
+            unset($this->_channels[strtolower($ircdata->channel)]);
         } else {
             if ($ircdata->type & SMARTIRC_TYPE_QUIT) {
                 // remove the user from all channels
@@ -2489,7 +2489,7 @@ class Net_SmartIRC
                     }
                 }
             } else {
-                $channel = &$this->_channels[$ircdata->channel];
+                $channel = &$this->_channels[strtolower($ircdata->channel)];
                 unset($channel->users[$lowerednick]);
                 
                 if (isset($channel->ops[$nick])) {

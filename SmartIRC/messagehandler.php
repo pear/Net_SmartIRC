@@ -47,14 +47,14 @@ class Net_SmartIRC_messagehandler
             if ($irc->_nick == $ircdata->nick) {
                 $channel = &new Net_SmartIRC_channel();
                 $channel->name = $ircdata->channel;
-                $irc->_channels[$channel->name] = &$channel;
+                $irc->_channels[strtolower($channel->name)] = &$channel;
                 
                 $irc->who($channel->name);
                 $irc->mode($channel->name);
                 $irc->ban($channel->name);
             }
             
-            $channel = &$irc->_channels[$ircdata->channel];
+            $channel = &$irc->_channels[strtolower($ircdata->channel)];
             $user = &new Net_SmartIRC_user();
             $user->nick = $ircdata->nick;
             $user->ident = $ircdata->ident;
@@ -132,7 +132,7 @@ class Net_SmartIRC_messagehandler
             $irc->_usermode = substr($ircdata->rawmessageex[3], 1);
         } else if ($irc->_channelsynching == true) {
             // it's not, and we do channel syching
-            $channel = &$irc->_channels[$ircdata->channel];
+            $channel = &$irc->_channels[strtolower($ircdata->channel)];
             $mode = $ircdata->rawmessageex[3];
             $parameters = array_slice($ircdata->rawmessageex, 4);
             
@@ -260,7 +260,7 @@ class Net_SmartIRC_messagehandler
     
     function _rpl_channelmodeis(&$irc, &$ircdata) {
         if ($irc->_channelsynching == true && $irc->isJoined($ircdata->channel)) {
-            $channel = &$irc->_channels[$ircdata->channel];
+            $channel = &$irc->_channels[strtolower($ircdata->channel)];
             $mode = $ircdata->rawmessageex[4];
             $channel->mode = str_replace('+', '', $mode);
         }
@@ -269,7 +269,7 @@ class Net_SmartIRC_messagehandler
     function _rpl_whoreply(&$irc, &$ircdata)
     {
         if ($irc->_channelsynching == true && $irc->isJoined($ircdata->channel)) {
-            $channel = &$irc->_channels[$ircdata->channel];
+            $channel = &$irc->_channels[strtolower($ircdata->channel)];
             
             $user = &new Net_SmartIRC_user();
             $user->ident = $ircdata->rawmessageex[4];
@@ -313,7 +313,7 @@ class Net_SmartIRC_messagehandler
     function _rpl_namreply(&$irc, &$ircdata)
     {
         if ($irc->_channelsynching == true) {
-            $channel = &$irc->_channels[$ircdata->channel];
+            $channel = &$irc->_channels[strtolower($ircdata->channel)];
             
             $userarray = explode(' ',substr($ircdata->message, strpos($ircdata->message, ':')+1, -1));
             $userarraycount = count($userarray);
@@ -342,7 +342,7 @@ class Net_SmartIRC_messagehandler
     function _rpl_banlist(&$irc, &$ircdata)
     {
         if ($irc->_channelsynching == true && $irc->isJoined($ircdata->channel)) {
-            $channel = &$irc->_channels[$ircdata->channel];
+            $channel = &$irc->_channels[strtolower($ircdata->channel)];
             $hostmask = $ircdata->rawmessageex[4];
             $channel->bans[$hostmask] = true;
         }
@@ -351,7 +351,7 @@ class Net_SmartIRC_messagehandler
     function _rpl_topic(&$irc, &$ircdata)
     {
         if ($irc->_channelsynching == true) {
-            $channel = &$irc->_channels[$ircdata->channel];
+            $channel = &$irc->_channels[strtolower($ircdata->channel)];
             $topic = substr(implode(array_slice($ircdata->rawmessageex, 4), ' '), 1);
             $channel->topic = $topic;
         }
