@@ -101,10 +101,11 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             $lowerednewnick = strtolower($newnick);
             $lowerednick = strtolower($ircdata->nick);
             
-            foreach ($this->_channels as $channelkey => $channelvalue) {
+            $channelkeys = array_keys($this->_channels);
+            foreach ($channelkeys as $channelkey) {
                 // loop through all channels
                 $channel = &$this->_channels[$channelkey];
-                foreach ($channel->users as $userkey => $uservalue) {
+                foreach ($channel->users as $uservalue) {
                     // loop through all user in this channel
                     
                     if ($ircdata->nick == $uservalue->nick) {
@@ -148,7 +149,6 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             
             $add = false;
             $remove = false;
-            $channelmode = '';
             $modelength = strlen($mode);
             for ($i = 0; $i < $modelength; $i++) {
                 switch($mode[$i]) {
