@@ -2198,7 +2198,8 @@ class Net_SmartIRC_base
         
         if ($this->_nick == $nick) {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: we left channel: '.$ircdata->channel.' destroying...', __FILE__, __LINE__);
-            unset($this->_channels[strtolower($ircdata->channel)]);
+//            unset($this->_channels[strtolower($ircdata->channel)]);
+            unset($this->_channels[strtolower($ircdata->channel)]->users[$lowerednick]);
         } else {
             if ($ircdata->type & SMARTIRC_TYPE_QUIT) {
                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: user '.$nick.' quit, removing him from all channels', __FILE__, __LINE__);
