@@ -902,7 +902,7 @@ class Net_SmartIRC_base
             return false;
         }
         
-        if (isJoined($channelname)) {
+        if ($this->isJoined($channelname)) {
             return $this->_channels[strtolower($channelname)];
         } else {
             return false;
@@ -924,7 +924,7 @@ class Net_SmartIRC_base
             return false;
         }
         
-        if (isJoined($channelname, $username)) {
+        if ($this->isJoined($channelname, $username)) {
             return $this->_channels[strtolower($channelname)]->users[strtolower($username)];
         } else {
             return false;
