@@ -678,7 +678,7 @@ class Net_SmartIRC
             
         switch ($this->_logdestination) {
             case SMARTIRC_STDOUT:
-                if(isset($_SERVER['REQUEST_METHOD'])) {
+                if(isset($_SERVER)) {
                     // the script is called from a browser, lets show the output browser friendly
                     $formatedentry = '<pre>'.$formatedentry.'</pre>';
                 }
@@ -758,13 +758,10 @@ class Net_SmartIRC
             
             $error_msg = 'couldn\'t connect to "'.$address.'" reason: "'.$error.'"';
             $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: '.$error_msg);
-            // TODO! muss return wert sein
             $this->throwError($error_msg);
-            
-            static $tries = 0;
-            if ($this->_autoretry == true && $this->$tries < 5) {
+        
+            if ($this->_autoretry == true) {
                 $this->reconnect();
-                $tries++;
             } else {
                 die();
             }
@@ -925,12 +922,8 @@ class Net_SmartIRC
             case SMARTIRC_TYPE_NOTICE:
                 $this->_send('NOTICE '.$destination.' :'.$message);
             break;
-            case SMARTIRC_TYPE_CTCP: // backwards compatibilty
-            case SMARTIRC_TYPE_CTCP_REPLY:
+            case SMARTIRC_TYPE_CTCP:
                 $this->_send('NOTICE '.$destination.' :'.chr(1).$message.chr(1));
-            break;
-            case SMARTIRC_TYPE_CTCP_REQUEST:
-                $this->_send('PRIVMSG '.$destination.' :'.chr(1).$message.chr(1));
             break;
             default:
                 return false;
@@ -1304,12 +1297,6 @@ class Net_SmartIRC
         return false;
     }
     
-    /**
-     * checks if we or the given user is opped on the specified channel and returns the result
-     *
-     * @return boolean
-     * @access public
-     */
     function isOp($channel, $nickname = null)
     {
         if ($nickname === null) {
@@ -1325,12 +1312,6 @@ class Net_SmartIRC
         return false;
     }
 
-    /**
-     * checks if we or the given user is voiced on the specified channel and returns the result
-     *
-     * @return boolean
-     * @access public
-     */
     function isVoice($channel, $nickname = null)
     {
         if ($nickname === null) {
@@ -1346,12 +1327,6 @@ class Net_SmartIRC
         return false;
     }
 
-    /**
-     * checks if the hostmask is on the specified channel banned and returns the result
-     *
-     * @return boolean
-     * @access public
-     */
     function isBanned($channel, $hostmask)
     {
         if ($this->isJoined($channel)) {
@@ -1580,10 +1555,9 @@ class Net_SmartIRC
             $found_description = false;
             $found_autor = false;
             
-            for ($i=0;$i<$filecount; $i++) {
-                $line = $file[$i];
-                $lineex = explode(' ', $line);
-                switch($lineex[0]) {
+			for ($i=1;$i<4; $i++) {
+                $line = explode(' ',trim($file[$i]),2);
+                switch(trim($line[0])) {
                     case '$module[\'name\']':
                         $found_name = true;
                     break;
@@ -1597,7 +1571,7 @@ class Net_SmartIRC
             }
             
             if($found_name && $found_description && $found_autor) {
-                include($filename);
+                include_once($filename);
                 return true;
             } else {
                 return false;
