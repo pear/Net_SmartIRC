@@ -48,11 +48,12 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: joining channel: '.$ircdata->channel, __FILE__, __LINE__);
                 $channel = &new Net_SmartIRC_channel();
                 $channel->name = $ircdata->channel;
+                $channel->synctime_start = $this->microtime()/1000;
                 $this->_channels[strtolower($channel->name)] = &$channel;
                 
                 // the class will get his own who data from the whole who channel list
-                $this->who($channel->name);
                 $this->mode($channel->name);
+                $this->who($channel->name);
                 $this->ban($channel->name);
             } else {
                 // the class didn't join but someone else, lets get his who data
@@ -391,6 +392,15 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             $channel = &$this->_channels[strtolower($ircdata->channel)];
             $hostmask = $ircdata->rawmessageex[4];
             $channel->bans[$hostmask] = true;
+        }
+    }
+    
+    function _event_rpl_endofbanlist(&$ircdata)
+    {
+        if ($this->_channelsyncing == true && $this->isJoined($ircdata->channel)) {
+            $channel = &$this->_channels[strtolower($ircdata->channel)];
+            $channel->synctime = ($this->microtime()/1000) - $channel->synctime_start;
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel.' in '.($channel->synctime/1000).' secs', __FILE__, __LINE__);
         }
     }
     
