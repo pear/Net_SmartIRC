@@ -2666,13 +2666,19 @@ class Net_SmartIRC_channel
     var $mode;
     
     /**
-     * @var string
+     * @var integer
      * @access public
      */
     var $synctime_start;
     
     /**
-     * @var string
+     * @var integer
+     * @access public
+     */
+    var $synctime_stop;
+    
+    /**
+     * @var integer
      * @access public
      */
     var $synctime;
