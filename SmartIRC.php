@@ -1803,7 +1803,7 @@ class Net_SmartIRC_base
                     }
                 }
                 
-                $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: ircata nick: "'.$ircdata->nick.
+                $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: ircdata nick: "'.$ircdata->nick.
                                                          '" ident: "'.$ircdata->ident.
                                                          '" host: "'.$ircdata->host.
                                                          '" type: "'.$ircdata->type.
