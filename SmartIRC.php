@@ -309,7 +309,7 @@ class Net_SmartIRC_base
      * @access private
      */
     var $_autoretry = false;
-
+    
     /**
      * stores the path to the modules that can be loaded
      *
@@ -318,6 +318,16 @@ class Net_SmartIRC_base
      */
     var $_modulepath = '';
         
+    /**
+     * stores all objects of the modules
+     *
+     * @var string
+     * @access privat
+     */
+    var $_modules = array();
+    
+    var $_messagehandlerclassname = 'Net_SmartIRC_messagehandler';
+    
     /**
      * All IRC replycodes, the index is the replycode name.
      *
@@ -394,6 +404,8 @@ class Net_SmartIRC_base
             // to SMARTIRC_BROWSEROUT (makes browser friendly output)
             $this->setLogdestination(SMARTIRC_BROWSEROUT);
         }
+        
+        
     }
     
     /**
@@ -1369,92 +1381,6 @@ class Net_SmartIRC_base
         return false;
     }
     
-    // experimentel feature, do not use it yet!
-    function loadModule($name)
-    {
-        $filename = $this->_modulepath.'/'.$name.'.php';
-        if (!file_exists($filename)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: couldn\'t load module "'.$filename.'" file doesn\'t exist', __FILE__, __LINE__);
-            return false;
-        }
-        
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: loading module: "'.$name.'"...', __FILE__, __LINE__);
-        // pray that there is no parse error, it will kill us!
-        include_once($filename);
-        $classname = 'Net_SmartIRC_module_'.$name;
-        
-        if (!class_exists($classname)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: class '.$classname.' not found in '.$filename, __FILE__, __LINE__);
-            return false;
-        }
-        
-        $methods = get_class_methods($classname);
-        if (!in_array('module_init', $methods)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method'.$classname.'::module_init not found, aborting...', __FILE__, __LINE__);
-            return false;
-        }
-        
-        if (!in_array('module_exit', $methods)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method'.$classname.'::module_exit not found, aborting...', __FILE__, __LINE__);
-            return false;
-        }
-        
-        $vars = array_keys(get_class_vars($classname));
-        if (!in_array('name', $vars)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required variable '.$classname.'::name not found, aborting...', __FILE__, __LINE__);
-            return false;
-        }
-        
-        if (!in_array('description', $vars)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required variable '.$classname.'::description not found, aborting...', __FILE__, __LINE__);
-            return false;
-        }
-        
-        if (!in_array('author', $vars)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required variable '.$classname.'::author not found, aborting...', __FILE__, __LINE__);
-            return false;
-        }
-        
-        if (!in_array('license', $vars)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required variable '.$classname.'::license not found, aborting...', __FILE__, __LINE__);
-            return false;
-        }
-        
-        // looks like the module satisfies us
-        $module = &new $classname;
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful created instance of: '.$classname, __FILE__, __LINE__);
-        
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: calling '.$classname.'::module_init()', __FILE__, __LINE__);
-        $module->module_init($this);
-        $this->_modules[] = &$module;
-        
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful loaded module: '.$name, __FILE__, __LINE__);
-        return true;
-    }
-    
-   // experimentel feature, do not use it yet! 
-    function unloadModule($name)
-    {
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: unloading module: '.$name.'...', __FILE__, __LINE__);
-        
-        $modulecount = count($this->_modules);
-        for ($i = 0; $i < $modulecount; $i++) {
-            $module = &$this->_modules[$i];
-            $modulename = get_class($module);
-            
-            if ($modulename == 'net_smartirc_module_'.$name) {
-                $module->module_exit($this);
-                unset($this->_modules[$i]);
-                $this->_reordermodules();
-                $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful unloaded module: '.$name, __FILE__, __LINE__);
-                return true;
-            }
-        }
-        
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: couldn\'t unloaded module: '.$name.' (it\'s not loaded!)', __FILE__, __LINE__);
-        return false;
-    }
-    
     // <private methods>
     /**
      * changes a already used nickname to a new nickname plus 3 random digits
@@ -2039,7 +1965,6 @@ class Net_SmartIRC_base
      */
     function _handlemessage($messagecode, &$ircdata)
     {
-        $messagehandlerobject = &$this->_messagehandlerobject;
         $found = false;
         
         if (is_numeric($messagecode)) {
@@ -2049,26 +1974,26 @@ class Net_SmartIRC_base
                 return;
             }
             
-            $methodname = strtolower($this->nreplycodes[$messagecode]);
+            $methodname = 'event_'.strtolower($this->nreplycodes[$messagecode]);
             $_methodname = '_'.$methodname;
             $_codetype = 'by numeric';
         } else if (is_string($messagecode)) { // its not numericcode so already a name/string
-            $methodname = strtolower($messagecode);
+            $methodname = 'event_'.strtolower($messagecode);
             $_methodname = '_'.$methodname;
             $_codetype = 'by string';
         }
         
         // if exists call internal method for the handling
-        if (@method_exists($messagehandlerobject, $_methodname)) {
-           $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling internal method "'.get_class($messagehandlerobject).'->'.$_methodname.'" ('.$_codetype.')', __FILE__, __LINE__);
-           $messagehandlerobject->$_methodname($this, $ircdata);
+        if (@method_exists($this, $_methodname)) {
+           $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling internal method "'.get_class($this).'->'.$_methodname.'" ('.$_codetype.')', __FILE__, __LINE__);
+           $this->$_methodname($ircdata);
            $found = true;
         }
-            
+        
         // if exist, call user defined method for the handling
-        if (@method_exists($messagehandlerobject, $methodname)) {
-           $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling user defined method "'.get_class($messagehandlerobject).'->'.$methodname.'" ('.$_codetype.')', __FILE__, __LINE__);
-           $messagehandlerobject->$methodname($this, $ircdata);
+        if (@method_exists($this, $methodname)) {
+           $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: calling user defined method "'.get_class($this).'->'.$methodname.'" ('.$_codetype.')', __FILE__, __LINE__);
+           $this->$methodname($ircdata);
            $found = true;
         }
         
@@ -2266,33 +2191,11 @@ class Net_SmartIRC_base
         }
     }
     
-    function _addIrcUser()
-    {
-    }
-    
-    function _updateIrcUser()
-    {
-    }
-    
-    function _removeIrcUser()
-    {
-    }
-    
-    function _addChannelUser()
-    {
-    }
-    
-    function _updateChannelUser()
-    {
-    }
-    
-    function _removeChannelUser()
-    {
-    }
-    
     function _checkPHPVersion()
     {
+        // doing nothing at the moment
     }
+    
     // </private methods>
     
     function isError($object) {
@@ -2306,6 +2209,7 @@ class Net_SmartIRC_base
 
 class Net_SmartIRC extends Net_SmartIRC_messagehandler
 {
+    // empty
 }
 
 /**
@@ -2620,8 +2524,14 @@ class Net_SmartIRC_Error
 {
     var $error_msg;
     
-    function Net_SmartIRC_Error($message) {
+    function Net_SmartIRC_Error($message)
+    {
         $this->error_msg = $message;
+    }
+    
+    function getMessage()
+    {
+        return $this->error_msg;
     }
 }
 ?>
