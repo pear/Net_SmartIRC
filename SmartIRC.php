@@ -824,9 +824,8 @@ class Net_SmartIRC_base
     {
         // prechecks
         if (!(is_integer($level)) ||
-            !($level > SMARTIRC_DEBUG_NONE &&
-              $level < SMARTIRC_DEBUG_ALL)) {
-            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING!: invalid log level passed to log() ('.$level.')', __FILE__, __LINE__);
+            !($level & SMARTIRC_DEBUG_ALL)) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: invalid log level passed to log() ('.$level.')', __FILE__, __LINE__);
             return;
         }
         
@@ -1272,6 +1271,12 @@ class Net_SmartIRC_base
      */
     function registerActionhandler($handlertype, $regexhandler, &$object, $methodname)
     {
+        // precheck
+        if (!$this->_isValidType($handlertype)) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: passed invalid handlertype to registerActionhandler()', __FILE__, __LINE__);
+            return false;
+        }
+        
         $id = $this->_actionhandlerid++;
         $newactionhandler = &new Net_SmartIRC_actionhandler();
         
@@ -1302,6 +1307,12 @@ class Net_SmartIRC_base
      */
     function unregisterActionhandler($handlertype, $regexhandler, &$object, $methodname)
     {
+        // precheck
+        if (!$this->_isValidType($handlertype)) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: passed invalid handlertype to unregisterActionhandler()', __FILE__, __LINE__);
+            return false;
+        }
+        
         $handler = &$this->_actionhandler;
         $handlercount = count($handler);
         
@@ -1578,7 +1589,7 @@ class Net_SmartIRC_base
     {
         if ($this->_state() == SMARTIRC_STATE_CONNECTED) {
             $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: sent: "'.$data.'"', __FILE__, __LINE__);
-                
+            
             if ($this->_usesockets == true) {
                 $result = @socket_write($this->_socket, $data.SMARTIRC_CRLF);
             } else {
@@ -1669,10 +1680,15 @@ class Net_SmartIRC_base
                     $messagecode = $lineex[1];
                     $exclamationpos = strpos($from, '!');
                     $atpos = strpos($from, '@');
+                    $colonpos = strpos($line, ':');
                     $nick = substr($from, 0, $exclamationpos);
                     $ident = substr($from, $exclamationpos+1, ($atpos-$exclamationpos)-1);
                     $host = substr($from, $atpos+1);
-                    $message = substr($line, strpos($line, ':')+1);
+                    if ($colonpos !== false) {
+                        $message = substr($line, $colonpos+1);
+                    } else {
+                        $message = null;
+                    }
                     $type = $this->_gettype($rawline);
                     
                     $ircdata->from = $from;
@@ -2243,6 +2259,14 @@ class Net_SmartIRC_base
     function _checkPHPVersion()
     {
         // doing nothing at the moment
+    }
+    
+    function _isValidType($handlertype) {
+        if ($handlertype & SMARTIRC_TYPE_ALL ) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     // </private methods>
