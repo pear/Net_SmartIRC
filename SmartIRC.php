@@ -678,7 +678,7 @@ class Net_SmartIRC
             
         switch ($this->_logdestination) {
             case SMARTIRC_STDOUT:
-                if(isset($_SERVER['REQUEST_METHOD'])) {
+                if (isset($_SERVER['REQUEST_METHOD'])) {
                     // the script is called from a browser, lets show the output browser friendly
                     $formatedentry = '<pre>'.$formatedentry.'</pre>';
                 }
@@ -913,25 +913,25 @@ class Net_SmartIRC
      * @return boolean
      * @access public
      */
-    function message($type, $destination, $message)
+    function message($type, $destination, $message, $priority = SMARTIRC_MEDIUM)
     {
         switch ($type) {
             case SMARTIRC_TYPE_CHANNEL:
             case SMARTIRC_TYPE_QUERY:
-                $this->_send('PRIVMSG '.$destination.' :'.$message);
+                $this->_send('PRIVMSG '.$destination.' :'.$message, $priority);
             break;
             case SMARTIRC_TYPE_ACTION:
-                $this->_send('PRIVMSG '.$destination.' :'.chr(1).'ACTION '.$message);
+                $this->_send('PRIVMSG '.$destination.' :'.chr(1).'ACTION '.$message, $priority);
             break;
             case SMARTIRC_TYPE_NOTICE:
-                $this->_send('NOTICE '.$destination.' :'.$message);
+                $this->_send('NOTICE '.$destination.' :'.$message, $priority);
             break;
             case SMARTIRC_TYPE_CTCP: // backwards compatibilty
             case SMARTIRC_TYPE_CTCP_REPLY:
-                $this->_send('NOTICE '.$destination.' :'.chr(1).$message.chr(1));
+                $this->_send('NOTICE '.$destination.' :'.chr(1).$message.chr(1), $priority);
             break;
             case SMARTIRC_TYPE_CTCP_REQUEST:
-                $this->_send('PRIVMSG '.$destination.' :'.chr(1).$message.chr(1));
+                $this->_send('PRIVMSG '.$destination.' :'.chr(1).$message.chr(1), $priority);
             break;
             default:
                 return false;
@@ -966,7 +966,7 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function join($channelarray, $key = null)
+    function join($channelarray, $key = null, $priority = SMARTIRC_MEDIUM)
     {
         if (!is_array($channelarray)) {
             $channelarray = array($channelarray);
@@ -975,9 +975,9 @@ class Net_SmartIRC
         $channellist = implode(',', $channelarray);
         
         if ($key !== null) {
-            $this->_send('JOIN '.$channellist.' '.$key);
+            $this->_send('JOIN '.$channellist.' '.$key, $priority);
         } else {
-            $this->_send('JOIN '.$channellist);
+            $this->_send('JOIN '.$channellist, $priority);
         }
     }
     
@@ -989,7 +989,7 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function part($channelarray, $reason = null)
+    function part($channelarray, $reason = null, $priority = SMARTIRC_MEDIUM)
     {
         if (!is_array($channelarray)) {
             $channelarray = array($channelarray);
@@ -998,9 +998,9 @@ class Net_SmartIRC
         $channellist = implode(',', $channelarray);
         
         if ($reason !== null) {
-            $this->_send('PART '.$channellist.' :'.$reason);
+            $this->_send('PART '.$channellist.' :'.$reason, $priority);
         } else {
-            $this->_send('PART '.$channellist);
+            $this->_send('PART '.$channellist, $priority);
         }
     }
     
@@ -1013,7 +1013,7 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function kick($channel, $nicknamearray, $reason = null)
+    function kick($channel, $nicknamearray, $reason = null, $priority = SMARTIRC_MEDIUM)
     {
         if (!is_array($nicknamearray)) {
             $nicknamearray = array($nicknamearray);
@@ -1022,9 +1022,9 @@ class Net_SmartIRC
         $nicknamelist = implode(',', $nicknamearray);
         
         if ($reason !== null) {
-            $this->_send('KICK '.$channel.' '.$nicknamelist.' :'.$reason, SMARTIRC_CRITICAL);
+            $this->_send('KICK '.$channel.' '.$nicknamelist.' :'.$reason, $priority);
         } else {
-            $this->_send('KICK '.$channel.' '.$nicknamelist, SMARTIRC_CRITICAL);
+            $this->_send('KICK '.$channel.' '.$nicknamelist, $priority);
         }
     }
     
@@ -1038,7 +1038,7 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function getList($channelarray = null)
+    function getList($channelarray = null, $priority = SMARTIRC_MEDIUM)
     {
         if ($channelarray !== null) {
             if (!is_array($channelarray)) {
@@ -1046,9 +1046,9 @@ class Net_SmartIRC
             }
             
             $channellist = implode(',', $channelarray);
-            $this->_send('LIST '.$channellist);
+            $this->_send('LIST '.$channellist, $priority);
         } else {
-            $this->_send('LIST');
+            $this->_send('LIST', $priority);
         }
     }
 
@@ -1061,7 +1061,7 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function names($channelarray = null)
+    function names($channelarray = null, $priority = SMARTIRC_MEDIUM)
     {
         if ($channelarray !== null) {
             if (!is_array($channelarray)) {
@@ -1069,9 +1069,9 @@ class Net_SmartIRC
             }
             
             $channellist = implode(',', $channelarray);
-            $this->_send('NAMES '.$channellist);
+            $this->_send('NAMES '.$channellist, $priority);
         } else {
-            $this->_send('NAMES');
+            $this->_send('NAMES', $priority);
         }
     }
     
@@ -1083,9 +1083,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function setTopic($channel, $newtopic)
+    function setTopic($channel, $newtopic, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('TOPIC '.$channel.' :'.$newtopic);
+        $this->_send('TOPIC '.$channel.' :'.$newtopic, $priority);
     }
     
     /**
@@ -1095,9 +1095,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function getTopic($channel)
+    function getTopic($channel, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('TOPIC '.$channel);
+        $this->_send('TOPIC '.$channel, $priority);
     }
     
     /**
@@ -1110,12 +1110,12 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function mode($target, $newmode = null)
+    function mode($target, $newmode = null, $priority = SMARTIRC_MEDIUM)
     {
         if ($newmode !== null) {
-            $this->_send('MODE '.$target.' '.$newmode);
+            $this->_send('MODE '.$target.' '.$newmode, $priority);
         } else {
-            $this->_send('MODE '.$target);
+            $this->_send('MODE '.$target, $priority);
         }
     }
     
@@ -1127,9 +1127,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function op($channel, $nickname)
+    function op($channel, $nickname, $priority = SMARTIRC_MEDIUM)
     {
-        $this->mode($channel, '+o '.$nickname);
+        $this->mode($channel, '+o '.$nickname, $priority);
     }
     
     /**
@@ -1140,9 +1140,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function deop($channel, $nickname)
+    function deop($channel, $nickname, $priority = SMARTIRC_MEDIUM)
     {
-        $this->mode($channel, '-o '.$nickname);
+        $this->mode($channel, '-o '.$nickname, $priority);
     }
     
     /**
@@ -1153,9 +1153,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function voice($channel, $nickname)
+    function voice($channel, $nickname, $priority = SMARTIRC_MEDIUM)
     {
-        $this->mode($channel, '+v '.$nickname);
+        $this->mode($channel, '+v '.$nickname, $priority);
     }
     
     /**
@@ -1166,9 +1166,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function devoice($channel, $nickname)
+    function devoice($channel, $nickname, $priority = SMARTIRC_MEDIUM)
     {
-        $this->mode($channel, '-v '.$nickname);
+        $this->mode($channel, '-v '.$nickname, $priority);
     }
     
     /**
@@ -1181,12 +1181,12 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function ban($channel, $hostmask = null)
+    function ban($channel, $hostmask = null, $priority = SMARTIRC_MEDIUM)
     {
         if ($hostmask !== null) {
-            $this->mode($channel, '+b '.$hostmask);
+            $this->mode($channel, '+b '.$hostmask, $priority);
         } else {
-            $this->mode($channel, 'b');
+            $this->mode($channel, 'b', $priority);
         }
     }
     
@@ -1198,9 +1198,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function unban($channel, $hostmask)
+    function unban($channel, $hostmask, $priority = SMARTIRC_MEDIUM)
     {
-        $this->mode($channel, '-b '.$hostmask);
+        $this->mode($channel, '-b '.$hostmask, $priority);
     }
     
     /**
@@ -1211,9 +1211,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function invite($nickname, $channel)
+    function invite($nickname, $channel, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('INVITE '.$nickname.' '.$channel);
+        $this->_send('INVITE '.$nickname.' '.$channel, $priority);
     }
     
     /**
@@ -1225,9 +1225,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function changeNick($newnick)
+    function changeNick($newnick, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('NICK '.$newnick, SMARTIRC_CRITICAL);
+        $this->_send('NICK '.$newnick, $priority);
     }
     
     /**
@@ -1237,9 +1237,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function who($target)
+    function who($target, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('WHO '.$target);
+        $this->_send('WHO '.$target, $priority);
     }
     
     /**
@@ -1249,9 +1249,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function whois($target)
+    function whois($target, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('WHOIS '.$target);
+        $this->_send('WHOIS '.$target, $priority);
     }
     
     /**
@@ -1262,9 +1262,9 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function whowas($target)
+    function whowas($target, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('WHOWAS '.$target);
+        $this->_send('WHOWAS '.$target, $priority);
     }
     
     /**
@@ -1274,12 +1274,12 @@ class Net_SmartIRC
      * @return void
      * @access public
      */
-    function quit($quitmessage = null)
+    function quit($quitmessage = null, $priority = SMARTIRC_MEDIUM)
     {
         if ($quitmessage !== null) {
-            $this->_send('QUIT :'.$quitmessage);
+            $this->_send('QUIT :'.$quitmessage, $priority);
         } else {
-            $this->_send('QUIT');
+            $this->_send('QUIT', $priority);
         }
     }
     // </IRC methods>
@@ -1400,9 +1400,11 @@ class Net_SmartIRC
         $this->registerActionhandler($messagetype, '.*', $listenfor, 'handler');
         $this->listen();
         $result = $listenfor->result;
-		if(isset($listenfor)) {
-	        unset($listenfor);
-		}
+        
+	if (isset($listenfor)) {
+	    unset($listenfor);
+	}
+	
         return $result;
     }
     
@@ -1424,9 +1426,11 @@ class Net_SmartIRC
     {
         $id = $this->_actionhandlerid++;
         $newactionhandler = &new Net_SmartIRC_actionhandler();
-		if(!$newactionhandler) {
-			return false;
-		}
+        
+	if (!$newactionhandler) {
+	    return false;
+	}
+	
         $newactionhandler->id = $id;
         $newactionhandler->type = $handlertype;
         $newactionhandler->message = $regexhandler;
@@ -1451,7 +1455,8 @@ class Net_SmartIRC
     function unregisterActionhandler($handlertype, $regexhandler, &$object, $methodname)
     {
         $handler = &$this->_actionhandler;
-		$handlercount = count($handler);
+	$handlercount = count($handler);
+        
         for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
@@ -1460,9 +1465,11 @@ class Net_SmartIRC
                 $handlerobject->method == $methodname) {
                 
                 $id = $handlerobject->id;
-				if(isset($this->_actionhandler[$i])) {
-	                unset($this->_actionhandler[$i]);
-				}
+                
+                if (isset($this->_actionhandler[$i])) {
+	            unset($this->_actionhandler[$i]);
+		}
+		
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler('.$id.') unregistered');
                 $this->_reorderactionhandler();
                 return true;
@@ -1483,14 +1490,15 @@ class Net_SmartIRC
     function unregisterActionid($id)
     {
         $handler = &$this->_actionhandler;
-		$handlercount = count($handler);
+	$handlercount = count($handler);
         for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->id == $id) {
-				if(isset($this->_actionhandler[$i])) {
-					unset($this->_actionhandler[$i]);
-				}
+		if (isset($this->_actionhandler[$i])) {
+                    unset($this->_actionhandler[$i]);
+	    	}
+	    	
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler('.$id.') unregistered');
                 $this->_reorderactionhandler();
                 return true;
@@ -1518,9 +1526,11 @@ class Net_SmartIRC
     {
         $id = $this->_timehandlerid++;
         $newtimehandler = &new Net_SmartIRC_timehandler();
-		if(!$newtimehandler) {
-			return false;
-		}
+        
+        if (!$newtimehandler) {
+            return false;
+	}
+	
         $newtimehandler->id = $id;
         $newtimehandler->interval = $interval;
         $newtimehandler->object = &$object;
@@ -1553,9 +1563,10 @@ class Net_SmartIRC
             $handlerobject = &$handler[$i];
                         
             if ($handlerobject->id == $id) {
-				if(isset($this->_timehandler[$i])) {
-	                unset($this->_timehandler[$i]);
-				}
+		if (isset($this->_timehandler[$i])) {
+	            unset($this->_timehandler[$i]);
+		}
+		
                 $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: timehandler('.$id.') unregistered');
                 $this->_reordertimehandler();
                 $this->_updatemintimer();
@@ -1570,37 +1581,23 @@ class Net_SmartIRC
     // experimentel feature, do not use it yet!
     function loadModule($filename)
     {
-        if (@file_exists($filename)) {
+        $fullfilename = 'modules/'.$filename;
+        if (@file_exists($fullfilename)) {
             $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: loading module '.$filename);
-            // before we load/include something, we should check what it is
-            $file = file($filename);
-	    $filecount = count($file);
-            $found_name = false;
-            $found_description = false;
-            $found_autor = false;
+            include_once($fullfilename);
+            // now we have to check what we included
+            // TODO: later
             
-	    for ($i=1;$i<4; $i++) {
-                $line = explode(' ',trim($file[$i]),2);
-                switch(trim($line[0])) {
-                    case '$module[\'name\']':
-                        $found_name = true;
-                    break;
-                    case '$module[\'description\']':
-                        $found_description = true;
-                    break;
-                    case '$module[\'autor\']':
-                        $found_autor = true;
-                    break;
-                }
-            }
+            $extpos = strpos($filename, '.php');
+            $classname = substr($filename, 0, strlen($filename)-$extpos);
             
-            if($found_name && $found_description && $found_autor) {
-                include_once($filename);
+            if ($found_name && $found_description && $found_autor) {
                 return true;
             } else {
                 return false;
             }
         } else {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: couldn\'t loading module '.$filename.' file doesn\'t exist');
             return false;
         }
     }
@@ -1892,9 +1889,10 @@ class Net_SmartIRC
                     // now the actionhandlers are comming
                     $this->_handleactionhandler($ircdata);
                 }
-                if(isset($ircdata)) {
-	                unset($ircdata);
-				}
+                
+                if (isset($ircdata)) {
+	            unset($ircdata);
+	    	}
             }
         }
     }
@@ -1948,7 +1946,7 @@ class Net_SmartIRC
      */
     function _calculateselecttimeout($microseconds)
     {
-        if(($this->_selecttimeout > $microseconds) || $this->_selecttimeout === null) {
+        if (($this->_selecttimeout > $microseconds) || $this->_selecttimeout === null) {
             $this->_selecttimeout = $microseconds;
         }
     }
@@ -1967,7 +1965,7 @@ class Net_SmartIRC
         }
         
         $result = array_multisort($timerarray, SORT_NUMERIC, SORT_ASC);
-        if($result == true && isset($timerarray[0])) {
+        if ($result == true && isset($timerarray[0])) {
             $this->_mintimer = $timerarray[0];
         } else {
             $this->_mintimer = false;
