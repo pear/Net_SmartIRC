@@ -133,6 +133,7 @@ class Net_SmartIRC_messagehandler
         } else if ($irc->_channelsyncing == true) {
             // it's not, and we do channel syching
             $channel = &$irc->_channels[strtolower($ircdata->channel)];
+            $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: updating channel mode for: '.$channel->name, __FILE__, __LINE__);
             $mode = $ircdata->rawmessageex[3];
             $parameters = array_slice($ircdata->rawmessageex, 4);
             
@@ -153,10 +154,12 @@ class Net_SmartIRC_messagehandler
                         $nick = array_shift($parameters);
                         $lowerednick = strtolower($nick);
                         if ($add) {
-                            $channel->ops[$nick] = null;
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $channel->ops[$nick] = true;
                             $channel->users[$lowerednick]->op = true;
                         }
                         if ($remove) {
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
                             unset($channel->ops[$nick]);
                             $channel->users[$lowerednick]->op = false;
                         }
@@ -165,10 +168,12 @@ class Net_SmartIRC_messagehandler
                         $nick = array_shift($parameters);
                         $lowerednick = strtolower($nick);
                         if ($add) {
-                            $channel->voices[$nick] = null;
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding voice: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $channel->voices[$nick] = true;
                             $channel->users[$lowerednick]->voice = true;
                         }
                         if ($remove) {
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing voice: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
                             unset($channel->voices[$nick]);
                             $channel->users[$lowerednick]->voice = false;
                         }
@@ -187,21 +192,21 @@ class Net_SmartIRC_messagehandler
                     default:
                         // channel modes
                         if ($mode[$i] == 'b') {
+                            $hostmask = array_shift($parameters);
                             if ($add) {
-                                $hostmask = array_shift($parameters);
+                                $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: adding ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
                                 $channel->bans[$hostmask] = true;
                             }
                             if ($remove) {
-                                $hostmask = array_shift($parameters);
+                                $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: removing ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
                                 unset($channel->bans[$hostmask]);
                             }
                         } else {
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: storing unknown channelmode ('.$mode.') in channel->mode for: '.$channel->name, __FILE__, __LINE__);
                             $channel->mode = str_replace($mode[$i], '', $channel->mode);
                         }
                 }
             }
-            
-            unset($channel);
         }
     }
     
