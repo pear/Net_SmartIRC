@@ -1573,7 +1573,7 @@ class Net_SmartIRC_base
         $modulecount = count($this->_modules);
         for ($i = 0; $i < $modulecount; $i++) {
             $module = &$this->_modules[$i];
-            $modulename = get_class($module);
+            $modulename = strtolower(get_class($module));
             
             if ($modulename == 'net_smartirc_module_'.$name) {
                 $module->module_exit($this);
@@ -2461,7 +2461,7 @@ class Net_SmartIRC_base
     
     function isError($object)
     {
-        return (bool)(is_object($object) && (get_class($object) == 'net_smartirc_error'));
+        return (bool)(is_object($object) && (strtolower(get_class($object)) == 'net_smartirc_error'));
     }
     
     function &throwError($message)
