@@ -8,12 +8,8 @@
 v0.6.0:
 ------
 fixes:
- - renamed Net_SmartIRC_base::Net_SmartIRC to Net_SmartIRC_base::Net_SmartIRC_base
-   a PHP4 bug made it work, in PHP5 its fixed and doesn't (closes PEAR bug #1466, sf.net patch #967067)
-
+   
 changes:
- - applied load socket extension patch (sf.net patch #911993) from Anatoly Techtonik <techtonik@users.sourceforge.net>
-   if the socket extension is not loaded, it will now try to load it for *nix and windows.
 
 new:
  - applied reconnect delay patch (sf.net patch #883820) from Ronald Hummelink <ronaldhummelink@users.sourceforge.net>
@@ -24,13 +20,32 @@ new:
 v0.5.6:
 ------
 fixes:
- - renamed Net_SmartIRC_base::Net_SmartIRC to Net_SmartIRC_base::Net_SmartIRC_base
-   a PHP4 bug made it work, in PHP5 its fixed and doesn't (closes PEAR bug #1466, sf.net patch #967067)
+ - renamed Net_SmartIRC_base::Net_SmartIRC to
+   Net_SmartIRC_base::Net_SmartIRC_base
+   a PHP4 bug made it work, in PHP5 its fixed and doesn't
+   (closes PEAR bug #1466, sf.net patch #967067)
+ - fixed a bug in _rawreceive()
+   the parser checked if he found a colon (messagepart) but +1 was added, the
+   check never worked right (I found this bug while porting SmartIRC to C#)
+ - fixed bug in _gettype()
+   the regexs was too sloppy, sometimes it got confused, this can break easily
+   the ChannelSync code.
+ - fixed bug in _event_rpl_whoreply() 
+   on some IRC networks, the channel info in who replies can't be used, they
+   return sometimes random channels, this can break ChannelSync code.
+ - fixed include paths in example scripts (closes PEAR bug #2042)
 
 changes:
- - applied load socket extension patch (sf.net patch #911993) from Anatoly Techtonik <techtonik@users.sourceforge.net>
-   if the socket extension is not loaded, it will now try to load it for *nix and windows.
-   
+ - applied load socket extension patch (sf.net patch #911993) from
+   Anatoly Techtonik <techtonik@users.sourceforge.net>
+   if the socket extension is not loaded, it will now try to load it for *nix
+   and windows.
+
+new:
+ - added objListenFor() method  
+   it works like listenFor() but returns an array of the received ircdata
+   objects (not just ircdata->message like listenFor() does)
+
 v0.5.5:
 -------
 fixes:
