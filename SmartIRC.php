@@ -38,14 +38,14 @@
 // ------- PHP code ----------
 include_once('SmartIRC/defines.php');
 include_once('SmartIRC/messagehandler.php');
-define('SMARTIRC_VERSION', '0.5.1');
+define('SMARTIRC_VERSION', '0.5.2-dev');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
  * main SmartIRC class
  *
  * @package Net_SmartIRC
- * @version 0.5.1
+ * @version 0.5.2-dev
  * @author Mirco "MEEBEY" Bauer <mail@meebey.net>
  * @access public
  */
@@ -296,7 +296,15 @@ class Net_SmartIRC
      * @access private
      */
     var $_autoretry = false;
-    
+
+    /**
+     * stores the path to the modules that can be loaded
+     *
+     * @var string
+     * @access privat
+     */
+    var $_modulepath = '';
+        
     /**
      * All IRC replycodes, the index is the replycode name.
      *
@@ -608,6 +616,18 @@ class Net_SmartIRC
             $this->_txtimeout = $seconds;
         else
             $this->_txtimeout = 300;
+    }
+    
+    /**
+     * sets the paths for the modules
+     *
+     * @param integer $path
+     * @return void
+     * @access public
+     */
+    function setModulepath($path)
+    {
+        $this->_modulepath = $path;
     }
     
     /**
@@ -1581,31 +1601,86 @@ class Net_SmartIRC
     // experimentel feature, do not use it yet!
     function loadModule($name)
     {
-        $filename = '/home/meebey/data/projects/SmartIRC/cvs-php/pear/Net_SmartIRC/SmartIRC/modules/'.$name.'.php';
-        if (file_exists($filename)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: loading module '.$name);
-            include_once($filename);
-            // now we have to check what we included
-            // TODO: later
-            
-            $classname = 'Net_SmartIRC_module_'.$name;
-            
-            if (class_exists($classname)) {
-                $module = &new $classname;
-                $module->module_init($this);
-                return true;
-            }
-            
-            return false;
-        } else {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: couldn\'t loading module '.$filename.' file doesn\'t exist');
+        $filename = $this->_modulepath.'/'.$name.'.php';
+        if (!file_exists($filename)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: couldn\'t load module "'.$filename.'" file doesn\'t exist');
             return false;
         }
+        
+        $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: loading module: "'.$name.'"...');
+        // pray that there is no parse error, it will kill us!
+        include_once($filename);
+        $classname = 'Net_SmartIRC_module_'.$name;
+        
+        if (!class_exists($classname)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: class '.$classname.' not found in '.$filename);
+            return false;
+        }
+        
+        $methods = get_class_methods($classname);
+        if (!in_array('module_init', $methods)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: required method'.$classname.'::module_init not found, aborting...');
+            return false;
+        }
+        
+        if (!in_array('module_exit', $methods)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: required method'.$classname.'::module_exit not found, aborting...');
+            return false;
+        }
+        
+        $vars = array_keys(get_class_vars($classname));
+        if (!in_array('name', $vars)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: required variable '.$classname.'::name not found, aborting...');
+            return false;
+        }
+        
+        if (!in_array('description', $vars)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: required variable '.$classname.'::description not found, aborting...');
+            return false;
+        }
+        
+        if (!in_array('author', $vars)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: required variable '.$classname.'::author not found, aborting...');
+            return false;
+        }
+        
+        if (!in_array('license', $vars)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: required variable '.$classname.'::license not found, aborting...');
+            return false;
+        }
+        
+        // looks like the module satisfies us
+        $module = &new $classname;
+        $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: successful created instance of: '.$classname);
+        
+        $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: calling '.$classname.'::module_init()');
+        $module->module_init($this);
+        $this->_modules[] = &$module;
+        
+        $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: successful loaded module: '.$name);
+        return true;
     }
     
    // experimentel feature, do not use it yet! 
-    function unloadModule($filename)
+    function unloadModule($name)
     {
+        $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: unloading module: '.$name.'...');
+
+        $modulecount = count($this->_modules);
+        for ($i=0; $i < $modulecount; $i++) {
+            $module = &$this->_modules[$i];
+            $modulename = get_class($module);
+
+            if ($modulename == 'net_smartirc_module_'.$name) {
+                $module->module_exit($this);
+                unset($this->_modules[$i]);
+                $this->_reordermodules();
+                $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: successful unloaded module: '.$name);
+                return true;
+            }
+        }
+        
+        $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: couldn\'t unloaded module: '.$name.' (it\'s not loaded!)');
         return false;
     }
     
@@ -2003,6 +2078,21 @@ class Net_SmartIRC
         $this->_timehandler = &$orderedtimehandler;
     }
     
+    /**
+     * reorders the modules array, needed after removing one
+     *
+     * @return void
+     * @access private
+     */
+    function _reordermodules()
+    {
+        $orderedmodules = array();
+        foreach ($this->_modules as $value) {
+            $orderedmodules[] = $value;
+        }
+        $this->_modules = &$orderedmodules;
+    }
+
     /**
      * determines the messagetype of $line
      *
