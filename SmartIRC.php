@@ -800,7 +800,7 @@ class Net_SmartIRC
     function log($level, $entry, $file = null, $line = null)
     {
         // prechecks
-        if (!(is_number($level)) ||
+        if (!(is_integer($level)) ||
             !($level > SMARTIRC_DEBUG_NONE &&
               $level < SMARTIRC_DEBUG_ALL)) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING!: invalid log level passed to log() ('.$level.')', __FILE__, __LINE__);
@@ -982,6 +982,7 @@ class Net_SmartIRC
         
         if ($this->_logdestination == SMARTIRC_FILE) {
             fclose($this->_logfilefp);
+            $this->_logfilefp = null;
         } else if ($this->_logdestination == SMARTIRC_SYSLOG) {
             closelog();
         }
@@ -1745,7 +1746,7 @@ class Net_SmartIRC
         $handlercount = count($handler);
         for ($i = 0; $i < $handlercount; $i++) {
             $handlerobject = &$handler[$i];
-                        
+            
             if ($handlerobject->id == $id) {
                 if (isset($this->_timehandler[$i])) {
                     unset($this->_timehandler[$i]);
@@ -1949,19 +1950,20 @@ class Net_SmartIRC
         if (!$this->_loggedin) {
             return;
         }
-        $timehandlercount = count($this->_timehandler);
-        for ($i = 0; $i < $timehandlercount; $i++) {
+        
+        // has to be count() because the array may change during the loop!
+        for ($i = 0; $i < count($this->_timehandler); $i++) {
             $handlerobject = &$this->_timehandler[$i];
-            if ($this->_microint() >= ($handlerobject->lastmicrotimestamp+($handlerobject->interval/1000))) {
+            $microtimestamp = $this->_microint();
+            if ($microtimestamp >= ($handlerobject->lastmicrotimestamp+($handlerobject->interval/1000))) {
                 $methodobject = &$handlerobject->object;
                 $method = $handlerobject->method;
-                    
+                $handlerobject->lastmicrotimestamp = $microtimestamp;
+                
                 if (@method_exists($methodobject, $method)) {
                     $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: calling method "'.get_class($methodobject).'->'.$method.'"', __FILE__, __LINE__);
                     $methodobject->$method($this);
                 }
-                
-                $handlerobject->lastmicrotimestamp = $this->_microint();
             }
         }
     }
