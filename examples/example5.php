@@ -4,8 +4,7 @@
  * $Revision$
  * $Author$
  * $Date$
- */
-/**
+ *
  * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
@@ -33,9 +32,9 @@ class mybot
     function kick(&$irc, &$data)
     {
         // we need the nickname parameter
-        if(isset($irc->messageex[1])) {
-            $nickname = $irc->messageex[1];
-            $channel = $irc->channel;
+        if(isset($data->messageex[1])) {
+            $nickname = $data->messageex[1];
+            $channel = $data->channel;
             $irc->kick($channel, $nickname);
         } else {
             $irc->message( $data->type, $data->nick, 'wrong parameter count' );
@@ -50,7 +49,7 @@ $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(TRUE);
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!kick', $bot, 'kick');
 $irc->connect('irc.freenet.de', 6667);
-$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 8, 'Net_SmartIRC');
+$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example5.php)', 8, 'Net_SmartIRC');
 $irc->join('#test');
 $irc->listen();
 $irc->disconnect();
