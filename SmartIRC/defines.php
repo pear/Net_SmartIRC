@@ -52,7 +52,8 @@ define('SMARTIRC_DEBUG_CHANNELSYNCING',   256);
 define('SMARTIRC_DEBUG_MODULES',          512);
 define('SMARTIRC_DEBUG_USERSYNCING',      1024);
 define('SMARTIRC_DEBUG_MESSAGEPARSER',    2048);
-define('SMARTIRC_DEBUG_ALL',              4095);
+define('SMARTIRC_DEBUG_DCC',              4096);
+define('SMARTIRC_DEBUG_ALL',              8191);
 define('SMARTIRC_TYPE_UNKNOWN',        1);
 define('SMARTIRC_TYPE_CHANNEL',        2);
 define('SMARTIRC_TYPE_QUERY',          4);
@@ -83,6 +84,7 @@ define('SMARTIRC_TYPE_USERMODE',       67108864);
 define('SMARTIRC_TYPE_CHANNELMODE',    134217728);
 define('SMARTIRC_TYPE_CTCP_REQUEST',   268435456);
 define('SMARTIRC_TYPE_CTCP_REPLY',     536870912);
+//define('SMARTIRC_TYPE_DCC',            536870912);
 define('SMARTIRC_TYPE_ALL',            1073741823);
 
 $SMARTIRC_replycodes = array(
