@@ -342,7 +342,7 @@ class Net_SmartIRC
      *
      * @see setChannelSyncing()
      * @see Net_SmartIRC_channel
-     * @see Net_SmartIRC_user
+     * @see Net_SmartIRC_channeluser
      * @var array
      * @access public
      */
@@ -354,7 +354,7 @@ class Net_SmartIRC
      * $irc->user['meebey']->host;
      *
      * @see setUserSyncing()
-     * @see Net_SmartIRC_user
+     * @see Net_SmartIRC_ircuser
      * @var array
      * @access public
      */
@@ -2648,6 +2648,31 @@ class Net_SmartIRC
             }
         }
     }
+    
+    function _addIrcUser()
+    {
+    }
+    
+    function _updateIrcUser()
+    {
+    }
+    
+    function _removeIrcUser()
+    {
+    }
+    
+    function _addChannelUser()
+    {
+    }
+    
+    function _updateChannelUser()
+    {
+    }
+    
+    function _removeChannelUser()
+    {
+    }
+    
     // </private methods>
     
     function isError($object) {
@@ -2884,18 +2909,6 @@ class Net_SmartIRC_user
      * @var boolean
      * @access public
      */
-    var $op;
-    
-    /**
-     * @var boolean
-     * @access public
-     */
-    var $voice;
-    
-    /**
-     * @var boolean
-     * @access public
-     */
     var $ircop;
     
     /**
@@ -2908,6 +2921,12 @@ class Net_SmartIRC_user
      * @var string
      * @access public
      */
+    var $mode;
+    
+    /**
+     * @var string
+     * @access public
+     */
     var $server;
     
     /**
@@ -2915,6 +2934,36 @@ class Net_SmartIRC_user
      * @access public
      */
     var $hopcount;
+}
+
+/**
+ * @access public
+ */
+class Net_SmartIRC_channeluser extends Net_SmartIRC_user
+{
+    /**
+     * @var boolean
+     * @access public
+     */
+    var $op;
+    
+    /**
+     * @var boolean
+     * @access public
+     */
+    var $voice;
+}
+
+/**
+ * @access public
+ */
+class Net_SmartIRC_ircuser extends Net_SmartIRC_user
+{
+    /**
+     * @var array
+     * @access public
+     */
+    var $joinedchannels = array();
 }
 
 /**
