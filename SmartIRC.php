@@ -2666,6 +2666,12 @@ class Net_SmartIRC_channel
      * @var string
      * @access public
      */
+    var $user_limit = false;
+    
+    /**
+     * @var string
+     * @access public
+     */
     var $mode;
     
     /**
