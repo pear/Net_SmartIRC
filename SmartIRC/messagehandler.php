@@ -269,9 +269,20 @@ class Net_SmartIRC_messagehandler
     
     function _rpl_channelmodeis(&$irc, &$ircdata) {
         if ($irc->_channelsyncing == true && $irc->isJoined($ircdata->channel)) {
-            $channel = &$irc->_channels[strtolower($ircdata->channel)];
             $mode = $ircdata->rawmessageex[4];
-            $channel->mode = str_replace('+', '', $mode);
+            $parameters = array_slice($ircdata->rawmessageex, 5);
+            
+            $ircdata->rawmessageex = array( 0 => '',
+                                            1 => '',
+                                            2 => '',
+                                            3 => $mode);
+            
+            foreach ($parameters as $value) {
+                $ircdata->rawmessageex[] = $value;
+            }
+            
+            // let _mode() handle the received mode
+            $this->_mode(&$irc, &$ircdata);
         }
     }
     
