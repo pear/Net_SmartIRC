@@ -1829,7 +1829,7 @@ class Net_SmartIRC_base
                 $messagecode = $lineex[1];
                 $exclamationpos = strpos($from, '!');
                 $atpos = strpos($from, '@');
-                $colonpos = strpos($line, ':');
+                $colonpos = strpos($line, ' :')+1;
                 
                 $ircdata->nick = substr($from, 0, $exclamationpos);
                 $ircdata->ident = substr($from, $exclamationpos+1, ($atpos-$exclamationpos)-1);
