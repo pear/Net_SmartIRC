@@ -1622,18 +1622,18 @@ class Net_SmartIRC_base
         switch ($priority) {
             case SMARTIRC_CRITICAL:
                 $this->_rawsend($data);
-                return true;
             break;
             case SMARTIRC_HIGH:
             case SMARTIRC_MEDIUM:
             case SMARTIRC_LOW:
                 $this->_messagebuffer[$priority][] = $data;
-                return true;
             break;
             default:
                 $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: message ('.$data.') with an invalid priority passed ('.$priority.'), message is ignored!', __FILE__, __LINE__);
                 return false;
         }
+        
+        return true;
     }
     
     /**
@@ -2364,12 +2364,12 @@ class Net_SmartIRC_base
             if ($ircdata->type & SMARTIRC_TYPE_QUIT) {
                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: user '.$nick.' quit, removing him from all channels', __FILE__, __LINE__);
                 // remove the user from all channels
-                foreach ($this->_channels as $channelkey => $channelvalue) {
+                $channelkeys = array_keys($this->_channels);
+                foreach ($channelkeys as $channelkey) {
                     // loop through all channels
                     $channel = &$this->_channels[$channelkey];
-                    foreach ($channel->users as $userkey => $uservalue) {
+                    foreach ($channel->users as $uservalue) {
                         // loop through all user in this channel
-                        
                         if ($nick == $uservalue->nick) {
                             // found him
                             // kill him
@@ -2460,11 +2460,13 @@ class Net_SmartIRC_base
     
     // </private methods>
     
-    function isError($object) {
+    function isError($object)
+    {
         return (bool)(is_object($object) && (get_class($object) == 'net_smartirc_error'));
     }
     
-    function &throwError($message) {
+    function &throwError($message)
+    {
         return new Net_SmartIRC_Error($message);
     }
 }
