@@ -1281,8 +1281,6 @@ class Net_SmartIRC
         } else {
             $this->_send('QUIT');
         }
-        
-        $this->disconnect(false);
     }
     // </IRC methods>
     
@@ -1311,7 +1309,7 @@ class Net_SmartIRC
      * @return boolean
      * @access public
      */
-    function isOp($channel, $nickname = null)
+    function isOpped($channel, $nickname = null)
     {
         if ($nickname === null) {
             $nickname = $this->_nick;
@@ -1332,7 +1330,7 @@ class Net_SmartIRC
      * @return boolean
      * @access public
      */
-    function isVoice($channel, $nickname = null)
+    function isVoiced($channel, $nickname = null)
     {
         if ($nickname === null) {
             $nickname = $this->_nick;
