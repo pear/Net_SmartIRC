@@ -1467,6 +1467,50 @@ class Net_SmartIRC
         return false;
     }
     
+    // experimentel feature, do not use it yet!
+    function loadModule($filename)
+    {
+        if (file_exists($filename)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'SMARTIRC_DEBUG_MODULES: loading module '.$filename);
+            // before we load/include something, we should check what it is
+            $file = file($filename);
+            $found_name = false;
+            $found_description = false;
+            $found_autor = false;
+
+            for ($i=0;$i < count($file); $i++) {
+                $line = $file[$i];
+                $lineex = explode(' ', $line);
+                switch($lineex[0]) {
+                    case '$module[\'name\']':
+                        $found_name = true;
+                    break;
+                    case '$module[\'description\']':
+                        $found_description = true;
+                    break;
+                    case '$module[\'autor\']':
+                        $found_autor = true;
+                    break;
+                }
+            }
+            
+            if($found_name && $found_description && $found_autor) {
+                include($filename);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
+   // experimentel feature, do not use it yet! 
+    function unloadModule($filename)
+    {
+        return false;
+    }
+    
     // <private methods>
     /**
      * changes a already used nickname to a new nickname plus 3 random digits
@@ -1721,14 +1765,9 @@ class Net_SmartIRC
                                  SMARTIRC_TYPE_ACTION|
                                  SMARTIRC_TYPE_MODECHANGE|
                                  SMARTIRC_TYPE_KICK|
-                                 SMARTIRC_TYPE_PART)) {
+                                 SMARTIRC_TYPE_PART|
+                                 SMARTIRC_TYPE_JOIN)) {
                         $ircdata->channel = $lineex[2];
-                    } else if ($type & SMARTIRC_TYPE_JOIN) {
-                        if (substr($lineex[2], 0, 1) == ':') {
-                            $ircdata->channel = substr($lineex[2], 1);
-                        } else {
-                            $ircdata->channel = $lineex[2];
-                        }
                     } else if ($type & (SMARTIRC_TYPE_WHO|
                                         SMARTIRC_TYPE_BANLIST|
                                         SMARTIRC_TYPE_TOPIC|
@@ -1739,6 +1778,9 @@ class Net_SmartIRC
                     }
                     
                     if ($ircdata->channel !== null) {
+                        if (substr($ircdata->channel, 0, 1) == ':') {
+                            $ircdata->channel = substr($ircdata->channel, 1);
+                        }
                         $ircdata->channel = strtolower($ircdata->channel);
                     }
                 }
