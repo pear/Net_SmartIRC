@@ -1692,19 +1692,19 @@ class Net_SmartIRC_base
                         $ircdata->messageex = explode(' ', $ircdata->message);
                     }
                     
-                    if ($type & (SMARTIRC_TYPE_CHANNEL|
+                    if ($ircdata->type & (SMARTIRC_TYPE_CHANNEL|
                                  SMARTIRC_TYPE_ACTION|
                                  SMARTIRC_TYPE_MODECHANGE|
                                  SMARTIRC_TYPE_KICK|
                                  SMARTIRC_TYPE_PART|
                                  SMARTIRC_TYPE_JOIN)) {
                         $ircdata->channel = $lineex[2];
-                    } else if ($type & (SMARTIRC_TYPE_WHO|
+                    } else if ($ircdata->type & (SMARTIRC_TYPE_WHO|
                                         SMARTIRC_TYPE_BANLIST|
                                         SMARTIRC_TYPE_TOPIC|
                                         SMARTIRC_TYPE_CHANNELMODE)) {
                         $ircdata->channel = $lineex[3];
-                    } else if ($type & SMARTIRC_TYPE_NAME) {
+                    } else if ($ircdata->type & SMARTIRC_TYPE_NAME) {
                         $ircdata->channel = $lineex[4];
                     }
                     
