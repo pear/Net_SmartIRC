@@ -55,7 +55,7 @@ class Net_SmartIRC_messagehandler
             }
             
             $channel = &$irc->_channels[strtolower($ircdata->channel)];
-            $user = &new Net_SmartIRC_user();
+            $user = &new Net_SmartIRC_channeluser();
             $user->nick = $ircdata->nick;
             $user->ident = $ircdata->ident;
             $user->host = $ircdata->host;
@@ -176,9 +176,11 @@ class Net_SmartIRC_messagehandler
                     case 'k':
                         $key = array_shift($parameters);
                         if ($add) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: stored channel key for: '.$channel->name, __FILE__, __LINE__);
                             $channel->key = $key;
                         }
                         if ($remove) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: removed channel key for: '.$channel->name, __FILE__, __LINE__);
                             $channel->key = '';
                         }
                     break;
@@ -271,7 +273,7 @@ class Net_SmartIRC_messagehandler
         if ($irc->_channelsyncing == true && $irc->isJoined($ircdata->channel)) {
             $channel = &$irc->_channels[strtolower($ircdata->channel)];
             
-            $user = &new Net_SmartIRC_user();
+            $user = &new Net_SmartIRC_channeluser();
             $user->ident = $ircdata->rawmessageex[4];
             $user->host = $ircdata->rawmessageex[5];
             $user->server = $ircdata->rawmessageex[6];
@@ -318,7 +320,7 @@ class Net_SmartIRC_messagehandler
             $userarray = explode(' ',substr($ircdata->message, strpos($ircdata->message, ':')+1, -1));
             $userarraycount = count($userarray);
             for ($i = 0; $i < $userarraycount; $i++) {
-                $user = &new Net_SmartIRC_user();
+                $user = &new Net_SmartIRC_channeluser();
                 
                 $usermode = substr($userarray[$i], 0, 1);
                 switch ($usermode) {
