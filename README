@@ -50,9 +50,12 @@ SmartIRC/
  All defined messagehandler that SmartIRC currently uses for channelsynching
  and some other API handling.
 
+ irccommands.php
+ All supported IRC commands (like join/part/kick/etc..)
+
 docs/
  DOCUMENTATION
- Full developer documention of the Net_SmartIRC class.
+ Appendix to the HTML documention for developers.
 
  HOWTO
  Mini howto with detailed information, step by step.
