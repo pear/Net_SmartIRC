@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-class Net_SmartIRC_messagehandler
+class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
 {
     /* misc */
     function _ping(&$irc, &$ircdata)
@@ -283,7 +283,7 @@ class Net_SmartIRC_messagehandler
             }
             
             // let _mode() handle the received mode
-            $this->_mode(&$irc, &$ircdata);
+            $this->_mode($irc, $ircdata);
         }
     }
     
