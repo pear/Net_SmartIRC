@@ -50,3 +50,7 @@ S: Germany
 N: Jani Taskinen
 E: sniper@php.net
 D: fixed several bugs
+
+N: Ronald Hummelink
+E: ronaldhummelink@users.sourceforge.net
+D: autoretry patch (sf.net patch #883821)
