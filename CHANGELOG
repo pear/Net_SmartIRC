@@ -3,18 +3,58 @@
  * $Revision$
  * $Author$
  * $Date$
+ *
+ * Copyright (c) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
+ * 
+ * Full LGPL License: <http://www.meebey.net/lgpl.txt>
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 v0.5.1
 ------
-
+fixes:
+ - major bugs in ChannelSynching fixed.
+ - fsocks support fixed.
+ - setUseSocket() method fixed.
+   If false was passed as parameter, it tried to load the socket extension.
+   Also warnings are now suppressed with @ in front of dl().
+ - fixed a typo in reconnect().
+ - missing SMARTIRC_DEBUG_CHANNELSYNCHING constant added.
+ 
+changes:
+ - new design for HTML documentation used (PEAR template).
+ - moved all examples to their own directory (examples/).
+ - moved the documentation to docs/HTML/.
+ - added new file descriptions to README.
+ - removed not needed parts of DOCUMENTATION (most is now in the HTML version).
+ - updated the HTML documentation.
+ 
+new:
+ - example5/6/7.php added.
+ - setAutoRetry() method added.
+   Autoretrying of connecting to the IRC server, is now supported.
+ 
 v0.5.0
 ------
 fixes:
  - fixed critical bug in the main _rawreceive() for() loop, messages were lost.
 
 changes:
- - copyright year
+ - License changed from GPL to LGPL.
+ - updated in all files the copyright year.
  - changed documentation tags in front of all methods to the phpDocumentator compatible format.
  - improved connect() errorhandling.
  - changed login() parameters to $nick, $realname, $usermode = 0, $username = null, $password = null.
