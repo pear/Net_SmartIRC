@@ -25,7 +25,7 @@
  */
 // ---EXAMPLE OF HOW TO USE Net_SmartIRC---
 // this code shows how you could show on your homepage how many users are in a specific channel
-include_once('../SmartIRC.php');
+include_once('Net/SmartIRC.php');
 
 $irc = &new Net_SmartIRC();
 $irc->startBenchmark();
@@ -44,10 +44,10 @@ if (is_array($resultar)) {
     $count = $resultex[1];
     ?>
         <B>On our IRC Channel #debian.de are <? echo $count; ?> Users</B>
-    <?
+    <?php
 } else {
     ?>
         <B>An error occured, please check the specified server and settings<B>
-    <?
+    <?php
 }
 ?>

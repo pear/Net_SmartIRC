@@ -26,7 +26,7 @@
 
 // ---EXAMPLE OF HOW TO USE Net_SmartIRC---
 // this code shows how a mini php bot could be written
-include_once('../SmartIRC.php');
+include_once('Net/SmartIRC.php');
 
 class mybot
 {
