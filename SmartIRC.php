@@ -2082,73 +2082,51 @@ class Net_SmartIRC_base
      */
     function _gettype($line)
     {
-        if (preg_match('/^:.* [0-9]{3} .*$/', $line) == 1) {
+        if (preg_match('/^:.*? [0-9]{3} .*$/', $line) == 1) {
             $lineex = explode(' ', $line);
             $code = $lineex[1];
                 
             switch ($code) {
                 case SMARTIRC_RPL_WELCOME:
-                    return SMARTIRC_TYPE_LOGIN;
                 case SMARTIRC_RPL_YOURHOST:
-                    return SMARTIRC_TYPE_LOGIN;
                 case SMARTIRC_RPL_CREATED:
-                    return SMARTIRC_TYPE_LOGIN;
                 case SMARTIRC_RPL_MYINFO:
-                    return SMARTIRC_TYPE_LOGIN;
                 case SMARTIRC_RPL_BOUNCE:
                     return SMARTIRC_TYPE_LOGIN;
                 case SMARTIRC_RPL_LUSERCLIENT:
-                    return SMARTIRC_TYPE_INFO;
                 case SMARTIRC_RPL_LUSEROP:
-                    return SMARTIRC_TYPE_INFO;
                 case SMARTIRC_RPL_LUSERUNKNOWN:
-                    return SMARTIRC_TYPE_INFO;
                 case SMARTIRC_RPL_LUSERME:
-                    return SMARTIRC_TYPE_INFO;
                 case SMARTIRC_RPL_LUSERCHANNELS:
                     return SMARTIRC_TYPE_INFO;
                 case SMARTIRC_RPL_MOTDSTART:
-                    return SMARTIRC_TYPE_MOTD;
                 case SMARTIRC_RPL_MOTD:
-                    return SMARTIRC_TYPE_MOTD;
                 case SMARTIRC_RPL_ENDOFMOTD:
                     return SMARTIRC_TYPE_MOTD;
                 case SMARTIRC_RPL_NAMREPLY:
-                    return SMARTIRC_TYPE_NAME;
                 case SMARTIRC_RPL_ENDOFNAMES:
                     return SMARTIRC_TYPE_NAME;
                 case SMARTIRC_RPL_WHOREPLY:
-                    return SMARTIRC_TYPE_WHO;
                 case SMARTIRC_RPL_ENDOFWHO:
                     return SMARTIRC_TYPE_WHO;
                 case SMARTIRC_RPL_LISTSTART:
                     return SMARTIRC_TYPE_NONRELEVANT;
                 case SMARTIRC_RPL_LIST:
-                    return SMARTIRC_TYPE_LIST;
                 case SMARTIRC_RPL_LISTEND:
                     return SMARTIRC_TYPE_LIST;
                 case SMARTIRC_RPL_BANLIST:
-                    return SMARTIRC_TYPE_BANLIST;
                 case SMARTIRC_RPL_ENDOFBANLIST:
                     return SMARTIRC_TYPE_BANLIST;
                 case SMARTIRC_RPL_TOPIC:
                     return SMARTIRC_TYPE_TOPIC;
                 case SMARTIRC_RPL_WHOISUSER:
-                    return SMARTIRC_TYPE_WHOIS;
                 case SMARTIRC_RPL_WHOISSERVER:
-                    return SMARTIRC_TYPE_WHOIS;
                 case SMARTIRC_RPL_WHOISOPERATOR:
-                    return SMARTIRC_TYPE_WHOIS;
                 case SMARTIRC_RPL_WHOISIDLE:
-                    return SMARTIRC_TYPE_WHOIS;
-                case SMARTIRC_RPL_WHOISIDLE:
-                    return SMARTIRC_TYPE_WHOIS;
                 case SMARTIRC_RPL_ENDOFWHOIS:
-                    return SMARTIRC_TYPE_WHOIS;
                 case SMARTIRC_RPL_WHOISCHANNELS:
                     return SMARTIRC_TYPE_WHOIS;
                 case SMARTIRC_RPL_WHOWASUSER:
-                    return SMARTIRC_TYPE_WHOWAS;
                 case SMARTIRC_RPL_ENDOFWHOWAS:
                     return SMARTIRC_TYPE_WHOWAS;
                 case SMARTIRC_RPL_UMODEIS:
@@ -2156,7 +2134,6 @@ class Net_SmartIRC_base
                 case SMARTIRC_RPL_CHANNELMODEIS:
                     return SMARTIRC_TYPE_CHANNELMODE;
                 case SMARTIRC_ERR_NICKNAMEINUSE:
-                    return SMARTIRC_TYPE_ERROR;
                 case SMARTIRC_ERR_NOTREGISTERED:
                     return SMARTIRC_TYPE_ERROR;
                 default:
@@ -2164,33 +2141,33 @@ class Net_SmartIRC_base
             }
         }
         
-        if (preg_match('/^:.* PRIVMSG .* :'.chr(1).'ACTION .*'.chr(1).'$/', $line) == 1) {
+        if (preg_match('/^:.*? PRIVMSG .* :'.chr(1).'ACTION .*'.chr(1).'$/', $line) == 1) {
             return SMARTIRC_TYPE_ACTION;
-        } else if (preg_match('/^:.* PRIVMSG .* :'.chr(1).'.*'.chr(1).'$/', $line) == 1) {
+        } else if (preg_match('/^:.*? PRIVMSG .* :'.chr(1).'.*'.chr(1).'$/', $line) == 1) {
             return (SMARTIRC_TYPE_CTCP_REQUEST|SMARTIRC_TYPE_CTCP);
-        } else if (preg_match('/^:.* NOTICE .* :'.chr(1).'.*'.chr(1).'$/', $line) == 1) {
+        } else if (preg_match('/^:.*? NOTICE .* :'.chr(1).'.*'.chr(1).'$/', $line) == 1) {
             return (SMARTIRC_TYPE_CTCP_REPLY|SMARTIRC_TYPE_CTCP);
-        } else if (preg_match('/^:.* PRIVMSG (\&|\#|\+|\!).* :.*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? PRIVMSG (\&|\#|\+|\!).* :.*$/', $line) == 1) {
             return SMARTIRC_TYPE_CHANNEL;
-        } else if (preg_match('/^:.* PRIVMSG .*:.*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? PRIVMSG .*:.*$/', $line) == 1) {
             return SMARTIRC_TYPE_QUERY;
-        } else if (preg_match('/^:.* NOTICE .* :.*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? NOTICE .* :.*$/', $line) == 1) {
             return SMARTIRC_TYPE_NOTICE;
-        } else if (preg_match('/^:.* INVITE .* .*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? INVITE .* .*$/', $line) == 1) {
             return SMARTIRC_TYPE_INVITE;
-        } else if (preg_match('/^:.* JOIN .*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? JOIN .*$/', $line) == 1) {
             return SMARTIRC_TYPE_JOIN;
-        } else if (preg_match('/^:.* TOPIC .* :.*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? TOPIC .* :.*$/', $line) == 1) {
             return SMARTIRC_TYPE_TOPICCHANGE;
-        } else if (preg_match('/^:.* NICK .*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? NICK .*$/', $line) == 1) {
             return SMARTIRC_TYPE_NICKCHANGE;
-        } else if (preg_match('/^:.* KICK .* .*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? KICK .* .*$/', $line) == 1) {
             return SMARTIRC_TYPE_KICK;
-        } else if (preg_match('/^:.* PART .*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? PART .*$/', $line) == 1) {
             return SMARTIRC_TYPE_PART;
-        } else if (preg_match('/^:.* MODE .* .*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? MODE .* .*$/', $line) == 1) {
             return SMARTIRC_TYPE_MODECHANGE;
-        } else if (preg_match('/^:.* QUIT :.*$/', $line) == 1) {
+        } else if (preg_match('/^:.*? QUIT :.*$/', $line) == 1) {
             return SMARTIRC_TYPE_QUIT;
         } else {
             $this->log(SMARTIRC_DEBUG_MESSAGETYPES, 'DEBUG_MESSAGETYPES: SMARTIRC_TYPE_UNKNOWN!: "'.$line.'"', __FILE__, __LINE__);
