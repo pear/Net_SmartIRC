@@ -122,7 +122,6 @@ class Net_SmartIRC_messagehandler
                         $channel->users[$lowerednewnick]->nick = $newnick;
                         
                         if ($lowerednewnick != $lowerednick) {
-                            $channel->users[$lowerednick]->_Net_SmartIRC_user();
                             unset($channel->users[$lowerednick]);
                         }
                         
