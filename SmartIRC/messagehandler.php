@@ -203,6 +203,14 @@ class Net_SmartIRC_messagehandler
         }
     }
     
+    function _topic(&$irc, &$ircdata)
+    {
+        if ($irc->_channelsynching == true) {
+            $channel = &$irc->channel[$ircdata->rawmessageex[2]];
+            $channel->topic = $ircdata->message;
+        }
+    }
+    
     function _privmsg(&$irc, &$ircdata)
     {
         if ($ircdata->type == SMARTIRC_TYPE_CTCP) {
