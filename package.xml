@@ -82,7 +82,6 @@ Full featurelist of Net_SmartIRC
   <release>
     <version>0.5.5</version>
     <date>2003-07-23</date>
-    <license>LGPL</license>
     <state>stable</state>
     <notes>
 v0.5.5:
@@ -368,7 +367,6 @@ new:
     <release>
       <version>0.5.5</version>
       <date>2003-07-23</date>
-      <license>LGPL</license>
       <state>stable</state>
       <notes>
 v0.5.5:
@@ -450,7 +448,6 @@ new:
         <release>
             <version>0.5.1</version>
             <state>stable</state>
-            <license>LGPL</license>
             <date>2003-01-17</date>
             <notes>
 v0.5.1:
@@ -481,7 +478,6 @@ new:
     <release>
       <version>0.5.0</version>
       <date>2003-01-07</date>
-      <license>LGPL</license>
       <state>stable</state>
       <notes>
 v0.5.0
@@ -523,7 +519,6 @@ new:
     <release>
       <version>0.4.0</version>
       <date>2002-11-26</date>
-      <license>GPL</license>
       <state>stable</state>
       <notes>
 v0.4.0
@@ -585,7 +580,6 @@ v0.4.0
     <release>
       <version>0.3.2</version>
       <date>2002-11-05</date>
-      <license>GPL</license>
       <state>stable</state>
       <notes>
 v0.3.2
@@ -640,7 +634,6 @@ v0.3.2
     <release>
       <version>0.3.0</version>
       <date>2002-10-23</date>
-      <license>GPL</license>
       <state>beta</state>
       <notes>
 v0.3.0
@@ -666,7 +659,6 @@ v0.3.0
     <release>
       <version>0.2.6</version>
       <date>2002-10-12</date>
-      <license>GPL</license>
       <state>beta</state>
       <notes>
 v0.2.6
@@ -695,7 +687,6 @@ v0.2.6
     <release>
       <version>0.2.5</version>
       <date>2002-09-02</date>
-      <license>GPL</license>
       <state>beta</state>
       <notes>
 v0.2.5
