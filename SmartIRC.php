@@ -1574,6 +1574,10 @@ class Net_SmartIRC_base
                 if ($result == 1) {
                     // the socket got data to read
                     $rawdata = @socket_read($this->_socket, 10240);
+                } else if ($result === false) {
+                    // panic! panic! something went wrong!
+                    $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket_select() returned false, something went wrong! Reason: '.socket_strerror(socket_last_error()), __FILE__, __LINE__);
+                    exit;
                 } else {
                     // no data
                     $rawdata = null;
