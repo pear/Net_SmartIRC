@@ -25,31 +25,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 // ---EXAMPLE OF HOW TO USE Net_SmartIRC---
-// this code shows how a mini php bot could be written
+// this code shows how a mini php bot which could be written
 include_once('../SmartIRC.php');
 
 class mybot
 {
-	function channel_test(&$irc, &$data)
-	{
-		$irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $data->nick.': I dont like tests!');
-	}
+    function channel_test(&$irc, &$data)
+    {
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $data->nick.': I dont like tests!');
+    }
 
-	function query_test(&$irc, &$data)
-	{
-		$irc->message(SMARTIRC_TYPE_CHANNEL, '#test', $data->nick.' said "'.$data->message.'" to me!');
-		$irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'I told everyone on #test what you said!');
-	}
-}	
+    function query_test(&$irc, &$data)
+    {
+        $irc->message(SMARTIRC_TYPE_CHANNEL, '#test', $data->nick.' said "'.$data->message.'" to me!');
+        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'I told everyone on #test what you said!');
+    }
+}
 
 $bot = &new mybot();
 $irc = &new Net_SmartIRC();
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
-$irc->useSockets(TRUE);
+$irc->setUseSockets(TRUE);
 $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^test', $bot, 'query_test');
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^test', $bot, 'channel_test');
 $irc->connect('irc.freenet.de', 6667);
-$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 'Net_SmartIRC');
+$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION, 0, 'Net_SmartIRC');
 $irc->join('#test');
 $irc->listen();
 $irc->disconnect();
