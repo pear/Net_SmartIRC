@@ -6,17 +6,24 @@
  * $Date$
  *
  * Net_SmartIRC
- * Communication for PHP with IRC networks
+ * This is a PHP class for communication with IRC networks,
+ * which conforms to the RFC 2812 (IRC protocol).
+ * It's an API that handles all IRC protocol messages.
+ * This class is designed for creating IRC bots, chats and show irc related info on webpages.
  *
- * Example of how you could use this class see example.php and example2.php
- * 
+ * Documenation, a HOWTO and examples are in SmartIRC included.
+ *
  * Here you will find a service bot which I am also developing
- * <http://cvs.meebey.net/cvs.php/atbs>
- * Latest versions of Net_SmartIRC you will find on my homepage
+ * <http://cvs.meebey.net/atbs> and <ttp://cvs.meebey.net/phpbitch>
+ * Latest versions of Net_SmartIRC you will find on the project homepage
+ * or get it through PEAR since SmartIRC is an official PEAR package.
+ * See <http://pear.php.net/package-info.php?pacid=146>.
+ *
+ * Official Projet Homepage: <http://sf.net/projects/phpsmartirc>
  *
  * Net_SmartIRC conforms to RFC 2812 (Internet Relay Chat: Client Protocol)
  * 
- * Copyright (c) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
+ * Copyright (c) 2002-2003 Mirco 'meebey' Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
  * 
@@ -36,9 +43,9 @@
  *
  */
 // ------- PHP code ----------
-include_once('SmartIRC/defines.php');
-include_once('SmartIRC/irccommands.php');
-include_once('SmartIRC/messagehandler.php');
+include_once('Net/SmartIRC/defines.php');
+include_once('Net/SmartIRC/irccommands.php');
+include_once('Net/SmartIRC/messagehandler.php');
 define('SMARTIRC_VERSION', '0.5.2-dev');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
@@ -47,7 +54,7 @@ define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
  *
  * @package Net_SmartIRC
  * @version 0.5.2-dev
- * @author Mirco "MEEBEY" Bauer <mail@meebey.net>
+ * @author Mirco 'meebey' Bauer <mail@meebey.net>
  * @access public
  */
 class Net_SmartIRC_base
@@ -311,7 +318,7 @@ class Net_SmartIRC_base
     var $_autoretry = false;
     
     /**
-     * stores the path to the modules that can be loaded
+     * Stores the path to the modules that can be loaded.
      *
      * @var string
      * @access privat
@@ -319,7 +326,7 @@ class Net_SmartIRC_base
     var $_modulepath = '';
         
     /**
-     * stores all objects of the modules
+     * Stores all objects of the modules.
      *
      * @var string
      * @access privat
@@ -409,7 +416,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * enables/disables the usage of real sockets
+     * Enables/disables the usage of real sockets.
      *
      * Enables/disables the usage of real sockets instead of fsocks
      * (works only if your PHP build has loaded the PHP socket extension)
@@ -442,7 +449,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the level of debug messages
+     * Sets the level of debug messages.
      *
      * Sets the debug level (bitwise), useful for testing/developing your code.
      * Here the list of all possible debug levels:
@@ -474,7 +481,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * enables/disables the benchmark engine
+     * Enables/disables the benchmark engine.
      * 
      * @param boolean $boolean
      * @return void
@@ -490,7 +497,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * deprecated, use setChannelSyncing() instead!
+     * Deprecated, use setChannelSyncing() instead!
      *
      * @deprecated
      * @param boolean $boolean
@@ -504,7 +511,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * enables/disables channel syncing
+     * Enables/disables channel syncing.
      *
      * Channel syncing means, all users on all channel we are joined are tracked in the
      * channel array. This makes it very handy for botcoding.
@@ -529,7 +536,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * enables/disables user syncing
+     * Enables/disables user syncing.
      *
      * User syncing means, all users we have or had contact with through channel, query or
      * notice are tracked in the $irc->user array. This is very handy for botcoding.
@@ -554,7 +561,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the CTCP version reply string
+     * Sets the CTCP version reply string.
      * 
      * @param string $versionstring
      * @return void
@@ -566,7 +573,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the destination of all log messages
+     * Sets the destination of all log messages.
      *
      * Sets the destination of log messages.
      * $type can be:
@@ -597,7 +604,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the file for the log if the destination is set to file
+     * Sets the file for the log if the destination is set to file.
      *
      * Sets the logfile, if {@link setLogdestination logdestination} is set to SMARTIRC_FILE.
      * This should be only used with full path!
@@ -612,7 +619,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the delaytime before closing the socket when disconnect
+     * Sets the delaytime before closing the socket when disconnect.
      *
      * @param integer $milliseconds
      * @return void
@@ -628,7 +635,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the delay for receiving data from the IRC server
+     * Sets the delay for receiving data from the IRC server.
      *
      * Sets the delaytime between messages that are received, this reduces your CPU load.
      * Don't set this too low (min 100ms).
@@ -648,7 +655,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the delay for sending data to the IRC server
+     * Sets the delay for sending data to the IRC server.
      *
      * Sets the delaytime between messages that are sent, because IRC servers doesn't like floods.
      * This will avoid sending your messages too fast to the IRC server.
@@ -668,7 +675,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * enables/disables autoreconnecting
+     * Enables/disables autoreconnecting.
      * 
      * @param boolean $boolean
      * @return void
@@ -684,7 +691,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * enables/disables autoretry for connecting to a server
+     * Enables/disables autoretry for connecting to a server.
      * 
      * @param boolean $boolean
      * @return void
@@ -700,7 +707,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the receive timeout
+     * Sets the receive timeout.
      *
      * If the timeout occurs, the connection will be reinitialized
      * Default: 300 seconds
@@ -719,7 +726,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the transmit timeout
+     * Sets the transmit timeout.
      *
      * If the timeout occurs, the connection will be reinitialized
      * Default: 300 seconds
@@ -738,7 +745,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sets the paths for the modules
+     * Sets the paths for the modules.
      *
      * @param integer $path
      * @return void
@@ -750,7 +757,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * starts the benchmark (sets the counters)
+     * Starts the benchmark (sets the counters).
      *
      * @return void
      * @access public
@@ -762,7 +769,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * stops the benchmark and displays the result
+     * Stops the benchmark and displays the result.
      *
      * @return void
      * @access public
@@ -778,7 +785,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * shows the benchmark result
+     * Shows the benchmark result.
      *
      * @return void
      * @access public
@@ -789,7 +796,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * adds an entry to the log
+     * Adds an entry to the log.
      *
      * Adds an entry to the log with Linux style log format.
      * Possible $level constants (can also be combined with "|"s)
@@ -872,7 +879,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * returns the motd
+     * Returns the full motd.
      *
      * @return array
      * @access public
@@ -883,7 +890,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * returns the usermode
+     * Returns the usermode.
      *
      * @return string
      * @access public
@@ -958,9 +965,9 @@ class Net_SmartIRC_base
     }
     
     /**
-     * disconnects from the IRC server nicely with a QUIT or just destroys the socket
+     * Disconnects from the IRC server nicely with a QUIT or just destroys the socket.
      *
-     * disconnects from the IRC server in the given quickness mode.
+     * Disconnects from the IRC server in the given quickness mode.
      * $quickdisconnect:
      * true, just close the socket
      * false, send QUIT and wait {@link $_disconnectime $_disconnectime} before closing the socket
@@ -1013,7 +1020,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * reconnects to the IRC server with the same login info,
+     * Reconnects to the IRC server with the same login info,
      * it also rejoins the channels
      *
      * @return void
@@ -1091,12 +1098,21 @@ class Net_SmartIRC_base
     
     /**
      * checks if we or the given user is joined to the specified channel and returns the result
+     * ChannelSyncing is required for this.
      *
+     * @see setChannelSyncing
+     * @param string $channel
+     * @param string $nickname
      * @return boolean
      * @access public
      */
     function isJoined($channel, $nickname = null)
     {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isJoined() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
         if ($nickname === null) {
             $nickname = $this->_nick;
         }
@@ -1109,13 +1125,22 @@ class Net_SmartIRC_base
     }
     
     /**
-     * checks if we or the given user is opped on the specified channel and returns the result
+     * Checks if we or the given user is opped on the specified channel and returns the result.
+     * ChannelSyncing is required for this.
      *
+     * @see setChannelSyncing
+     * @param string $channel
+     * @param string $nickname
      * @return boolean
      * @access public
      */
     function isOpped($channel, $nickname = null)
     {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isOpped() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
         if ($nickname === null) {
             $nickname = $this->_nick;
         }
@@ -1128,15 +1153,24 @@ class Net_SmartIRC_base
         
         return false;
     }
-
+    
     /**
-     * checks if we or the given user is voiced on the specified channel and returns the result
+     * Checks if we or the given user is voiced on the specified channel and returns the result.
+     * ChannelSyncing is required for this.
      *
+     * @see setChannelSyncing
+     * @param string $channel
+     * @param string $nickname
      * @return boolean
      * @access public
      */
     function isVoiced($channel, $nickname = null)
     {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isVoiced() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
         if ($nickname === null) {
             $nickname = $this->_nick;
         }
@@ -1149,15 +1183,24 @@ class Net_SmartIRC_base
         
         return false;
     }
-
+    
     /**
-     * checks if the hostmask is on the specified channel banned and returns the result
+     * Checks if the hostmask is on the specified channel banned and returns the result.
+     * ChannelSyncing is required for this.
      *
+     * @see setChannelSyncing
+     * @param string $channel
+     * @param string $hostmask
      * @return boolean
      * @access public
      */
     function isBanned($channel, $hostmask)
     {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isBanned() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
         if ($this->isJoined($channel)) {
             $result = array_search($hostmask, $this->_channels[strtolower($channel)]->bans);
             
