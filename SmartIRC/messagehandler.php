@@ -173,6 +173,15 @@ class Net_SmartIRC_messagehandler
                             $channel->users[$lowerednick]->voice = false;
                         }
                     break;
+                    case 'k':
+                        $key = array_shift($parameters);
+                        if($add) {
+                            $channel->key = $key;
+                        }
+                        if($remove) {
+                            $channel->key = '';
+                        }
+                    break;
                     default:
                         // channel modes
                         if($mode[$i] == 'b') {
