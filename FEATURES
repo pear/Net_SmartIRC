@@ -14,7 +14,7 @@ Full featurelist of Net_SmartIRC
 - detects and changes nickname on nickname collisions
 - time events
 - full object oriented programmed
-- autoreconnect
+- autoreconnect, if connection is lost
 - autoretry for connecting to IRC servers
 - debugging/logging system
 - supports fsocks and PHP socket extension
