@@ -61,6 +61,7 @@ class Net_SmartIRC_messagehandler
             $user->host = $ircdata->host;
             
             $irc->_adduser($channel, $user);
+            $irc->who($channel->name);
         }
     }
     
@@ -288,45 +289,57 @@ class Net_SmartIRC_messagehandler
     
     function _rpl_whoreply(&$irc, &$ircdata)
     {
-        if ($irc->_channelsyncing == true && $irc->isJoined($ircdata->channel)) {
-            $channel = &$irc->_channels[strtolower($ircdata->channel)];
-            
-            $user = &new Net_SmartIRC_channeluser();
-            $user->ident = $ircdata->rawmessageex[4];
-            $user->host = $ircdata->rawmessageex[5];
-            $user->server = $ircdata->rawmessageex[6];
-            $user->nick = $ircdata->rawmessageex[7];
-            
-            $user->op = false;
-            $user->voice = false;
-            $user->ircop = false;
-            
-            $usermode = $ircdata->rawmessageex[8];
-            $usermodelength = strlen($usermode);
-            for ($i = 0; $i < $usermodelength; $i++) {
-                switch ($usermode[$i]) {
-                    case 'H':
-                        $user->away = false;
-                    break;
-                    case 'G':
-                        $user->away = true;
-                    break;
-                    case '@':
-                        $user->op = true;
-                    break;
-                    case '+':
-                        $user->voice = true;
-                    break;
-                    case '*':
-                        $user->ircop = true;
-                    break;
+        if ($irc->_channelsyncing == true) {
+            if ($ircdata->channel == '*') {
+                $nick = $ircdata->rawmessageex[7];
+                // we got who info without channel info, so we need to search the user
+                // on all channels and update him
+                foreach ($irc->_channels as $channel) {
+                    if ($irc->isJoined($channel->name, $nick)) {
+                        $ircdata->channel = $channel->name;
+                        $this->_rpl_whoreply($irc, $ircdata);
+                    }
                 }
+            } else {
+                $channel = &$irc->_channels[strtolower($ircdata->channel)];
+                
+                $user = &new Net_SmartIRC_channeluser();
+                $user->ident = $ircdata->rawmessageex[4];
+                $user->host = $ircdata->rawmessageex[5];
+                $user->server = $ircdata->rawmessageex[6];
+                $user->nick = $ircdata->rawmessageex[7];
+                
+                $user->op = false;
+                $user->voice = false;
+                $user->ircop = false;
+                
+                $usermode = $ircdata->rawmessageex[8];
+                $usermodelength = strlen($usermode);
+                for ($i = 0; $i < $usermodelength; $i++) {
+                    switch ($usermode[$i]) {
+                        case 'H':
+                            $user->away = false;
+                        break;
+                        case 'G':
+                            $user->away = true;
+                        break;
+                        case '@':
+                            $user->op = true;
+                        break;
+                        case '+':
+                            $user->voice = true;
+                        break;
+                        case '*':
+                            $user->ircop = true;
+                        break;
+                    }
+                }
+                 
+                $user->hopcount = substr($ircdata->rawmessageex[9], 1);
+                $user->realname = implode(array_slice($ircdata->rawmessageex, 10), ' ');
+                
+                $irc->_adduser($channel, $user);
             }
-             
-            $user->hopcount = substr($ircdata->rawmessageex[9], 1);
-            $user->realname = implode(array_slice($ircdata->rawmessageex, 10), ' ');
-            
-            $irc->_adduser($channel, $user);
         }
     }
     
