@@ -1803,9 +1803,18 @@ class Net_SmartIRC_base
                     }
                 }
                 
+                $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: ircata nick: "'.$ircdata->nick.
+                                                         '" ident: "'.$ircdata->ident.
+                                                         '" host: "'.$ircdata->host.
+                                                         '" type: "'.$ircdata->type.
+                                                         '" from: "'.$ircdata->from.
+                                                         '" channel: "'.$ircdata->channel.
+                                                         '" message: "'.$ircdata->message
+                                                         , __FILE__, __LINE__);
+                
                 // lets see if we have a messagehandler for it
                 $this->_handlemessage($messagecode, $ircdata);
-                    
+                
                 if ($validmessage == true) {
                     // now the actionhandlers are comming
                     $this->_handleactionhandler($ircdata);
