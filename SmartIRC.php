@@ -867,8 +867,9 @@ class Net_SmartIRC
             $this->_send('PASS '.$this->_password, SMARTIRC_CRITICAL);
         }
         
-        if ($usermode !== null) {
-            $this->_usermode = $usermode;
+        if (!is_numeric($usermode)) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: login() usermode ('.$usermode.') is not valid, will use 0 instead');
+            $usermode = 0;
         }
         
         $this->_send('NICK '.$this->_nick, SMARTIRC_CRITICAL);
