@@ -897,7 +897,7 @@ class Net_SmartIRC
         
         // rejoin the channels
         foreach ($channels as $value) {
-            if (isset($value->key)) {
+            if (isset($value['key'])) {
                 $this->join($value['name'], $value['key']);
             } else {
                 $this->join($value['name']);
