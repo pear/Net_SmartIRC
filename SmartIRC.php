@@ -392,7 +392,7 @@ class Net_SmartIRC_base
         $this->replycodes = &$GLOBALS['SMARTIRC_replycodes'];
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
         
-        // hack till PHP allows (PHP5) $object->method($param)->$object
+        // hack till PHP allows (PHP5) $object->somemethod($param)->memberofobject
         $this->channel = &$this->_channels;
         // another hack
         $this->user = &$this->_users;
@@ -1083,6 +1083,22 @@ class Net_SmartIRC_base
     }
     
     // </IRC methods>
+    
+    /**
+     * checks if the passed nickname is our own nickname
+     *
+     * @param string $nickname
+     * @return boolean
+     * @access public
+     */
+    function isMe($nickname)
+    {
+        if ($nickname == $this->_nick) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
     /**
      * checks if we or the given user is joined to the specified channel and returns the result
