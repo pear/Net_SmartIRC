@@ -380,7 +380,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         if ($this->_channelsyncing == true) {
             $channel = &$this->_channels[strtolower($ircdata->channel)];
             
-            $userarray = explode(' ', substr($ircdata->message, 0, -1));
+            $userarray = explode(' ', rtrim($ircdata->message));
             $userarraycount = count($userarray);
             for ($i = 0; $i < $userarraycount; $i++) {
                 $user = &new Net_SmartIRC_channeluser();
