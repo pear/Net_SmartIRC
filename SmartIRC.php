@@ -44,8 +44,6 @@
  */
 // ------- PHP code ----------
 include_once('SmartIRC/defines.php');
-include_once('SmartIRC/irccommands.php');
-include_once('SmartIRC/messagehandler.php');
 define('SMARTIRC_VERSION', '0.6.0-dev ($Revision$)');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
@@ -377,7 +375,7 @@ class Net_SmartIRC_base
      * @access public
      * @return void
      */
-    function Net_SmartIRC()
+    function Net_SmartIRC_base()
     {
         // precheck
         $this->_checkPHPVersion();
@@ -389,6 +387,7 @@ class Net_SmartIRC_base
         $this->_messagebuffer[SMARTIRC_HIGH] = array();
         $this->_messagebuffer[SMARTIRC_MEDIUM] = array();
         $this->_messagebuffer[SMARTIRC_LOW] = array();
+        
         $this->replycodes = &$GLOBALS['SMARTIRC_replycodes'];
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
         
@@ -2468,6 +2467,10 @@ class Net_SmartIRC_base
         return new Net_SmartIRC_Error($message);
     }
 }
+
+// includes must be after the base class definition, required for PHP5
+include_once('SmartIRC/irccommands.php');
+include_once('SmartIRC/messagehandler.php');
 
 class Net_SmartIRC extends Net_SmartIRC_messagehandler
 {
