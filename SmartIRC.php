@@ -2351,11 +2351,22 @@ class Net_SmartIRC_base
         }
     }
     
+    /**
+     * @return void
+     * @access private
+     */
     function _checkPHPVersion()
     {
         // doing nothing at the moment
     }
     
+    /**
+     * checks if the passed handlertype is valid
+     *
+     * @param integer $handlertype
+     * @return boolean
+     * @access private
+     */
     function _isValidType($handlertype) {
         if ($handlertype & SMARTIRC_TYPE_ALL) {
             return true;
