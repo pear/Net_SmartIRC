@@ -320,6 +320,12 @@ class Net_SmartIRC_base
     var $_autoreconnect = false;
     
     /**
+     * @var integer
+     * @access private
+     */
+    var $_reconnectdelay = 10000;
+
+    /**
      * @var boolean
      * @access private
      */
@@ -634,6 +640,23 @@ class Net_SmartIRC_base
         }
     }
     
+    /**
+     * Sets the delaytime before attempting reconnect.
+     * Value of 0 disables the delay entirely.
+     *
+     * @param integer $milliseconds
+     * @return void
+     * @access public
+     */
+    function setReconnectdelay($milliseconds)
+    {
+        if (is_integer($milliseconds)) {
+            $this->_reconnectdelay = $milliseconds;
+        } else {
+            $this->_reconnectdelay = 10000;
+        }
+    }
+
     /**
      * Sets the delay for receiving data from the IRC server.
      *
@@ -958,7 +981,7 @@ class Net_SmartIRC_base
             return false;
         }
     }
-    
+
     /**
      * Creates the sockets and connects to the IRC server on the given port.
      *
@@ -996,7 +1019,7 @@ class Net_SmartIRC_base
             
             if (($this->_autoretry == true) &&
                 ($this->_autoretrycount < $this->_autoretrymax)) {
-                 $this->delay_reconnect();
+                 $this->_delayReconnect();
                  $this->_autoretrycount++;
                  $this->reconnect();
             } else {
@@ -1748,9 +1771,11 @@ class Net_SmartIRC_base
             $timestamp = time();
             if ($this->_lastrx < ($timestamp - $this->_rxtimeout)) {
                 $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: receive timeout detected, doing reconnect...', __FILE__, __LINE__);
+                $this->_delayReconnect();
                 $this->reconnect();
             } else if ($this->_lasttx < ($timestamp - $this->_txtimeout)) {
                 $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: transmit timeout detected, doing reconnect...', __FILE__, __LINE__);
+                $this->_delayReconnect();
                 $this->reconnect();
             }
         }
@@ -2287,6 +2312,20 @@ class Net_SmartIRC_base
                 
                 break;
             }
+        }
+    }
+
+    /**
+     * Delay reconnect
+     *
+     * @return void
+     * @access private
+     */
+    function _delayReconnect()
+    {
+        if ($this->_reconnectdelay > 0) {
+            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying reconnect for '.$this->_reconnectdelay.' ms', __FILE__, __LINE__);
+            usleep($this->_reconnectdelay*1000);
         }
     }
     
