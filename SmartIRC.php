@@ -23,7 +23,7 @@
  *
  * Net_SmartIRC conforms to RFC 2812 (Internet Relay Chat: Client Protocol)
  * 
- * Copyright (c) 2002-2003 Mirco 'meebey' Bauer <mail@meebey.net> <http://www.meebey.net>
+ * Copyright (c) 2002-2003 Mirco 'meebey' Bauer <meebey@meebey.net> <http://www.meebey.net>
  * 
  * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
  * 
@@ -324,7 +324,19 @@ class Net_SmartIRC_base
      * @access private
      */
     var $_autoretry = false;
-    
+
+    /**
+     * @var integer
+     * @access private
+     */
+    var $_autoretrymax = 5;
+
+    /**
+     * @var integer
+     * @access private
+     */
+    var $_autoretrycount = 0;
+
     /**
      * All IRC replycodes, the index is the replycode name.
      *
@@ -693,7 +705,24 @@ class Net_SmartIRC_base
             $this->_autoretry = false;
         }
     }
-    
+
+    /**
+     * Sets the maximum number of attempts to connect to a server
+     * before giving up.
+     *
+     * @param integer $autoretrymax
+     * @return void
+     * @access public
+     */
+    function setAutoRetryMax($autoretrymax)
+    {
+        if (is_integer($autoretrymax)) {
+            $this->_autoretrymax = $autoretrymax;
+        } else {
+            $this->_autoretrymax = 5;
+        }
+    }
+
     /**
      * Sets the receive timeout.
      *
@@ -965,16 +994,17 @@ class Net_SmartIRC_base
             // TODO! muss return wert sein
             $this->throwError($error_msg);
             
-            // doesn't work somehow.... I only want to retry 4 times! no endless loop (causes segfault)
-            static $tries = 0;
-            if ($this->_autoretry == true && $tries < 5) {
-                $this->reconnect();
-                $tries++;
+            if (($this->_autoretry == true) &&
+                ($this->_autoretrycount < $this->_autoretrymax)) {
+                 $this->delay_reconnect();
+                 $this->_autoretrycount++;
+                 $this->reconnect();
             } else {
                 die();
             }
         } else {
             $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connected', __FILE__, __LINE__);
+            $this->_autoretrycount = 0;
             
             if ($this->_usesockets != true) {
                 $this->_socket = $result;
@@ -2187,7 +2217,7 @@ class Net_SmartIRC_base
         
         if (is_numeric($messagecode)) {
             if (!array_key_exists($messagecode, $this->nreplycodes)) {
-                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: ignoring unreconzied messagecode! "'.$messagecode.'"', __FILE__, __LINE__);
+                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: ignoring unrecognized messagecode! "'.$messagecode.'"', __FILE__, __LINE__);
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: this IRC server ('.$this->_address.') doesn\'t conform to the RFC 2812!', __FILE__, __LINE__);
                 return;
             }
