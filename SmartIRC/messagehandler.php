@@ -318,8 +318,8 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_rpl_whoreply(&$ircdata)
     {
         if ($this->_channelsyncing == true) {
+            $nick = $ircdata->rawmessageex[7];
             if ($ircdata->channel == '*') {
-                $nick = $ircdata->rawmessageex[7];
                 // we got who info without channel info, so we need to search the user
                 // on all channels and update him
                 foreach ($this->_channels as $channel) {
@@ -329,6 +329,10 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     }
                 }
             } else {
+                if (!$this->isJoined($channel->name, $nick)) {
+                    return;
+                }
+                
                 $channel = &$this->_channels[strtolower($ircdata->channel)];
                 
                 $user = &new Net_SmartIRC_channeluser();
