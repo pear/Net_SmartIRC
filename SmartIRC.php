@@ -2186,7 +2186,7 @@ class Net_SmartIRC
             }
         }
         
-        if (preg_match('/^:.* PRIVMSG .* :'.chr(1).'ACTION .*$/', $line) == 1) {
+        if (preg_match('/^:.* PRIVMSG .* :'.chr(1).'ACTION .*'.chr(1).'$/', $line) == 1) {
             return SMARTIRC_TYPE_ACTION;
         } else if (preg_match('/^:.* PRIVMSG .* :'.chr(1).'.*'.chr(1).'$/', $line) == 1) {
             return SMARTIRC_TYPE_CTCP;
@@ -2329,8 +2329,14 @@ class Net_SmartIRC
         for ($i=0; $i<$handlercount; $i++) {
             $handlerobject = &$handler[$i];
             
+            if (substr($handlerobject->message, 0, 1) == '/') {
+                $regex = $handlerobject->message;
+            } else {
+                $regex = '/'.$handlerobject->message.'/';
+            }
+            
             if (($handlerobject->type & $ircdata->type) &&
-                (preg_match('/'.$handlerobject->message.'/',$ircdata->message) == 1)) {
+                (preg_match($regex, $ircdata->message) == 1)) {
                 
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: actionhandler match found for id: '.$i.' type: '.$ircdata->type.' message: "'.$ircdata->message.'" regex: "'.$handlerobject->message.'"');
                 
