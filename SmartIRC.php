@@ -17,7 +17,7 @@
  *
  * Net_SmartIRC conforms to RFC 2812 (Internet Relay Chat: Client Protocol)
  * 
- * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
+ * Copyright (c) 2002-2003-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
  * 
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
  * 
