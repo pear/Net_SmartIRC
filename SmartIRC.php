@@ -1681,23 +1681,16 @@ class Net_SmartIRC_base
                     $exclamationpos = strpos($from, '!');
                     $atpos = strpos($from, '@');
                     $colonpos = strpos($line, ':');
-                    $nick = substr($from, 0, $exclamationpos);
-                    $ident = substr($from, $exclamationpos+1, ($atpos-$exclamationpos)-1);
-                    $host = substr($from, $atpos+1);
-                    if ($colonpos !== false) {
-                        $message = substr($line, $colonpos+1);
-                    } else {
-                        $message = null;
-                    }
-                    $type = $this->_gettype($rawline);
                     
+                    $ircdata->nick = substr($from, 0, $exclamationpos);
+                    $ircdata->ident = substr($from, $exclamationpos+1, ($atpos-$exclamationpos)-1);
+                    $ircdata->host = substr($from, $atpos+1);
+                    $ircdata->type = $this->_gettype($rawline);
                     $ircdata->from = $from;
-                    $ircdata->nick = $nick;
-                    $ircdata->ident = $ident;
-                    $ircdata->host = $host;
-                    $ircdata->message = $message;
-                    $ircdata->messageex = explode(' ', $message);
-                    $ircdata->type = $type;
+                    if ($colonpos !== false) {
+                        $ircdata->message = substr($line, $colonpos+1);
+                        $ircdata->messageex = explode(' ', $ircdata->message);
+                    }
                     
                     if ($type & (SMARTIRC_TYPE_CHANNEL|
                                  SMARTIRC_TYPE_ACTION|
