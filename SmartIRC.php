@@ -226,6 +226,12 @@ class Net_SmartIRC
     var $_channels = array();
     
     /**
+     * @var array
+     * @access private
+     */
+    var $_users = array();
+    
+    /**
      * @var boolean
      * @access private
      */
@@ -425,13 +431,26 @@ class Net_SmartIRC
     }
     
     /**
-     * enables/disables channel synching
+     * deprecated, use setChannelSyncing() instead!
      * 
      * @param boolean $boolean
      * @return void
      * @access public
      */
     function setChannelSynching($boolean)
+    {
+        $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: you are using setChannelSynching() which is a deprecated method, use setChannelSyncing() instead!');
+        $this->setChannelSyncing($boolean);
+    }
+    
+    /**
+     * enables/disables channel synching
+     * 
+     * @param boolean $boolean
+     * @return void
+     * @access public
+     */
+    function setChannelSyncing($boolean)
     {
         if (is_bool($boolean))
             $this->_channelsynching = $boolean;
@@ -702,23 +721,21 @@ class Net_SmartIRC
                     // the script is called from a browser, lets show the output browser friendly
                     $formatedentry = '<pre>'.$formatedentry.'</pre>';
                 }
-                
                 echo($formatedentry);
                 flush();
             break;
             case SMARTIRC_FILE:
-                if (!is_resource($this->_logfilefp))
+                if (!is_resource($this->_logfilefp)) {
                     $this->_logfilefp = @fopen($this->_logfile,'w+');
-                
+                }
                 @fwrite($this->_logfilefp, $formatedentry);
-                    fflush($this->_logfilefp);
+                fflush($this->_logfilefp);
             break;
             case SMARTIRC_SYSLOG:
                 define_syslog_variables();
-                
-                if (!is_int($this->_logfilefp))
+                if (!is_int($this->_logfilefp)) {
                     $this->_logfilefp = openlog('Net_SmartIRC', LOG_NDELAY, LOG_DAEMON);
-                
+                }
                 syslog(LOG_INFO, $entry);
             break;
         }
@@ -865,9 +882,13 @@ class Net_SmartIRC
     function reconnect()
     {
         // remember in which channels we are joined
-        $channels = array();
+        $channels = array(array());
         foreach ($this->_channels as $value) {
-            $channels[] = $value->name;
+            if (empty($value->key)) {
+                $channels[] = array('name' => $value->name);
+            } else {
+                $channels[] = array('name' =>$value->name, 'key' => $value->key);
+            }
         }
         
         $this->disconnect(true);
@@ -876,7 +897,11 @@ class Net_SmartIRC
         
         // rejoin the channels
         foreach ($channels as $value) {
-            $this->join($value);
+            if (isset($value->key)) {
+                $this->join($value->name, $value->key);
+            } else {
+                $this->join($value->name);
+            }
         }
     }
     
@@ -1865,8 +1890,8 @@ class Net_SmartIRC
         while ($this->_state() == SMARTIRC_STATE_CONNECTED) {
             $this->_checkbuffer();
             
+            $timeout = $this->_selecttimeout();
             if ($this->_usesockets == true) {
-                $timeout = $this->_selecttimeout();
                 $sread = array($this->_socket);
                 $result = @socket_select($sread, $w = null, $e = null, 0, $timeout*1000);
                 
@@ -1878,7 +1903,7 @@ class Net_SmartIRC
                     $rawdata = null;
                 }
             } else {
-                usleep($this->_receivedelay*1000);
+                usleep($timeout*1000);
                 $rawdata = @fread($this->_socket, 10240);
             }
             
@@ -1894,11 +1919,11 @@ class Net_SmartIRC
                 $rawdataar = explode("\n", $rawdata);
             }
             
+            $rawdataarcount = count($rawdataar);
             // loop through our received messages
-            while (sizeof($rawdataar) > 0) {
+            for ($i = 0; $i < $rawdataarcount; $i++) {
                 $this->_lastrx = time();
-                // current message and then shifting please
-                $rawline = array_shift($rawdataar);
+                $rawline = $rawdataar[$i];
                 $validmessage = false;
                 
                 $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: received: "'.$rawline.'"');
@@ -2492,9 +2517,9 @@ class Net_SmartIRC
     // </private methods>
     
     function isError($object) {
-        return (bool)(is_object($object) && (get_class($object) == 'net_smartirc_error'));  
+        return (bool)(is_object($object) && (get_class($object) == 'net_smartirc_error'));
     }
-
+    
     function &throwError($message) {
         return new Net_SmartIRC_Error($message);
     }
@@ -2648,6 +2673,12 @@ class Net_SmartIRC_channel
      * @access public
      */
     var $name;
+    
+    /**
+     * @var string
+     * @access public
+     */
+    var $key;
     
     /**
      * @var array
