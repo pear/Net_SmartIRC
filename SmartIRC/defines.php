@@ -25,15 +25,17 @@
  */
 
 // don't change this! unless you know what you do
-define('SMARTIRC_CRLF',    "\r\n");
-define('SMARTIRC_STDOUT',   0);
-define('SMARTIRC_FILE',	    1);
-define('SMARTIRC_SYSLOG',   2);
-define('SMARTIRC_UNUSED',   '*');
-define('SMARTIRC_LOW',       '0');
-define('SMARTIRC_MEDIUM',    '1');
-define('SMARTIRC_HIGH',      '2');
-define('SMARTIRC_CRITICAL',  '3');
+define('SMARTIRC_CRLF',      "\r\n");
+define('SMARTIRC_UNUSED',    '*');
+define('SMARTIRC_STDOUT',        0);
+define('SMARTIRC_FILE',	         1);
+define('SMARTIRC_SYSLOG',        2);
+define('SMARTIRC_BROWSEROUT',    3);
+define('SMARTIRC_NONE',          4);
+define('SMARTIRC_LOW',         0);
+define('SMARTIRC_MEDIUM',      1);
+define('SMARTIRC_HIGH',        2);
+define('SMARTIRC_CRITICAL',    3);
 define('SMARTIRC_STATE_DISCONNECTED',    0);
 define('SMARTIRC_STATE_CONNECTING',      1);
 define('SMARTIRC_STATE_CONNECTED',       2);
@@ -46,9 +48,10 @@ define('SMARTIRC_DEBUG_MESSAGETYPES',     16);
 define('SMARTIRC_DEBUG_ACTIONHANDLER',    32);
 define('SMARTIRC_DEBUG_TIMEHANDLER',      64);
 define('SMARTIRC_DEBUG_MESSAGEHANDLER',   128);
-define('SMARTIRC_DEBUG_CHANNELSYNCHING',  256);
+define('SMARTIRC_DEBUG_CHANNELSYNCING',   256);
 define('SMARTIRC_DEBUG_MODULES',          512);
-define('SMARTIRC_DEBUG_ALL',              1023);
+define('SMARTIRC_DEBUG_USERSYNCING',      1024);
+define('SMARTIRC_DEBUG_ALL',              2047);
 define('SMARTIRC_TYPE_UNKNOWN',        1);
 define('SMARTIRC_TYPE_CHANNEL',        2);
 define('SMARTIRC_TYPE_QUERY',          4);
