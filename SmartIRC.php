@@ -1587,6 +1587,7 @@ class Net_SmartIRC_base
             $this->_checktimeout();
             
             if ($rawdata !== null && !empty($rawdata)) {
+                $this->_lastrx = time();
                 $rawdata = str_replace("\r", '', $rawdata);
                 $rawdata = $lastpart.$rawdata;
                 
@@ -1597,7 +1598,6 @@ class Net_SmartIRC_base
             
             // loop through our received messages
             while (count($rawdataar) > 0) {
-                $this->_lastrx = time();
                 $rawline = array_shift($rawdataar);
                 $validmessage = false;
                 
@@ -2444,12 +2444,6 @@ class Net_SmartIRC_user
      * @access public
      */
     var $away;
-    
-    /**
-     * @var string
-     * @access public
-     */
-    var $mode;
     
     /**
      * @var string
