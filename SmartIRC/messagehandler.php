@@ -329,7 +329,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     }
                 }
             } else {
-                if (!$this->isJoined($channel->name, $nick)) {
+                if (!$this->isJoined($ircdata->channel, $nick)) {
                     return;
                 }
                 
