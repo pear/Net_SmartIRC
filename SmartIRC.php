@@ -1809,8 +1809,8 @@ class Net_SmartIRC_base
                                                          '" type: "'.$ircdata->type.
                                                          '" from: "'.$ircdata->from.
                                                          '" channel: "'.$ircdata->channel.
-                                                         '" message: "'.$ircdata->message
-                                                         , __FILE__, __LINE__);
+                                                         '" message: "'.$ircdata->message.
+                                                         '"', __FILE__, __LINE__);
                 
                 // lets see if we have a messagehandler for it
                 $this->_handlemessage($messagecode, $ircdata);
