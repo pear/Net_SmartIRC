@@ -43,17 +43,17 @@
  *
  */
 // ------- PHP code ----------
-include_once('Net/SmartIRC/defines.php');
-include_once('Net/SmartIRC/irccommands.php');
-include_once('Net/SmartIRC/messagehandler.php');
-define('SMARTIRC_VERSION', '0.5.2-dev');
+include_once('SmartIRC/defines.php');
+include_once('SmartIRC/irccommands.php');
+include_once('SmartIRC/messagehandler.php');
+define('SMARTIRC_VERSION', '0.5.5-dev ($Revision$)');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
  * main SmartIRC class
  *
  * @package Net_SmartIRC
- * @version 0.5.2-dev
+ * @version 0.5.5-dev
  * @author Mirco 'meebey' Bauer <mail@meebey.net>
  * @access public
  */
