@@ -145,9 +145,11 @@ class Net_SmartIRC_messagehandler
                 switch($mode[$i]) {
                     case '-':
                         $remove = true;
+                        $add = false;
                     break;
                     case '+':
                         $add = true;
+                        $remove = false;
                     break;
                     // user modes
                     case 'o':
@@ -181,11 +183,11 @@ class Net_SmartIRC_messagehandler
                     case 'k':
                         $key = array_shift($parameters);
                         if ($add) {
-                            $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: stored channel key for: '.$channel->name, __FILE__, __LINE__);
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYCING: stored channel key for: '.$channel->name, __FILE__, __LINE__);
                             $channel->key = $key;
                         }
                         if ($remove) {
-                            $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: removed channel key for: '.$channel->name, __FILE__, __LINE__);
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYCING: removed channel key for: '.$channel->name, __FILE__, __LINE__);
                             $channel->key = '';
                         }
                     break;
@@ -194,15 +196,15 @@ class Net_SmartIRC_messagehandler
                         if ($mode[$i] == 'b') {
                             $hostmask = array_shift($parameters);
                             if ($add) {
-                                $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: adding ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
+                                $irc->log(SMARTIRC_DEBUG_CHANNELSYCNING, 'DEBUG_CHANNELSYCING: adding ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
                                 $channel->bans[$hostmask] = true;
                             }
                             if ($remove) {
-                                $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: removing ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
+                                $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYCING: removing ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
                                 unset($channel->bans[$hostmask]);
                             }
                         } else {
-                            $irc->log(SMARTIRC_DEBUG_CHANNELSYCING, 'DEBUG_CHANNELSYCING: storing unknown channelmode ('.$mode.') in channel->mode for: '.$channel->name, __FILE__, __LINE__);
+                            $irc->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYCING: storing unknown channelmode ('.$mode.') in channel->mode for: '.$channel->name, __FILE__, __LINE__);
                             $channel->mode = str_replace($mode[$i], '', $channel->mode);
                         }
                 }
