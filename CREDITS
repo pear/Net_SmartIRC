@@ -18,6 +18,7 @@ The fields are:
 
 N: Mirco 'meebey' Bauer
 E: mail@meebey.net
+E: meebey@php.net
 W: www.meebey.net
 P: 5051C9B9 / EF69 07A4 51AD 689E CF0C  767F CD9C 4C1A 5051 C9B9
 D: Project Maintainer
@@ -45,3 +46,7 @@ D: high improved concept for socket_select() handling
 S: Willinghusener Weg 100
 S: 21509 Glinde
 S: Germany
+
+N: Jani Taskinen
+E: sniper@php.net
+D: fixed several bugs
