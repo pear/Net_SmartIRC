@@ -46,14 +46,14 @@
 include_once('SmartIRC/defines.php');
 include_once('SmartIRC/irccommands.php');
 include_once('SmartIRC/messagehandler.php');
-define('SMARTIRC_VERSION', '0.5.5-dev ($Revision$)');
+define('SMARTIRC_VERSION', '0.6.0-dev ($Revision$)');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
  * main SmartIRC class
  *
  * @package Net_SmartIRC
- * @version 0.5.5-dev
+ * @version 0.6.0-dev
  * @author Mirco 'meebey' Bauer <mail@meebey.net>
  * @access public
  */
@@ -2343,7 +2343,7 @@ class Net_SmartIRC_base
     }
     
     function _isValidType($handlertype) {
-        if ($handlertype & SMARTIRC_TYPE_ALL ) {
+        if ($handlertype & SMARTIRC_TYPE_ALL) {
             return true;
         } else {
             return false;
