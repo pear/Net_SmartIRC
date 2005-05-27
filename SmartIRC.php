@@ -2083,7 +2083,7 @@ class Net_SmartIRC_base
      */
     function _gettype($line)
     {
-        if (preg_match('/^:.*? [0-9]{3} .*$/', $line) == 1) {
+        if (preg_match('/^:[^ ]+? [0-9]{3} .+$/', $line) == 1) {
             $lineex = explode(' ', $line);
             $code = $lineex[1];
                 
