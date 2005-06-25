@@ -5,7 +5,7 @@
  * $Date$
  */
 
-v0.6.0:
+v1.1.0:
 ------
 fixes:
    
@@ -16,6 +16,7 @@ new:
    added setReconnectdelay() method, allows delay between reconnects. This reduces CPU load and prevents DoS.
  - applied autoretry patch (sf.net patch #883821) from Ronald Hummelink <ronaldhummelink@users.sourceforge.net>
    added setAutoRetryMax() method, makes connect retries cleaner.
+ - added send() method, can be used to send raw message to the IRC server.
 
 v0.5.6:
 ------

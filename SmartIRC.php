@@ -1674,6 +1674,26 @@ class Net_SmartIRC_base
      * @param string $data
      * @param integer $priority must be one of the priority constants
      * @return boolean
+     * @access public
+     */
+    function send($data, $priority = SMARTIRC_MEDIUM)
+    {
+        return _send($data, $priority);
+    }
+    
+    /**
+     * sends an IRC message
+     *
+     * Adds a message to the messagequeue, with the optional priority.
+     * $priority:
+     * SMARTIRC_CRITICAL
+     * SMARTIRC_HIGH
+     * SMARTIRC_MEDIUM
+     * SMARTIRC_LOW
+     *
+     * @param string $data
+     * @param integer $priority must be one of the priority constants
+     * @return boolean
      * @access private
      */
     function _send($data, $priority = SMARTIRC_MEDIUM)
@@ -1791,7 +1811,7 @@ class Net_SmartIRC_base
     /**
      * sends a raw message to the IRC server (don't use this!!)
      *
-     * Use message() or _send() instead.
+     * Use message() or send() instead.
      *
      * @param string $data
      * @return boolean
