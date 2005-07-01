@@ -1678,7 +1678,7 @@ class Net_SmartIRC_base
      */
     function send($data, $priority = SMARTIRC_MEDIUM)
     {
-        return _send($data, $priority);
+        return $this->_send($data, $priority);
     }
     
     /**
