@@ -19,11 +19,11 @@
  * or get it through PEAR since SmartIRC is an official PEAR package.
  * See <http://pear.php.net/Net_SmartIRC>.
  *
- * Official Projet Homepage: <http://sf.net/projects/phpsmartirc>
+ * Official Project Homepage: <http://sf.net/projects/phpsmartirc>
  *
  * Net_SmartIRC conforms to RFC 2812 (Internet Relay Chat: Client Protocol)
  * 
- * Copyright (c) 2002-2004 Mirco Bauer <meebey@meebey.net> <http://www.meebey.net>
+ * Copyright (c) 2002-2005 Mirco Bauer <meebey@meebey.net> <http://www.meebey.net>
  * 
  * Full LGPL License: <http://www.gnu.org/licenses/lgpl.txt>
  * 
@@ -43,8 +43,8 @@
  *
  */
 // ------- PHP code ----------
-include_once('SmartIRC/defines.php');
-define('SMARTIRC_VERSION', '0.6.0-dev ($Revision$)');
+require_once 'SmartIRC/defines.php';
+define('SMARTIRC_VERSION', '1.1.0-dev ($Revision$)');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
@@ -342,6 +342,13 @@ class Net_SmartIRC_base
      * @access private
      */
     var $_autoretrycount = 0;
+    
+    /**
+     * @var boolean
+     * @access private
+     */
+    var $_connectionerror = false;
+    
 
     /**
      * All IRC replycodes, the index is the replycode name.
@@ -1034,6 +1041,7 @@ class Net_SmartIRC_base
         } else {
             $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connected', __FILE__, __LINE__);
             $this->_autoretrycount = 0;
+            $this->_connectionerror = false;
             
             if ($this->_usesockets != true) {
                 $this->_socket = $result;
@@ -1328,15 +1336,11 @@ class Net_SmartIRC_base
      */
     function listen()
     {
-        if ($this->_state() == SMARTIRC_STATE_CONNECTED) {
-            while ($this->_state() == SMARTIRC_STATE_CONNECTED) {
-                $this->_rawreceive();
-            }
-            
-            return true;
-        } else {
-            return false;
+        while ($this->_state() == SMARTIRC_STATE_CONNECTED) {
+            $this->listenOnce();
         }
+            
+        return false;
     }
     
     /**
@@ -1352,6 +1356,15 @@ class Net_SmartIRC_base
     {
         if ($this->_state() == SMARTIRC_STATE_CONNECTED) {
             $this->_rawreceive();
+            if ($this->_connectionerror) {
+                if ($this->_autoreconnect) {
+                    $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will reconnect!', __FILE__, __LINE__);
+                    $this->reconnect();
+                } else {
+                    $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will disconnect!', __FILE__, __LINE__);
+                    $this->disconnect();
+                }
+            }
             return true;
         } else {
             return false;
@@ -1741,6 +1754,7 @@ class Net_SmartIRC_base
         
         // don't send them too fast
         if ($this->_microint() >= ($lastmicrotimestamp+($this->_senddelay/1000))) {
+            $result = null;
             if ($highcount > 0 && $highsent <= 2) {
                 $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_HIGH]));
                 $lastmicrotimestamp = $this->_microint();
@@ -1830,6 +1844,9 @@ class Net_SmartIRC_base
             
             
             if ($result === false) {
+                // writing to the socket failed, means the connection is broken
+                $this->_connectionerror = true;
+                
                 return false;
             } else {
                 $this->_lasttx = time();
@@ -1872,6 +1889,10 @@ class Net_SmartIRC_base
         } else {
             usleep($this->_receivedelay*1000);
             $rawdata = fread($this->_socket, 10240);
+        }
+        if ($rawdata === false) {
+            // reading from the socket failed, the connection is broken
+            $this->_connectionerror = true;
         }
         
         $this->_checktimer();
@@ -1994,7 +2015,8 @@ class Net_SmartIRC_base
      * @return integer selecttimeout in microseconds
      * @access private
      */
-    function _selecttimeout() {
+    function _selecttimeout()
+    {
         if ($this->_messagebuffersize == 0) {
             $this->_selecttimeout = null;
             
@@ -2332,7 +2354,7 @@ class Net_SmartIRC_base
     {
         if ($this->_reconnectdelay > 0) {
             $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying reconnect for '.$this->_reconnectdelay.' ms', __FILE__, __LINE__);
-            usleep($this->_reconnectdelay*1000);
+            usleep($this->_reconnectdelay * 1000);
         }
     }
     
@@ -2547,8 +2569,8 @@ class Net_SmartIRC_base
 }
 
 // includes must be after the base class definition, required for PHP5
-include_once('SmartIRC/irccommands.php');
-include_once('SmartIRC/messagehandler.php');
+require_once 'SmartIRC/irccommands.php';
+require_once 'SmartIRC/messagehandler.php';
 
 class Net_SmartIRC extends Net_SmartIRC_messagehandler
 {
