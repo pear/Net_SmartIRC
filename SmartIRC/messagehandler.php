@@ -395,6 +395,12 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         $user->voice = true;
                         $user->nick = substr($userarray[$i], 1);
                     break;
+                    // RFC violating IRC servers might break us
+                    case '~':
+                    case '&':
+                    case '%':
+                        $user->nick = substr($userarray[$i], 1);
+                    break;
                     default:
                         $user->nick = $userarray[$i];
                 }
