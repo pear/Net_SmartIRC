@@ -435,13 +435,15 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      * @return void
      * @access public
      */
-    function quit($quitmessage = null, $priority = SMARTIRC_MEDIUM)
+    function quit($quitmessage = null, $priority = SMARTIRC_CRITICAL)
     {
         if ($quitmessage !== null) {
             $this->_send('QUIT :'.$quitmessage, $priority);
         } else {
             $this->_send('QUIT', $priority);
         }
+
+        $this->disconnect(true);
     }
 }
 ?>
