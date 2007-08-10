@@ -254,7 +254,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $this->message(SMARTIRC_TYPE_CTCP_REPLY, $ircdata->nick, 'PING '.substr($ircdata->message, 5, -1));
             } elseif (substr($ircdata->message, 1, 7) == 'VERSION') {
                 if (!empty($this->_ctcpversion)) {
-                    $versionstring = $this->_ctcpversion.' | using '.SMARTIRC_VERSIONSTRING;
+                    $versionstring = $this->_ctcpversion;
                 } else {
                     $versionstring = SMARTIRC_VERSIONSTRING;
                 }
