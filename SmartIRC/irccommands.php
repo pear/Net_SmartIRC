@@ -431,7 +431,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      * sends QUIT to IRC server and disconnects
      *
      * @param string $quitmessage optional quitmessage
-     * @param integer $priority message priority, default is SMARTIRC_MEDIUM
+     * @param integer $priority message priority, default is SMARTIRC_CRITICAL
      * @return void
      * @access public
      */
