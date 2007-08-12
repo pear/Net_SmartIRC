@@ -2564,7 +2564,8 @@ class Net_SmartIRC_base
     
     function &throwError($message)
     {
-        return new Net_SmartIRC_Error($message);
+        $error = new Net_SmartIRC_Error($message);
+        return $error;
     }
 }
 
