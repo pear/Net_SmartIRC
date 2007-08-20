@@ -348,6 +348,12 @@ class Net_SmartIRC_base
      * @access private
      */
     var $_connectionerror = false;
+
+    /**
+     * @var boolean
+     * @access  private
+     */
+    var $_runasdaemon = false;
     
 
     /**
@@ -407,7 +413,6 @@ class Net_SmartIRC_base
         
         ob_implicit_flush(true);
         @set_time_limit(0);
-        ignore_user_abort(true);
         $this->_messagebuffer[SMARTIRC_CRITICAL] = array();
         $this->_messagebuffer[SMARTIRC_HIGH] = array();
         $this->_messagebuffer[SMARTIRC_MEDIUM] = array();
@@ -553,7 +558,7 @@ class Net_SmartIRC_base
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: Channel syncing disabled', __FILE__, __LINE__);
         }
     }
-    
+
     /**
      * Enables/disables user syncing.
      *
@@ -807,6 +812,24 @@ class Net_SmartIRC_base
     function setModulepath($path)
     {
         $this->_modulepath = $path;
+    }
+
+    /**
+     * Sets wheter the script should be run as a daemon or not
+     * ( actually disables/enables ignore_user_abort() )
+     *
+     * @param boolean $boolean
+     * @return void
+     * @access public
+     */
+    function setRunAsDaemon($boolean)
+    {
+        if ($boolean === true) {
+            $this->_runasdaemon = true;
+            ingore_user_abort(true);
+        } else {
+            $this->_runasdaemon = false;
+        }
     }
     
     /**
