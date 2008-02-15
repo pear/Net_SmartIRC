@@ -1023,7 +1023,7 @@ class Net_SmartIRC_base
      *
      * @param string $address 
      * @param integer $port
-     * @return void
+     * @return boolean
      * @access public
      */
     function connect($address, $port)
@@ -1050,7 +1050,7 @@ class Net_SmartIRC_base
             
             $error_msg = 'couldn\'t connect to "'.$address.'" reason: "'.$error.'"';
             $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: '.$error_msg, __FILE__, __LINE__);
-            // TODO! muss return wert sein
+            // TODO! needs to be return value
             $this->throwError($error_msg);
             
             if (($this->_autoretry == true) &&
@@ -1059,7 +1059,7 @@ class Net_SmartIRC_base
                  $this->_autoretrycount++;
                  $this->reconnect();
             } else {
-                die();
+                return false;
             }
         } else {
             $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connected', __FILE__, __LINE__);
@@ -1077,11 +1077,7 @@ class Net_SmartIRC_base
         $this->_lasttx = $this->_lastrx;
         $this->_updatestate();
         
-        if ($result !== false) {
-            return true;
-        } else {
-            return false;
-        }
+        return $result !== false;
     }
     
     /**
@@ -2249,13 +2245,13 @@ class Net_SmartIRC_base
      */
     function _updatestate()
     {
-        $rtype = get_resource_type($this->_socket);
-        if ((is_resource($this->_socket)) &&
-            ($this->_socket !== false) &&
-            ($rtype == 'socket' || $rtype == 'Socket' || $rtype == 'stream')) {
-            
-            $this->_state = true;
-            return true;
+        if (is_resource($this->_socket)) {
+            $rtype = get_resource_type($this->_socket);
+            if (($this->_socket !== false) && 
+                ($rtype == 'socket' || $rtype == 'Socket' || $rtype == 'stream')) {
+                $this->_state = true;
+                return true;
+            }
         } else {
             $this->_state = false;
             $this->_loggedin = false;
