@@ -2357,8 +2357,6 @@ class Net_SmartIRC_base
                 } else {
                     $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: method doesn\'t exist! "'.get_class($methodobject).'->'.$method.'"', __FILE__, __LINE__);
                 }
-                
-                break;
             }
         }
     }
