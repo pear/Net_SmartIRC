@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0">
-  <name>Net_SmartIRC</name>
-  <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
-  <description>
-Net_SmartIRC is a PHP class for communication with IRC networks,
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.8.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Net_SmartIRC</name>
+ <channel>pear.php.net</channel>
+ <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
+ <description>Net_SmartIRC is a PHP class for communication with IRC networks,
 which conforms to the RFC 2812 (IRC protocol).
-It's an API that handles all IRC protocol messages.
+It&apos;s an API that handles all IRC protocol messages.
 This class is designed for creating IRC bots, chats and show irc related info on webpages.
 
 Full featurelist of Net_SmartIRC
@@ -62,526 +61,285 @@ Full featurelist of Net_SmartIRC
   who
   whois
   whowas
-  quit
-  </description>
-  <license>LGPL</license>
-  <maintainers>
-    <maintainer>
-      <user>meebey</user>
-      <name>Mirco 'meebey' Bauer</name>
-      <email>mail@meebey.net</email>
-      <role>lead</role>
-    </maintainer>
-    <maintainer>
-      <user>nicos</user>
-      <name>Nicolas CHAILLAN</name>
-      <email>nicos@php.net</email>
-      <role>contributor</role>
-    </maintainer>
-  </maintainers>
+  quit</description>
+ <lead>
+  <name>Mirco &apos;meebey&apos; Bauer</name>
+  <user>meebey</user>
+  <email>mail@meebey.net</email>
+  <active>yes</active>
+ </lead>
+ <contributor>
+  <name>Nicolas CHAILLAN</name>
+  <user>nicos</user>
+  <email>nicos@php.net</email>
+  <active>yes</active>
+ </contributor>
+ <date>2009-07-18</date>
+ <time>23:03:58</time>
+ <version>
+  <release>1.0.1</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+ <notes>
+QA release
+Updated to package 2.0
+
+Bug #1950		Constructor calls ignore_user_abort(true) - undocumented and not always desired	amir
+Bug #3064		Doesn&apos;t work with php 5.0.3	meebey
+Request #4727	Req	Regarding Examples	amir
+Bug #5220		connect() returns in some situations no false	amir
+Bug #6525		When joining empty channel channel array is wrong	amir
+Bug #9848		fix for &quot;Only variable references...&quot; warning	amir
+Bug #10118		quit command doesn&apos;t disconnect the socket	amir
+Request #10119	Req	CTCP version reply should be fully configurable	amir
+Request #13056		Allow multiple actionhandlers to execute	amir
+ </notes>
+ <contents>
+  <dir baseinstalldir="Net" name="/">
+   <file baseinstalldir="Net" md5sum="8dc4982aea1058c5118319548d242b1a" name="docs/DOCUMENTATION" role="doc" />
+   <file baseinstalldir="Net" md5sum="6c5b0c36a01d973f22409b9561106089" name="docs/HOWTO" role="doc" />
+   <file baseinstalldir="Net" md5sum="bbffe4fb3d76026d399f990e9149ad43" name="docs/HTML/classtrees_Net_SmartIRC.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="e3bc88fc44c079bc28568039a3e963aa" name="docs/HTML/elementindex.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="bff24d864e3842ef548b4a319e21fb38" name="docs/HTML/elementindex_Net_SmartIRC.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="78eeaad083ba60423e752975b981e29d" name="docs/HTML/errors.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="deee286c3d678a9c48369fdd78e7bd94" name="docs/HTML/index.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="6907981892eef7840eefaa3810e29a44" name="docs/HTML/li_Net_SmartIRC.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="579be7916eb1073c0c4458fc6fe19df8" name="docs/HTML/ric_CHANGELOG.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="68a52cca0fa193bcbc14da83b90ce7be" name="docs/HTML/ric_README.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="5189118af3e84698c51db5f8cac5525a" name="docs/HTML/media/background.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="4c480a60db1ab64317fe351a24396eb1" name="docs/HTML/media/empty.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="2cade077187cfc7a261bdc92005e5a1d" name="docs/HTML/media/style.css" role="doc" />
+   <file baseinstalldir="Net" md5sum="a22c563265f6dca88832edfba620b818" name="docs/HTML/media/TreeMenu.js" role="doc" />
+   <file baseinstalldir="Net" md5sum="9dc3fb889eab6ca02847e7cc44520747" name="docs/HTML/media/images/blank.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="a13e8860459c3a53973dc38871205383" name="docs/HTML/media/images/checkerboard.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="d2a3a3f17dabfc25dd37900b3cb8df0c" name="docs/HTML/media/images/Class.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="7e179d558e3814151049647df12eb636" name="docs/HTML/media/images/classFolder.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="f3b8fca6c1783aa1dcf28ba7da497694" name="docs/HTML/media/images/Constant.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="e629622face4e6f4694dfdfeaa4c91a5" name="docs/HTML/media/images/Constants.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="ab1964d424a50610ba0d3766b9ae1b82" name="docs/HTML/media/images/Constructor.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="3ca5f2269ca9d7fcbe874d76ae8eae1c" name="docs/HTML/media/images/Destructor.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="858dd3333287728312787509d5d08683" name="docs/HTML/media/images/Disk.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="49a707b2acbb93d780ca230507e119a0" name="docs/HTML/media/images/error.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="8c092768f85b3c268a506002a949b132" name="docs/HTML/media/images/file.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="22016624eb405c816ce2394d44d98eed" name="docs/HTML/media/images/FolderClosed.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="610c5e80451d2ffabc7babf0e352111e" name="docs/HTML/media/images/foldericon.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="d617e9fad5cd05a4e6ece312bc2c26d4" name="docs/HTML/media/images/FolderOpened.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="b2a256b396562ae95635a7d5bd2b2d96" name="docs/HTML/media/images/Functions.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="5b24ba92b54f0e193d7fb2bf7f22fb99" name="docs/HTML/media/images/GhostClass.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="8cdb41d4407690691fb1ab5265ee0b7c" name="docs/HTML/media/images/I.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="9c75e77d6c1dc1697f225c0f8a90ba85" name="docs/HTML/media/images/L.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="e332ca15b0b48ddb60ea8042d0c55a7d" name="docs/HTML/media/images/leftbg.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="10d4789e288c445ab5e6c4b93d01c884" name="docs/HTML/media/images/Lminus.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="498f5c3f351867da496ace814682cbfd" name="docs/HTML/media/images/Lplus.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="430a5f2c8db7877324fd54b995f30107" name="docs/HTML/media/images/minus.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="8e57a2bcf3b3a4c9119bfe527c0039ea" name="docs/HTML/media/images/msgError.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="e0baa027fb1437dcd9b7961dd9ff78d9" name="docs/HTML/media/images/msgFatalError.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="ee72fd7e1b0fc53bd5be86872a7fda58" name="docs/HTML/media/images/msgHint.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="3b2d8ff173626a4e80c0abe7288d5151" name="docs/HTML/media/images/msgInformation.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="8f864567bf80d6c404a4e1d5a1498043" name="docs/HTML/media/images/msgWarning.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="ff1cb9ec62def194cf467514a7e5287e" name="docs/HTML/media/images/openfoldericon.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="1f0ca8116ffeafac272a3f1a8325e408" name="docs/HTML/media/images/pearlogo.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="423a8689bb4529829739407cf0727844" name="docs/HTML/media/images/plus.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="494900899cff26908133bbe0fe95e04b" name="docs/HTML/media/images/PrivateDataMember.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="de7cbf4c17416f4a848b9a93a2dd11d1" name="docs/HTML/media/images/PrivateMethod.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="58a9d097d37e7c5f110a4fb4ba221490" name="docs/HTML/media/images/PrivateProperty.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="4219f4709956d84819d25028d7863442" name="docs/HTML/media/images/ProtectedDataMember.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="1727d3a16e4f6f4685a86d533e9e9888" name="docs/HTML/media/images/ProtectedMethod.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="a96316caff1e789644a9529c1f407a95" name="docs/HTML/media/images/ProtectedProperty.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="8a1d408251591c08151557c09422e8a2" name="docs/HTML/media/images/PublicDataMember.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="a31153932f42776296ed1363a0d4d20c" name="docs/HTML/media/images/PublicMethod.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="cc2fbd7e0a1ea20800c52d21e6c6ec47" name="docs/HTML/media/images/PublicProperty.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="8647a09907f1a5c35a56aaf41e8e0132" name="docs/HTML/media/images/spacer.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="4947e9e2ff6fd11dcf32e0ba1eca0564" name="docs/HTML/media/images/spacer2.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="6346415134bebdc6fcba24a14e6a2f69" name="docs/HTML/media/images/T.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="237ad92fd30501a08557867f642b7b0a" name="docs/HTML/media/images/Thumbs.db" role="doc" />
+   <file baseinstalldir="Net" md5sum="83ced60c3a5307605dc25ef7df3800bc" name="docs/HTML/media/images/Tminus.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="f0b02c1ecc496aafce1ca1f78bc53ddc" name="docs/HTML/media/images/Tplus.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="070077afb7ff9d6cf57fd6f5bfb94fd8" name="docs/HTML/media/images/Types.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="baa32e2bd12b434128d9807c3797bfc3" name="docs/HTML/media/images/Variable.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="f900b22ecd57772030b63b1b584b49ff" name="docs/HTML/media/images/Vars.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="e4f1b2d3f998559804aa1ac3450d88ad" name="docs/HTML/media/images/TreeMenuJS/branch.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="335459315ad97fe76b7a7ccce9e4c57e" name="docs/HTML/media/images/TreeMenuJS/branchbottom.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="0573af115f27abdcefb8bfcd3ce4a3e1" name="docs/HTML/media/images/TreeMenuJS/branchtop.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="dfbc92a0046265d8b706e11f64d34967" name="docs/HTML/media/images/TreeMenuJS/Class.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="57f736ee1be5479dd462b5a6d7b27507" name="docs/HTML/media/images/TreeMenuJS/classFolder.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="76148501c75947dc3ee8d4c439c05d31" name="docs/HTML/media/images/TreeMenuJS/Disk.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="771e93f7e4b25ca10ac899086eac3f59" name="docs/HTML/media/images/TreeMenuJS/file.png" role="doc" />
+   <file baseinstalldir="Net" md5sum="3665b03f0b6b099595415224ccc68285" name="docs/HTML/media/images/TreeMenuJS/folder.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="024eff25cb2e48ada72f4ce9f48d5934" name="docs/HTML/media/images/TreeMenuJS/FolderOpened.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="1362378c7dee497c5ee78804dedb3f66" name="docs/HTML/media/images/TreeMenuJS/Functions.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="4d5a8ed6dc7cd5d6e71fcb6acd100955" name="docs/HTML/media/images/TreeMenuJS/line.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="9445d29997b70a66fbf5e9430db2b49c" name="docs/HTML/media/images/TreeMenuJS/linebottom.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="e64b766cbe159f3b4fac5fb4c11bf780" name="docs/HTML/media/images/TreeMenuJS/minus.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="fb07076002b84c04f14f19c7cf6fe332" name="docs/HTML/media/images/TreeMenuJS/minusbottom.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="4edfa5cd18f12847054c5a603c345c50" name="docs/HTML/media/images/TreeMenuJS/minustop.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="5a65d2890a595d8218d4d00e59c47e9d" name="docs/HTML/media/images/TreeMenuJS/plus.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="5ac0b1e10996aa9ad70730527842739d" name="docs/HTML/media/images/TreeMenuJS/plusbottom.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="d0ae25b71adb33404ed64bd1a131bfe7" name="docs/HTML/media/images/TreeMenuJS/plustop.gif" role="doc" />
+   <file baseinstalldir="Net" md5sum="0de1b4051df6c62eb055babce734c00e" name="docs/HTML/media/lib/classTree.js" role="doc" />
+   <file baseinstalldir="Net" md5sum="888fe16f88292fa98b8294e71e4bc7c1" name="docs/HTML/media/lib/tab.webfx.css" role="doc" />
+   <file baseinstalldir="Net" md5sum="6a2c040a84f65a5d6693f2eb7d251a22" name="docs/HTML/media/lib/tabpane.js" role="doc" />
+   <file baseinstalldir="Net" md5sum="e6d4926512906802282e58d6723b1c73" name="docs/HTML/media/lib/ua.js" role="doc" />
+   <file baseinstalldir="Net" md5sum="f2f39c6a779049fa10190d65a722e817" name="docs/HTML/Net_SmartIRC/mybot.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="b201dd0264976fd85e66d6d8c2582a30" name="docs/HTML/Net_SmartIRC/Net_SmartIRC.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="63d338272ee461565196f4fc4a7f5196" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_actionhandler.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="50a8620635deb6a696d552aaa5fe26af" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_base.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="d53e8545c560675ca7e30c15c8d7d5a6" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_channel.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="6719717e20b88f6cfca56c9baef0e2ab" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_channeluser.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="80b7589c62ba6630fee07513ed05fc9f" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_data.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="0ad883d23f2ca73f38843964b9d350dc" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_Error.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="19b30d1b24e103fc397b2a1fdb31bb17" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_irccommands.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="1d8a8617704197b7134c7717ca1b292d" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_ircuser.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="44a023dd207d1e58fee219af19faad60" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_listenfor.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="f2220a36187de7602719c783645acabc" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_messagehandler.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="d212ebf27e70879b06c7bc725a186fb5" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_timehandler.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="522d873c0c395a30b3b0ad9843bc3f3a" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_user.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="e36707417297707e7f9ea64d626ff945" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example2_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="45f8d69d17395d43d33496ca3361c749" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example3_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="45f8d69d17395d43d33496ca3361c749" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example4_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="45f8d69d17395d43d33496ca3361c749" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example5_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="45f8d69d17395d43d33496ca3361c749" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example6_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="625a463fa426ad3feb5d075fb008395b" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example7_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="3ebbc8e7b24841265e502fc1890a0c0b" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="17d75a0318075fd60acf7e6814b51d18" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_defines_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="37d6cdf0676f13345b8cc56ad99f123d" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_irccommands_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="613bcb62b98a324eef335d1c418956fd" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_messagehandler_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="0e027a3eb3fec0c90412c3c76127130c" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_php.html" role="doc" />
+   <file baseinstalldir="Net" md5sum="67be0902e2b13cb6597efd50a71625b7" name="examples/example.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="e41e971f79d67ad7db35e00b04650634" name="examples/example2.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="22f62d73c7d3487f3234e70832c070b2" name="examples/example3.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="716ae717b7138b90aa0f5004f33999e8" name="examples/example4.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="b60dac20a8875830d8bfe036cf9ff8a1" name="examples/example5.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="19f302e61709ac66129dabc8cee9326a" name="examples/example6.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="a8224bb442c1b0e90e24969afe562f9a" name="examples/example7.php" role="doc" />
+   <file baseinstalldir="Net" md5sum="c6fa0ca02bd911c1d843aa3abc58eb24" name="SmartIRC/defines.php" role="php" />
+   <file baseinstalldir="Net" md5sum="82c13a67719ceacd78b68ef4b68c71c0" name="SmartIRC/irccommands.php" role="php" />
+   <file baseinstalldir="Net" md5sum="3957fb93e65fb197d1a6157817ae7411" name="SmartIRC/messagehandler.php" role="php" />
+   <file baseinstalldir="Net" md5sum="9d26bf4959af3305ad446b65e727f178" name="CHANGELOG" role="doc" />
+   <file baseinstalldir="Net" md5sum="b9dd6657301b179e0bf33e0be7d5684d" name="CREDITS" role="doc" />
+   <file baseinstalldir="Net" md5sum="02763b491c66f35684494f64e2779a2f" name="FEATURES" role="doc" />
+   <file baseinstalldir="Net" md5sum="da2cc128149d52bea82c2e52b440f216" name="LICENSE" role="doc" />
+   <file baseinstalldir="Net" md5sum="d54da5e99b9c293c1d8f1bb43cdd33d7" name="README" role="doc" />
+   <file baseinstalldir="Net" md5sum="a06ab45b4f464198f450a77b0a810003" name="SmartIRC.php" role="php" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
   <release>
-    <version>0.5.5p1</version>
-    <date>2003-07-23</date>
-    <state>stable</state>
-    <notes>
-v0.5.5:
--------
-fixes:
- - fixed a bug in _rawreceive()
-   messages were parsed wrong which caused problems with kick reasons.
-   (thx to sniper for reporting this).
- - fixed bug in message()
-   CTCP ACTION messages had missing \001 at the end.
- - fixed a bug in quit(), which caused quit messages not to be sent to the server.
- - fixed reconnect() bug, it sent the channel join requests right after connect(),
-   and tried to join a channel without a name.
- - fixes in ChannelSync code
-   When a user joins a channel after SmartIRC, no WHO info is updated in the user object.
-   Fixed wrong update of channel mode when rpl_channelmodeis received.
-   Fixed bug in _mode() method, which caused wrong handling of mode changes.
-   Topic updates are now tracked (thanks to sniper).
-   Fixed bug which caused fatal errors with ChannelSync enabled
-   (closes sf.net bug  #705269).
-   Fixed bug in _event_mode(), unhandled modes were stored wrong.
-   Fixed bug in _event_rpl_namreply(), which caused that the first char of the first nick
-   of a namreply got cut (closes sf.net bug #747832).
- - fixed bug in _checktimer()
-   Which caused problems when a timehandler is unregistered.
- - fixed _gettye()
-   It wasn't recognizing SMARTIRC_TYPE_ACTION.
- - removed if(!$obj) check for newly created objects (closes PHP bug #24622),
-   required for PHP 4.1.2 compatibility.
-
-changes:
- - removed all irc commands from SmartIRC.php
-   they have now their own file (SmartIRC/irccommands.php).
- - Net_SmartIRC_messagehandler class now extends Net_SmartIRC_irccommands.
- - removed the 1. parameter (&amp;$irc) of all message handlers, not needed anymore.
- - renamed class Net_SmartIRC_user to Net_SmartIRC_channeluser,
-   added class Net_SmartIRC_ircuser.
- - added prefix _event to all message handlers (needed because of class restructuring).
- - tweaked filling of the ircdata objects.
- - log() now checks the passed debug level bitwise.
- - $data-&gt;message will be null instead of random garbage,
-   if the IRC message has no colon (the message part),
- - All methods that depend on ChannelSync mode, checks if it's enabled.
- - Optimized the usage of time() for $this-&gt;_lastrx.
- - updated the URL of a SmartIRC based bot (atbs).
- - _loggedin is now set to false when the socket is dead,
-   required for proper working  reconnect().
- - on a reconnect(), the logfile won't be overwritten anymore.
- - updated phpdoc tags.
- - all access to the channel array now uses strtolower() for the key.
- - fixed typo in function name setChannelSynching(),
-   now it's called setChannelSyncing() with a BC wrapper.
- - removed all SMARTIRC_ prefixes for debug output.
- - changed isJoined($channel) to isJoined($channel, $nickname)
-   for checking if the specified user is joined.
- - removed &quot;destructors&quot;, because they don't free the memory.
-
-new:
- - added isOpped() isVoiced() isBanned().
- - added debug output and debug level for the messageparser.
- - reconnect() uses now the channel key if one exists.
- - added channel key syncing in _mode().
- - when an actionhandler message regex has a leading '/' then the regex is used as it is,
-   this allows complex perl regex's.
- - added message type SMARTIRC_TYPE_CTCP_REQUEST and SMARTIRC_CTCP_REPLY for more advanced CTCP.
- - added new log destinations SMARTIRC_NONE and SMARTIRC_BROWSEROUT
-   (for firendly browserouput). When the script is called from a browser,
-   the BROWSEROUT will automatic be used (closed sf.net bug #708155).
- - added error handling for socket_select() in _rawreceive().
- - added getMessage() to Net_SmartIRC_Error class.
- - added debug level for ChannelSync code (SMARTIRC_DEBUG_CHANNELSYNCING).
- - added filename and linenumber to debug output.
- - added key property to channel class.
- - added to all IRC commands optional $priority parameter with default value SMARTIRC_MEDIUM.
- - added isError() for more advanced errorhandling, needed for encapsulation.
- - added _isValidType() method, which checks for valid SMARTIRC_TYPE_* types.
-</notes>
-    <provides type="class" name="Net_SmartIRC_irccommands" />
-    <provides type="function" name="Net_SmartIRC_irccommands::message" />
-    <provides type="function" name="Net_SmartIRC_irccommands::channel" />
-    <provides type="function" name="Net_SmartIRC_irccommands::join" />
-    <provides type="function" name="Net_SmartIRC_irccommands::part" />
-    <provides type="function" name="Net_SmartIRC_irccommands::kick" />
-    <provides type="function" name="Net_SmartIRC_irccommands::getList" />
-    <provides type="function" name="Net_SmartIRC_irccommands::names" />
-    <provides type="function" name="Net_SmartIRC_irccommands::setTopic" />
-    <provides type="function" name="Net_SmartIRC_irccommands::getTopic" />
-    <provides type="function" name="Net_SmartIRC_irccommands::mode" />
-    <provides type="function" name="Net_SmartIRC_irccommands::op" />
-    <provides type="function" name="Net_SmartIRC_irccommands::deop" />
-    <provides type="function" name="Net_SmartIRC_irccommands::voice" />
-    <provides type="function" name="Net_SmartIRC_irccommands::devoice" />
-    <provides type="function" name="Net_SmartIRC_irccommands::ban" />
-    <provides type="function" name="Net_SmartIRC_irccommands::unban" />
-    <provides type="function" name="Net_SmartIRC_irccommands::invite" />
-    <provides type="function" name="Net_SmartIRC_irccommands::changeNick" />
-    <provides type="function" name="Net_SmartIRC_irccommands::who" />
-    <provides type="function" name="Net_SmartIRC_irccommands::whois" />
-    <provides type="function" name="Net_SmartIRC_irccommands::whowas" />
-    <provides type="function" name="Net_SmartIRC_irccommands::quit" />
-    <provides type="class" name="Net_SmartIRC_messagehandler" />
-    <provides type="class" name="Net_SmartIRC_base" />
-    <provides type="class" name="Net_SmartIRC" />
-    <provides type="class" name="Net_SmartIRC_data" />
-    <provides type="class" name="Net_SmartIRC_actionhandler" />
-    <provides type="class" name="Net_SmartIRC_timehandler" />
-    <provides type="class" name="Net_SmartIRC_channel" />
-    <provides type="class" name="Net_SmartIRC_user" />
-    <provides type="class" name="Net_SmartIRC_channeluser" />
-    <provides type="class" name="Net_SmartIRC_ircuser" />
-    <provides type="class" name="Net_SmartIRC_listenfor" />
-    <provides type="class" name="Net_SmartIRC_Error" />
-    <provides type="function" name="Net_SmartIRC_base::Net_SmartIRC" />
-    <provides type="function" name="Net_SmartIRC_base::setUseSockets" />
-    <provides type="function" name="Net_SmartIRC_base::setDebug" />
-    <provides type="function" name="Net_SmartIRC_base::setBenchmark" />
-    <provides type="function" name="Net_SmartIRC_base::setChannelSynching" />
-    <provides type="function" name="Net_SmartIRC_base::setChannelSyncing" />
-    <provides type="function" name="Net_SmartIRC_base::setCtcpVersion" />
-    <provides type="function" name="Net_SmartIRC_base::setLogdestination" />
-    <provides type="function" name="Net_SmartIRC_base::setLogfile" />
-    <provides type="function" name="Net_SmartIRC_base::setDisconnecttime" />
-    <provides type="function" name="Net_SmartIRC_base::setReceivedelay" />
-    <provides type="function" name="Net_SmartIRC_base::setSenddelay" />
-    <provides type="function" name="Net_SmartIRC_base::setAutoReconnect" />
-    <provides type="function" name="Net_SmartIRC_base::setAutoRetry" />
-    <provides type="function" name="Net_SmartIRC_base::setReceiveTimeout" />
-    <provides type="function" name="Net_SmartIRC_base::setTransmitTimeout" />
-    <provides type="function" name="Net_SmartIRC_base::startBenchmark" />
-    <provides type="function" name="Net_SmartIRC_base::stopBenchmark" />
-    <provides type="function" name="Net_SmartIRC_base::showBenchmark" />
-    <provides type="function" name="Net_SmartIRC_base::log" />
-    <provides type="function" name="Net_SmartIRC_base::getMotd" />
-    <provides type="function" name="Net_SmartIRC_base::getUsermode" />
-    <provides type="function" name="Net_SmartIRC_base::connect" />
-    <provides type="function" name="Net_SmartIRC_base::disconnect" />
-    <provides type="function" name="Net_SmartIRC_base::reconnect" />
-    <provides type="function" name="Net_SmartIRC_base::login" />
-    <provides type="function" name="Net_SmartIRC_base::isJoined" />
-    <provides type="function" name="Net_SmartIRC_base::isOpped" />
-    <provides type="function" name="Net_SmartIRC_base::isVoiced" />
-    <provides type="function" name="Net_SmartIRC_base::isBanned" />
-    <provides type="function" name="Net_SmartIRC_base::listen" />
-    <provides type="function" name="Net_SmartIRC_base::listenFor" />
-    <provides type="function" name="Net_SmartIRC_base::registerActionhandler" />
-    <provides type="function" name="Net_SmartIRC_base::unregisterActionhandler" />
-    <provides type="function" name="Net_SmartIRC_base::unregisterActionid" />
-    <provides type="function" name="Net_SmartIRC_base::registerTimehandler" />
-    <provides type="function" name="Net_SmartIRC_base::unregisterTimeid" />
-    <provides type="function" name="Net_SmartIRC_base::isError" />
-    <provides type="function" name="Net_SmartIRC_base::throwError" />
-    <provides type="function" name="Net_SmartIRC_listenfor::handler" />
-    <provides type="function" name="Net_SmartIRC_Error::getMessage" />
-    <filelist>
-      <file role="doc" baseinstalldir="Net" name="docs/DOCUMENTATION"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HOWTO"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/classtrees_Net_SmartIRC.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/elementindex.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/elementindex_Net_SmartIRC.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/errors.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/index.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/li_Net_SmartIRC.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/ric_CHANGELOG.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/ric_README.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/background.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/empty.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/style.css"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/TreeMenu.js"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/blank.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/checkerboard.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Class.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/classFolder.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Constant.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Constants.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Constructor.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Destructor.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Disk.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/error.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/file.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/FolderClosed.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/foldericon.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/FolderOpened.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Functions.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/GhostClass.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/I.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/L.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/leftbg.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Lminus.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Lplus.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/minus.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/msgError.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/msgFatalError.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/msgHint.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/msgInformation.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/msgWarning.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/openfoldericon.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/pearlogo.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/plus.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/PrivateDataMember.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/PrivateMethod.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/PrivateProperty.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/ProtectedDataMember.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/ProtectedMethod.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/ProtectedProperty.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/PublicDataMember.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/PublicMethod.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/PublicProperty.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/spacer.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/spacer2.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/T.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Thumbs.db"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Tminus.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Tplus.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Types.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Variable.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/Vars.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/branch.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/branchbottom.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/branchtop.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/Class.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/classFolder.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/Disk.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/file.png"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/folder.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/FolderOpened.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/Functions.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/line.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/linebottom.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/minus.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/minusbottom.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/minustop.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/plus.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/plusbottom.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/images/TreeMenuJS/plustop.gif"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/lib/classTree.js"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/lib/tab.webfx.css"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/lib/tabpane.js"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/media/lib/ua.js"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/mybot.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_actionhandler.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_base.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_channel.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_channeluser.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_data.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_Error.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_irccommands.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_ircuser.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_listenfor.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_messagehandler.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_timehandler.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_user.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example2_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example3_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example4_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example5_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example6_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example7_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_defines_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_irccommands_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_messagehandler_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_php.html"/>
-      <file role="doc" baseinstalldir="Net" name="examples/example.php"/>
-      <file role="doc" baseinstalldir="Net" name="examples/example2.php"/>
-      <file role="doc" baseinstalldir="Net" name="examples/example3.php"/>
-      <file role="doc" baseinstalldir="Net" name="examples/example4.php"/>
-      <file role="doc" baseinstalldir="Net" name="examples/example5.php"/>
-      <file role="doc" baseinstalldir="Net" name="examples/example6.php"/>
-      <file role="doc" baseinstalldir="Net" name="examples/example7.php"/>
-      <file role="php" baseinstalldir="Net" name="SmartIRC/defines.php"/>
-      <file role="php" baseinstalldir="Net" name="SmartIRC/irccommands.php"/>
-      <file role="php" baseinstalldir="Net" name="SmartIRC/messagehandler.php"/>
-      <file role="doc" baseinstalldir="Net" name="CHANGELOG"/>
-      <file role="doc" baseinstalldir="Net" name="CREDITS"/>
-      <file role="doc" baseinstalldir="Net" name="FEATURES"/>
-      <file role="doc" baseinstalldir="Net" name="LICENSE"/>
-      <file role="doc" baseinstalldir="Net" name="README"/>
-      <file role="php" baseinstalldir="Net" name="SmartIRC.php"/>
-    </filelist>
-  </release>
-  <changelog>
-    <release>
-      <version>0.5.5</version>
-      <date>2003-07-23</date>
-      <state>stable</state>
-      <notes>
-v0.5.5:
--------
-fixes:
- - fixed a bug in _rawreceive()
-   messages were parsed wrong which caused problems with kick reasons.
-   (thx to sniper for reporting this).
- - fixed bug in message()
-   CTCP ACTION messages had missing \001 at the end.
- - fixed a bug in quit(), which caused quit messages not to be sent to the server.
- - fixed reconnect() bug, it sent the channel join requests right after connect(),
-   and tried to join a channel without a name.
- - fixes in ChannelSync code
-   When a user joins a channel after SmartIRC, no WHO info is updated in the user object.
-   Fixed wrong update of channel mode when rpl_channelmodeis received.
-   Fixed bug in _mode() method, which caused wrong handling of mode changes.
-   Topic updates are now tracked (thanks to sniper).
-   Fixed bug which caused fatal errors with ChannelSync enabled
-   (closes sf.net bug  #705269).
-   Fixed bug in _event_mode(), unhandled modes were stored wrong.
-   Fixed bug in _event_rpl_namreply(), which caused that the first char of the first nick
-   of a namreply got cut (closes sf.net bug #747832).
- - fixed bug in _checktimer()
-   Which caused problems when a timehandler is unregistered.
- - fixed _gettye()
-   It wasn't recognizing SMARTIRC_TYPE_ACTION.
- - removed if(!$obj) check for newly created objects (closes PHP bug #24622),
-   required for PHP 4.1.2 compatibility.
-
-changes:
- - removed all irc commands from SmartIRC.php
-   they have now their own file (SmartIRC/irccommands.php).
- - Net_SmartIRC_messagehandler class now extends Net_SmartIRC_irccommands.
- - removed the 1. parameter (&amp;$irc) of all message handlers, not needed anymore.
- - renamed class Net_SmartIRC_user to Net_SmartIRC_channeluser,
-   added class Net_SmartIRC_ircuser.
- - added prefix _event to all message handlers (needed because of class restructuring).
- - tweaked filling of the ircdata objects.
- - log() now checks the passed debug level bitwise.
- - $data-&gt;message will be null instead of random garbage,
-   if the IRC message has no colon (the message part),
- - All methods that depend on ChannelSync mode, checks if it's enabled.
- - Optimized the usage of time() for $this-&gt;_lastrx.
- - updated the URL of a SmartIRC based bot (atbs).
- - _loggedin is now set to false when the socket is dead,
-   required for proper working  reconnect().
- - on a reconnect(), the logfile won't be overwritten anymore.
- - updated phpdoc tags.
- - all access to the channel array now uses strtolower() for the key.
- - fixed typo in function name setChannelSynching(),
-   now it's called setChannelSyncing() with a BC wrapper.
- - removed all SMARTIRC_ prefixes for debug output.
- - changed isJoined($channel) to isJoined($channel, $nickname)
-   for checking if the specified user is joined.
- - removed &quot;destructors&quot;, because they don't free the memory.
-
-new:
- - added isOpped() isVoiced() isBanned().
- - added debug output and debug level for the messageparser.
- - reconnect() uses now the channel key if one exists.
- - added channel key syncing in _mode().
- - when an actionhandler message regex has a leading '/' then the regex is used as it is,
-   this allows complex perl regex's.
- - added message type SMARTIRC_TYPE_CTCP_REQUEST and SMARTIRC_CTCTP_REPLY for more advanced CTCP.
- - added new log destinations SMARTIRC_NONE and SMARTIRC_BROWSEROUT
-   (for firendly browserouput). When the script is called from a browser,
-   the BROWSEROUT will automatic be used (closed sf.net bug #708155).
- - added error handling for socket_select() in _rawreceive().
- - added getMessage() to Net_SmartIRC_Error class.
- - added debug level for ChannelSync code (SMARTIRC_DEBUG_CHANNELSYNCING).
- - added filename and linenumber to debug output.
- - added key property to channel class.
- - added to all IRC commands optional $priority parameter with default value SMARTIRC_MEDIUM.
- - added isError() for more advanced errorhandling, needed for encapsulation.
- - added _isValidType() method, which checks for valid SMARTIRC_TYPE_* types.
-</notes>
-    </release>
-        <release>
-            <version>0.5.1</version>
-            <state>stable</state>
-            <date>2003-01-17</date>
-            <notes>
-v0.5.1:
--------
-fixes:
- - major bugs in ChannelSynching fixed.
- - fsocks support fixed.
- - setUseSocket() method fixed.
-   If false was passed as parameter, it tried to load the socket extension.
-   Also warnings are now suppressed with @ in front of dl().
- - fixed a typo in reconnect().
- - missing SMARTIRC_DEBUG_CHANNELSYNCHING constant added.
- 
-changes:
- - new design for HTML documentation used (PEAR template).
- - moved all examples to their own directory (examples/).
- - moved the documentation to docs/HTML/.
- - added new file descriptions to README.
- - removed not needed parts of DOCUMENTATION (most is now in the HTML version).
- - updated the HTML documentation.
- 
-new:
- - example5/6/7.php added.
- - setAutoRetry() method added.
-   Autoretrying of connecting to the IRC server, is now supported.
-             </notes>
-        </release>
-    <release>
-      <version>0.5.0</version>
-      <date>2003-01-07</date>
-      <state>stable</state>
-      <notes>
-v0.5.0
+   <version>
+    <release>0.2.5</release>
+    <api>0.2.5</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2002-09-02</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+v0.2.5
 ------
-fixes:
- - fixed critical bug in the main _rawreceive() for() loop, messages were lost.
-
-changes:
- - License changed from GPL to LGPL.
- - updated in all files the copyright year.
- - changed documentation tags in front of all methods to the phpDocumentator compatible format.
- - improved connect() errorhandling.
- - changed login() parameters to $nick, $realname, $usermode = 0, $username = null, $password = null.
- - changed join() parameters to $channelarray, $key = null.
- - changed kick() parameters to $channel, $nicknamearray, $reason = null.
- - changed listenFor() parameters to $messagetype
-   return value is now the result, instead the of a reference to the result parameter.
- - sendbuffer has now 3 queues: high, medium and low
-   high sends 2 messages, then 1 of medium
-   low is only send if high _and_ medium is empty.
- - select() call for sockets is strongly optimized
-
-new:
- - phpDocumentator package tags.
- - include() for messagehandler.php (needed for the new API).
- - setChannelSynching() method, for enabling the channel synching.
- - setCtcpVersion() method, for changing the ctcp version reply string.
- - setReceiveTimeout() method, for changing the receive timeout.
- - setTransmitTimeout() method, for changing the transmit timeout.
- - setAutoReconnect() method, for enabling the autoreconnect feature.
- - channel variable, a reference to _channels because $object-&gt;channel(&quot;#chan&quot;)-&gt;topic is not possible in PHP4 (ZE1).
- - reconnect() method, it will reconnect and also join all channels.
- - channel() method, getting a reference to the channel, only if channelsynching is on.
- - added ident, host, messageex and rawmessageex variables to the Net_SmartIRC_data class.
- - class Net_SmartIRC_user, stores info about one user, only used if channelsynching is on.
- - class Net_SmartIRC_channel, stores info about one channel, only used if channelsynching is on.
-</notes>
-    </release>
-    <release>
-      <version>0.4.0</version>
-      <date>2002-11-26</date>
-      <state>stable</state>
-      <notes>
-v0.4.0
+- improved socket handling
+- bufferedsend fix
+- new version number system
+- cpu usage reduced
+- added changelog file
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.2.6</release>
+    <api>0.2.6</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2002-10-12</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+v0.2.6
 ------
 * phpSmartIRCclass.inc.php:
- - fixed serious socket bug
-   The buffer of the socket got full because only 512 bytes were read at once,
-   which caused losing some IRC messages that are comming fast like the MOTD.
-   Now it will read 10240 bytes at once, and doesn't loose any IRC message.
- - fixed sendbuffer
-   The sendbuffer will only be sent, when the class is fully connected and
-   registered on the IRC network. Before if a nickname collision happened,
-   all sent IRC commands from the buffer were ignored by the IRC server.
- - fixed socket status
-   Socket handling is now compatible with PHP 4.3 dev.
- - fixed $_nick
-   When the nickname got changed because of nickname is already in use,
-   $_nick  will be updated. (thanks for the hint to Andreas Streichardt).
- - fixed actionhandler ids (unregister caused that the other ids were  changed).
- - fixed TYPE_TOPIC to the right bitoperator value.
- - added a reference to the IRC class in actionhandler callbacks
-   WARNING: all user writtin methods have to be changed!!
-   method( &amp;$data ) _has to be changed_ to method( &amp;$irc, &amp;$data )
-   If you don't change those, your IRC scripts will _not_ work anymore!
- - changed internal methodnames to _methodname
- - changed sendbuffer
-   Now it uses configurable senddelay, instead of static 2 messages  
-   per second (send flood protection).
- - changed TYPEs
-   All TYPE_* are now bitwise constants, register_actionhandler() can now
-   react to more than one message type.
- - added TYPE_ACTION for those common /me messages.
- - added timeevents   Added method register_timehandler()
-   unregister_timeid() and   reordertimehandler(). Those timehandler
-   can be used to call methods in specified intervalls, e.g. for
-   timeevents. Added needed class CphpSmartIRCclass_timehandler.
- - moved all IRC related defines to defines.inc.php.
- - changed if() elseif() structures where possible to switch() for
-   clearer/faster code.
- - added more debug messages for actionhandler.
- - added unregister_actionhandler() and unregister_actionid() method.
-   Also added needed reorderactionhandler(), which is called after an
-   unregister methods was called.
- - added $data-&gt;channel to actionhandler callback.
+ - phpSmartIRCclass.inc renamed to
+   phpSmartIRCclass.inc.php because of security reasons
+ - changed function_exists() to get_loaded_extensions() for
+   checking if the PHP build has real socket support
+ - log() changed to create Linux style formated logs
+ - new methods for logging (daemon style)
+   log() for add log entries setlogdestination() can be STDOUT or FILE
+   setlogfile() sets the file
+ - changed received data processing in rawreceive()
 
-* defines.inc.php:
- - initial import. 
- - now all IRC related defines are now in this file instead of
-   phpSmartIRCclass.inc.php.
+* HOWTO:
+ - added a mini howto for using the class
 
 * DOCUMENTATION:
- - updated/added methods description
+ - added class documentation of the project
 
-* example.php:
- - changed user function parameter to new style ( &amp;$irc and &amp;$data ).
- - added TYPE_NOTICE to query_test example.
-</notes>
-    </release>
-    <release>
-      <version>0.3.2</version>
-      <date>2002-11-05</date>
-      <state>stable</state>
-      <notes>
+* CREDITS:
+ - added credits file
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.0</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2002-10-23</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+v0.3.0
+-----
+* phpSmartIRCclass.inc.php:
+ - added &quot;Ping? Pong!&quot; log message for debugging
+ - added real linux/windows syslog logging
+   to setlogdestination().
+ - new method listen_for() makes it possible
+   to show irc related information on a homepage, like how many users
+   on a channel are.
+
+* HOWTO:
+ - added how to run/call the selfwritten bot
+
+* DOCUMENTATION:
+ - added (missing) explaination for new methods
+
+* example2.php:
+ - new examplefile with the new listen_for() method
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.2</release>
+    <api>0.3.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2002-11-05</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
 v0.3.2
 ------
 * phpSmartIRCclass.inc.php:
@@ -629,74 +387,274 @@ v0.3.2
 * example2.php:
  - replaced all quotes by singlquotes where possible.
  - added benchmark test to the example
-</notes>
-    </release>
-    <release>
-      <version>0.3.0</version>
-      <date>2002-10-23</date>
-      <state>beta</state>
-      <notes>
-v0.3.0
------
-* phpSmartIRCclass.inc.php:
- - added &quot;Ping? Pong!&quot; log message for debugging
- - added real linux/windows syslog logging
-   to setlogdestination().
- - new method listen_for() makes it possible
-   to show irc related information on a homepage, like how many users
-   on a channel are.
-
-* HOWTO:
- - added how to run/call the selfwritten bot
-
-* DOCUMENTATION:
- - added (missing) explaination for new methods
-
-* example2.php:
- - new examplefile with the new listen_for() method
-</notes>
-    </release>
-    <release>
-      <version>0.2.6</version>
-      <date>2002-10-12</date>
-      <state>beta</state>
-      <notes>
-v0.2.6
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2002-11-26</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+v0.4.0
 ------
 * phpSmartIRCclass.inc.php:
- - phpSmartIRCclass.inc renamed to
-   phpSmartIRCclass.inc.php because of security reasons
- - changed function_exists() to get_loaded_extensions() for
-   checking if the PHP build has real socket support
- - log() changed to create Linux style formated logs
- - new methods for logging (daemon style)
-   log() for add log entries setlogdestination() can be STDOUT or FILE
-   setlogfile() sets the file
- - changed received data processing in rawreceive()
+ - fixed serious socket bug
+   The buffer of the socket got full because only 512 bytes were read at once,
+   which caused losing some IRC messages that are comming fast like the MOTD.
+   Now it will read 10240 bytes at once, and doesn&apos;t loose any IRC message.
+ - fixed sendbuffer
+   The sendbuffer will only be sent, when the class is fully connected and
+   registered on the IRC network. Before if a nickname collision happened,
+   all sent IRC commands from the buffer were ignored by the IRC server.
+ - fixed socket status
+   Socket handling is now compatible with PHP 4.3 dev.
+ - fixed $_nick
+   When the nickname got changed because of nickname is already in use,
+   $_nick  will be updated. (thanks for the hint to Andreas Streichardt).
+ - fixed actionhandler ids (unregister caused that the other ids were  changed).
+ - fixed TYPE_TOPIC to the right bitoperator value.
+ - added a reference to the IRC class in actionhandler callbacks
+   WARNING: all user writtin methods have to be changed!!
+   method( &amp;$data ) _has to be changed_ to method( &amp;$irc, &amp;$data )
+   If you don&apos;t change those, your IRC scripts will _not_ work anymore!
+ - changed internal methodnames to _methodname
+ - changed sendbuffer
+   Now it uses configurable senddelay, instead of static 2 messages  
+   per second (send flood protection).
+ - changed TYPEs
+   All TYPE_* are now bitwise constants, register_actionhandler() can now
+   react to more than one message type.
+ - added TYPE_ACTION for those common /me messages.
+ - added timeevents   Added method register_timehandler()
+   unregister_timeid() and   reordertimehandler(). Those timehandler
+   can be used to call methods in specified intervalls, e.g. for
+   timeevents. Added needed class CphpSmartIRCclass_timehandler.
+ - moved all IRC related defines to defines.inc.php.
+ - changed if() elseif() structures where possible to switch() for
+   clearer/faster code.
+ - added more debug messages for actionhandler.
+ - added unregister_actionhandler() and unregister_actionid() method.
+   Also added needed reorderactionhandler(), which is called after an
+   unregister methods was called.
+ - added $data-&gt;channel to actionhandler callback.
 
-* HOWTO:
- - added a mini howto for using the class
+* defines.inc.php:
+ - initial import. 
+ - now all IRC related defines are now in this file instead of
+   phpSmartIRCclass.inc.php.
 
 * DOCUMENTATION:
- - added class documentation of the project
+ - updated/added methods description
 
-* CREDITS:
- - added credits file
-</notes>
-    </release>
-    <release>
-      <version>0.2.5</version>
-      <date>2002-09-02</date>
-      <state>beta</state>
-      <notes>
-v0.2.5
+* example.php:
+ - changed user function parameter to new style ( &amp;$irc and &amp;$data ).
+ - added TYPE_NOTICE to query_test example.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.0</release>
+    <api>0.5.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2003-01-07</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+v0.5.0
 ------
-- improved socket handling
-- bufferedsend fix
-- new version number system
-- cpu usage reduced
-- added changelog file
-</notes>
-    </release>
-  </changelog>
+fixes:
+ - fixed critical bug in the main _rawreceive() for() loop, messages were lost.
+
+changes:
+ - License changed from GPL to LGPL.
+ - updated in all files the copyright year.
+ - changed documentation tags in front of all methods to the phpDocumentator compatible format.
+ - improved connect() errorhandling.
+ - changed login() parameters to $nick, $realname, $usermode = 0, $username = null, $password = null.
+ - changed join() parameters to $channelarray, $key = null.
+ - changed kick() parameters to $channel, $nicknamearray, $reason = null.
+ - changed listenFor() parameters to $messagetype
+   return value is now the result, instead the of a reference to the result parameter.
+ - sendbuffer has now 3 queues: high, medium and low
+   high sends 2 messages, then 1 of medium
+   low is only send if high _and_ medium is empty.
+ - select() call for sockets is strongly optimized
+
+new:
+ - phpDocumentator package tags.
+ - include() for messagehandler.php (needed for the new API).
+ - setChannelSynching() method, for enabling the channel synching.
+ - setCtcpVersion() method, for changing the ctcp version reply string.
+ - setReceiveTimeout() method, for changing the receive timeout.
+ - setTransmitTimeout() method, for changing the transmit timeout.
+ - setAutoReconnect() method, for enabling the autoreconnect feature.
+ - channel variable, a reference to _channels because $object-&gt;channel(&quot;#chan&quot;)-&gt;topic is not possible in PHP4 (ZE1).
+ - reconnect() method, it will reconnect and also join all channels.
+ - channel() method, getting a reference to the channel, only if channelsynching is on.
+ - added ident, host, messageex and rawmessageex variables to the Net_SmartIRC_data class.
+ - class Net_SmartIRC_user, stores info about one user, only used if channelsynching is on.
+ - class Net_SmartIRC_channel, stores info about one channel, only used if channelsynching is on.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.1</release>
+    <api>0.5.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2003-01-17</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+v0.5.1:
+-------
+fixes:
+ - major bugs in ChannelSynching fixed.
+ - fsocks support fixed.
+ - setUseSocket() method fixed.
+   If false was passed as parameter, it tried to load the socket extension.
+   Also warnings are now suppressed with @ in front of dl().
+ - fixed a typo in reconnect().
+ - missing SMARTIRC_DEBUG_CHANNELSYNCHING constant added.
+ 
+changes:
+ - new design for HTML documentation used (PEAR template).
+ - moved all examples to their own directory (examples/).
+ - moved the documentation to docs/HTML/.
+ - added new file descriptions to README.
+ - removed not needed parts of DOCUMENTATION (most is now in the HTML version).
+ - updated the HTML documentation.
+ 
+new:
+ - example5/6/7.php added.
+ - setAutoRetry() method added.
+   Autoretrying of connecting to the IRC server, is now supported.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.5.5</release>
+    <api>0.5.5</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2003-07-23</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+v0.5.5:
+-------
+fixes:
+ - fixed a bug in _rawreceive()
+   messages were parsed wrong which caused problems with kick reasons.
+   (thx to sniper for reporting this).
+ - fixed bug in message()
+   CTCP ACTION messages had missing \001 at the end.
+ - fixed a bug in quit(), which caused quit messages not to be sent to the server.
+ - fixed reconnect() bug, it sent the channel join requests right after connect(),
+   and tried to join a channel without a name.
+ - fixes in ChannelSync code
+   When a user joins a channel after SmartIRC, no WHO info is updated in the user object.
+   Fixed wrong update of channel mode when rpl_channelmodeis received.
+   Fixed bug in _mode() method, which caused wrong handling of mode changes.
+   Topic updates are now tracked (thanks to sniper).
+   Fixed bug which caused fatal errors with ChannelSync enabled
+   (closes sf.net bug  #705269).
+   Fixed bug in _event_mode(), unhandled modes were stored wrong.
+   Fixed bug in _event_rpl_namreply(), which caused that the first char of the first nick
+   of a namreply got cut (closes sf.net bug #747832).
+ - fixed bug in _checktimer()
+   Which caused problems when a timehandler is unregistered.
+ - fixed _gettye()
+   It wasn&apos;t recognizing SMARTIRC_TYPE_ACTION.
+ - removed if(!$obj) check for newly created objects (closes PHP bug #24622),
+   required for PHP 4.1.2 compatibility.
+
+changes:
+ - removed all irc commands from SmartIRC.php
+   they have now their own file (SmartIRC/irccommands.php).
+ - Net_SmartIRC_messagehandler class now extends Net_SmartIRC_irccommands.
+ - removed the 1. parameter (&amp;$irc) of all message handlers, not needed anymore.
+ - renamed class Net_SmartIRC_user to Net_SmartIRC_channeluser,
+   added class Net_SmartIRC_ircuser.
+ - added prefix _event to all message handlers (needed because of class restructuring).
+ - tweaked filling of the ircdata objects.
+ - log() now checks the passed debug level bitwise.
+ - $data-&gt;message will be null instead of random garbage,
+   if the IRC message has no colon (the message part),
+ - All methods that depend on ChannelSync mode, checks if it&apos;s enabled.
+ - Optimized the usage of time() for $this-&gt;_lastrx.
+ - updated the URL of a SmartIRC based bot (atbs).
+ - _loggedin is now set to false when the socket is dead,
+   required for proper working  reconnect().
+ - on a reconnect(), the logfile won&apos;t be overwritten anymore.
+ - updated phpdoc tags.
+ - all access to the channel array now uses strtolower() for the key.
+ - fixed typo in function name setChannelSynching(),
+   now it&apos;s called setChannelSyncing() with a BC wrapper.
+ - removed all SMARTIRC_ prefixes for debug output.
+ - changed isJoined($channel) to isJoined($channel, $nickname)
+   for checking if the specified user is joined.
+ - removed &quot;destructors&quot;, because they don&apos;t free the memory.
+
+new:
+ - added isOpped() isVoiced() isBanned().
+ - added debug output and debug level for the messageparser.
+ - reconnect() uses now the channel key if one exists.
+ - added channel key syncing in _mode().
+ - when an actionhandler message regex has a leading &apos;/&apos; then the regex is used as it is,
+   this allows complex perl regex&apos;s.
+ - added message type SMARTIRC_TYPE_CTCP_REQUEST and SMARTIRC_CTCTP_REPLY for more advanced CTCP.
+ - added new log destinations SMARTIRC_NONE and SMARTIRC_BROWSEROUT
+   (for firendly browserouput). When the script is called from a browser,
+   the BROWSEROUT will automatic be used (closed sf.net bug #708155).
+ - added error handling for socket_select() in _rawreceive().
+ - added getMessage() to Net_SmartIRC_Error class.
+ - added debug level for ChannelSync code (SMARTIRC_DEBUG_CHANNELSYNCING).
+ - added filename and linenumber to debug output.
+ - added key property to channel class.
+ - added to all IRC commands optional $priority parameter with default value SMARTIRC_MEDIUM.
+ - added isError() for more advanced errorhandling, needed for encapsulation.
+ - added _isValidType() method, which checks for valid SMARTIRC_TYPE_* types.
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2009-07-18</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+QA release
+Updated to package 2.0
+
+Bug #1950		Constructor calls ignore_user_abort(true) - undocumented and not always desired	amir
+Bug #3064		Doesn&apos;t work with php 5.0.3	meebey
+Request #4727	Req	Regarding Examples	amir
+Bug #5220		connect() returns in some situations no false	amir
+Bug #6525		When joining empty channel channel array is wrong	amir
+Bug #9848		fix for &quot;Only variable references...&quot; warning	amir
+Bug #10118		quit command doesn&apos;t disconnect the socket	amir
+Request #10119	Req	CTCP version reply should be fully configurable	amir
+Request #13056		Allow multiple actionhandlers to execute	amir
+   </notes>
+  </release>
+ </changelog>
 </package>
