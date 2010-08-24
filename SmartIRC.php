@@ -1069,7 +1069,7 @@ class Net_SmartIRC_base
             if ($this->_usesockets != true) {
                 $this->_socket = $result;
                 $this->log(SMARTIRC_DEBUG_SOCKET, 'DEBUG_SOCKET: activating nonblocking fsocket mode', __FILE__, __LINE__);
-                socket_set_blocking($this->_socket, false);
+                stream_set_blocking($this->_socket, 0);
             }
         }
         
