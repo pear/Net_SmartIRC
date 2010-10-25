@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.8.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Net_SmartIRC</name>
  <channel>pear.php.net</channel>
  <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
@@ -74,10 +74,10 @@ Full featurelist of Net_SmartIRC
   <email>nicos@php.net</email>
   <active>yes</active>
  </contributor>
- <date>2009-07-18</date>
- <time>23:03:58</time>
+ <date>2010-10-25</date>
+ <time>23:16:17</time>
  <version>
-  <release>1.0.1</release>
+  <release>1.0.2</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -86,18 +86,8 @@ Full featurelist of Net_SmartIRC
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
-QA release
-Updated to package 2.0
-
-Bug #1950		Constructor calls ignore_user_abort(true) - undocumented and not always desired	amir
-Bug #3064		Doesn&apos;t work with php 5.0.3	meebey
-Request #4727	Req	Regarding Examples	amir
-Bug #5220		connect() returns in some situations no false	amir
-Bug #6525		When joining empty channel channel array is wrong	amir
-Bug #9848		fix for &quot;Only variable references...&quot; warning	amir
-Bug #10118		quit command doesn&apos;t disconnect the socket	amir
-Request #10119	Req	CTCP version reply should be fully configurable	amir
-Request #13056		Allow multiple actionhandlers to execute	amir
+Automatically built QA release
+Req #16526 Colour and bold codes are not supported - giggsey
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -225,7 +215,7 @@ Request #13056		Allow multiple actionhandlers to execute	amir
    <file baseinstalldir="Net" md5sum="02763b491c66f35684494f64e2779a2f" name="FEATURES" role="doc" />
    <file baseinstalldir="Net" md5sum="da2cc128149d52bea82c2e52b440f216" name="LICENSE" role="doc" />
    <file baseinstalldir="Net" md5sum="d54da5e99b9c293c1d8f1bb43cdd33d7" name="README" role="doc" />
-   <file baseinstalldir="Net" md5sum="a06ab45b4f464198f450a77b0a810003" name="SmartIRC.php" role="php" />
+   <file baseinstalldir="Net" md5sum="d1548d740cad370898acc810722af5ae" name="SmartIRC.php" role="php" />
   </dir>
  </contents>
  <dependencies>
@@ -654,6 +644,22 @@ Bug #9848		fix for &quot;Only variable references...&quot; warning	amir
 Bug #10118		quit command doesn&apos;t disconnect the socket	amir
 Request #10119	Req	CTCP version reply should be fully configurable	amir
 Request #13056		Allow multiple actionhandlers to execute	amir
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.2</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2010-10-25</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+Automatically built QA release
+Req #16526 Colour and bold codes are not supported - giggsey
    </notes>
   </release>
  </changelog>
