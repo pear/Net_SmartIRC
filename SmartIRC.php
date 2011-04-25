@@ -43,7 +43,7 @@
  *
  */
 // ------- PHP code ----------
-require_once 'SmartIRC/defines.php';
+require_once 'Net/SmartIRC/defines.php';
 define('SMARTIRC_VERSION', '1.1.0-dev ($Revision$)');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
@@ -2587,8 +2587,8 @@ class Net_SmartIRC_base
 }
 
 // includes must be after the base class definition, required for PHP5
-require_once 'SmartIRC/irccommands.php';
-require_once 'SmartIRC/messagehandler.php';
+require_once 'Net/SmartIRC/irccommands.php';
+require_once 'Net/SmartIRC/messagehandler.php';
 
 class Net_SmartIRC extends Net_SmartIRC_messagehandler
 {
