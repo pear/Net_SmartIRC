@@ -74,10 +74,10 @@ Full featurelist of Net_SmartIRC
   <email>nicos@php.net</email>
   <active>yes</active>
  </contributor>
- <date>2010-10-25</date>
- <time>23:16:17</time>
+ <date>2011-04-25</date>
+ <time>16:49:01</time>
  <version>
-  <release>1.0.2</release>
+  <release>1.0.3</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -86,11 +86,10 @@ Full featurelist of Net_SmartIRC
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
-Automatically built QA release
-Req #16526 Colour and bold codes are not supported - giggsey
+Updated include paths Bug #17769	file included with relative path
  </notes>
  <contents>
-  <dir baseinstalldir="Net" name="/">
+  <dir baseinstalldir="/" name="/">
    <file baseinstalldir="Net" md5sum="8dc4982aea1058c5118319548d242b1a" name="docs/DOCUMENTATION" role="doc" />
    <file baseinstalldir="Net" md5sum="6c5b0c36a01d973f22409b9561106089" name="docs/HOWTO" role="doc" />
    <file baseinstalldir="Net" md5sum="bbffe4fb3d76026d399f990e9149ad43" name="docs/HTML/classtrees_Net_SmartIRC.html" role="doc" />
@@ -207,15 +206,15 @@ Req #16526 Colour and bold codes are not supported - giggsey
    <file baseinstalldir="Net" md5sum="b60dac20a8875830d8bfe036cf9ff8a1" name="examples/example5.php" role="doc" />
    <file baseinstalldir="Net" md5sum="19f302e61709ac66129dabc8cee9326a" name="examples/example6.php" role="doc" />
    <file baseinstalldir="Net" md5sum="a8224bb442c1b0e90e24969afe562f9a" name="examples/example7.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="c6fa0ca02bd911c1d843aa3abc58eb24" name="SmartIRC/defines.php" role="php" />
-   <file baseinstalldir="Net" md5sum="82c13a67719ceacd78b68ef4b68c71c0" name="SmartIRC/irccommands.php" role="php" />
-   <file baseinstalldir="Net" md5sum="3957fb93e65fb197d1a6157817ae7411" name="SmartIRC/messagehandler.php" role="php" />
+   <file baseinstalldir="/" md5sum="2b7b08fa2d9055923364d3a421470d56" name="Net/SmartIRC.php" role="php" />
+   <file baseinstalldir="/" md5sum="c6fa0ca02bd911c1d843aa3abc58eb24" name="Net/SmartIRC/defines.php" role="php" />
+   <file baseinstalldir="/" md5sum="82c13a67719ceacd78b68ef4b68c71c0" name="Net/SmartIRC/irccommands.php" role="php" />
+   <file baseinstalldir="/" md5sum="3957fb93e65fb197d1a6157817ae7411" name="Net/SmartIRC/messagehandler.php" role="php" />
    <file baseinstalldir="Net" md5sum="9d26bf4959af3305ad446b65e727f178" name="CHANGELOG" role="doc" />
    <file baseinstalldir="Net" md5sum="b9dd6657301b179e0bf33e0be7d5684d" name="CREDITS" role="doc" />
    <file baseinstalldir="Net" md5sum="02763b491c66f35684494f64e2779a2f" name="FEATURES" role="doc" />
    <file baseinstalldir="Net" md5sum="da2cc128149d52bea82c2e52b440f216" name="LICENSE" role="doc" />
    <file baseinstalldir="Net" md5sum="d54da5e99b9c293c1d8f1bb43cdd33d7" name="README" role="doc" />
-   <file baseinstalldir="Net" md5sum="d1548d740cad370898acc810722af5ae" name="SmartIRC.php" role="php" />
   </dir>
  </contents>
  <dependencies>
@@ -660,6 +659,21 @@ Request #13056		Allow multiple actionhandlers to execute	amir
    <notes>
 Automatically built QA release
 Req #16526 Colour and bold codes are not supported - giggsey
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.3</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-04-25</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+Updated include paths Bug #17769	file included with relative path
    </notes>
   </release>
  </changelog>
