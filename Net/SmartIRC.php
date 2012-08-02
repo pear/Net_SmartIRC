@@ -1892,7 +1892,8 @@ class Net_SmartIRC_base
         $timeout = $this->_selecttimeout();
         if ($this->_usesockets == true) {
             $sread = array($this->_socket);
-            $result = socket_select($sread, $w = null, $e = null, 0, $timeout*1000);
+            // this will trigger a warning when catching a signal
+            $result = @socket_select($sread, $w = null, $e = null, 0, $timeout*1000);
             
             if ($result == 1) {
                 // the socket got data to read
