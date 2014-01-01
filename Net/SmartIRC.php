@@ -944,7 +944,9 @@ class Net_SmartIRC_base
                 fflush($this->_logfilefp);
             break;
             case SMARTIRC_SYSLOG:
-                define_syslog_variables();
+                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+                    define_syslog_variables();
+                }
                 if (!is_int($this->_logfilefp)) {
                     $this->_logfilefp = openlog('Net_SmartIRC', LOG_NDELAY, LOG_DAEMON);
                 }
