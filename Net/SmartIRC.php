@@ -79,6 +79,18 @@ class Net_SmartIRC_base
      * @var string
      * @access private
      */
+    var $_bindaddress = null;
+    
+    /**
+     * @var integer
+     * @access private
+     */
+    var $_bindport = 0;
+    
+    /**
+     * @var string
+     * @access private
+     */
     var $_nick;
     
     /**
@@ -470,6 +482,25 @@ class Net_SmartIRC_base
         } else {
             $this->_usesockets = false;
         }
+    }
+    
+    /**
+     * Sets an IP address (and optionally, a port) to bind the socket to.
+     * 
+     * Limits the bot to claiming only one of the machine's IPs as its home.
+     * Only works with setUseSockets(TRUE). Call with no parameters to unbind.
+     * 
+     * @param string $addr
+     * @return bool
+     * @access public
+     */
+    function setBindAddress($addr=null,$port=0)
+    {
+        if ($this->_usesockets) {
+            $this->bindaddress = $addr;
+            $this->bindport = $port;
+        }
+        return $this->_usesockets;
     }
     
     /**
@@ -1037,6 +1068,21 @@ class Net_SmartIRC_base
         if ($this->_usesockets == true) {
             $this->log(SMARTIRC_DEBUG_SOCKET, 'DEBUG_SOCKET: using real sockets', __FILE__, __LINE__);
             $this->_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+            if ($this->_bindaddress !== null) {
+                if (socket_bind($this->_socket, $this->_bindaddress, $this->_bindport)) {
+                    $this->log(SMARTIRC_DEBUG_SOCKET,
+                        'DEBUG_SOCKET: bound to '.$this->_bindaddress.':'
+                        .$this->_bindport, __FILE__, __LINE__);
+                } else {
+                    $errno = socket_last_error($this->_socket);
+                    $error_msg = 'unable to bind '.$this->_bindaddress.':'
+                        .$this->_bindport.' reason: '.socket_strerror($errno)
+                        .' ('.$errno.')';
+                    $this->log(SMARTIRC_DEBUG_NOTICE,
+                        'DEBUG_NOTICE: '.$error_msg, __FILE__, __LINE__);
+                    $this->throwError($error_msg);
+                }
+            }
             $result = socket_connect($this->_socket, $this->_address, $this->_port);
         } else {
             $this->log(SMARTIRC_DEBUG_SOCKET, 'DEBUG_SOCKET: using fsockets', __FILE__, __LINE__);
