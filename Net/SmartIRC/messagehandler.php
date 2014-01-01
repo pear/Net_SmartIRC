@@ -98,7 +98,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_nick(&$ircdata)
     {
         if ($this->_channelsyncing == true) {
-            $newnick = substr($ircdata->rawmessageex[2], 1);
+            $newnick = $ircdata->rawmessageex[2];
             $lowerednewnick = strtolower($newnick);
             $lowerednick = strtolower($ircdata->nick);
             
