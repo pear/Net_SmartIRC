@@ -1259,6 +1259,66 @@ class Net_SmartIRC_base
     }
     
     /**
+     * Checks if we or the given user is founder on the specified channel and returns the result.
+     * ChannelSyncing is required for this.
+     *
+     * @see setChannelSyncing
+     * @param string $channel
+     * @param string $nickname
+     * @return boolean
+     * @access public
+     */
+    function isFounder($channel, $nickname = null)
+    {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isFounder() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if ($nickname === null) {
+            $nickname = $this->_nick;
+        }
+        
+        if ($this->isJoined($channel, $nickname)) {
+            if ($this->_channels[strtolower($channel)]->users[strtolower($nickname)]->founder) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Checks if we or the given user is admin on the specified channel and returns the result.
+     * ChannelSyncing is required for this.
+     *
+     * @see setChannelSyncing
+     * @param string $channel
+     * @param string $nickname
+     * @return boolean
+     * @access public
+     */
+    function isAdmin($channel, $nickname = null)
+    {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isAdmin() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if ($nickname === null) {
+            $nickname = $this->_nick;
+        }
+        
+        if ($this->isJoined($channel, $nickname)) {
+            if ($this->_channels[strtolower($channel)]->users[strtolower($nickname)]->admin) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
      * Checks if we or the given user is opped on the specified channel and returns the result.
      * ChannelSyncing is required for this.
      *
@@ -1281,6 +1341,36 @@ class Net_SmartIRC_base
         
         if ($this->isJoined($channel, $nickname)) {
             if ($this->_channels[strtolower($channel)]->users[strtolower($nickname)]->op) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Checks if we or the given user is hopped on the specified channel and returns the result.
+     * ChannelSyncing is required for this.
+     *
+     * @see setChannelSyncing
+     * @param string $channel
+     * @param string $nickname
+     * @return boolean
+     * @access public
+     */
+    function isHopped($channel, $nickname = null)
+    {
+        if ($this->_channelsyncing != true) {
+            $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isHopped() is called and the required Channel Syncing is not activated!', __FILE__, __LINE__);
+            return false;
+        }
+        
+        if ($nickname === null) {
+            $nickname = $this->_nick;
+        }
+        
+        if ($this->isJoined($channel, $nickname)) {
+            if ($this->_channels[strtolower($channel)]->users[strtolower($nickname)]->hop) {
                 return true;
             }
         }
@@ -2417,14 +2507,23 @@ class Net_SmartIRC_base
             if ($newuser->realname !== null) {
                 $currentuser->realname = $newuser->realname;
             }
+            if ($newuser->ircop !== null) {
+                $currentuser->ircop = $newuser->ircop;
+            }
+            if ($newuser->founder !== null) {
+                $currentuser->founder = $newuser->founder;
+            }
+            if ($newuser->admin !== null) {
+                $currentuser->admin = $newuser->admin;
+            }
             if ($newuser->op !== null) {
                 $currentuser->op = $newuser->op;
             }
+            if ($newuser->hop !== null) {
+                $currentuser->hop = $newuser->hop;
+            }
             if ($newuser->voice !== null) {
                 $currentuser->voice = $newuser->voice;
-            }
-            if ($newuser->ircop !== null) {
-                $currentuser->ircop = $newuser->ircop;
             }
             if ($newuser->away !== null) {
                 $currentuser->away = $newuser->away;
@@ -2443,9 +2542,21 @@ class Net_SmartIRC_base
         }
         
         $user = &$channel->users[$lowerednick];
+        if ($user->founder) {
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding founder: '.$user->nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+            $channel->founders[$user->nick] = true;
+        }
+        if ($user->admin) {
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding admin: '.$user->nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+            $channel->admins[$user->nick] = true;
+        }
         if ($user->op) {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding op: '.$user->nick.' to channel: '.$channel->name, __FILE__, __LINE__);
             $channel->ops[$user->nick] = true;
+        }
+        if ($user->hop) {
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding half-op: '.$user->nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+            $channel->hops[$user->nick] = true;
         }
         if ($user->voice) {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding voice: '.$user->nick.' to channel: '.$channel->name, __FILE__, __LINE__);
@@ -2762,7 +2873,25 @@ class Net_SmartIRC_channel
      * @var array
      * @access public
      */
+    var $founders = array();
+    
+    /**
+     * @var array
+     * @access public
+     */
+    var $admins = array();
+    
+    /**
+     * @var array
+     * @access public
+     */
     var $ops = array();
+    
+    /**
+     * @var array
+     * @access public
+     */
+    var $hops = array();
     
     /**
      * @var array
@@ -2876,7 +3005,25 @@ class Net_SmartIRC_channeluser extends Net_SmartIRC_user
      * @var boolean
      * @access public
      */
+    var $founder;
+
+    /**
+     * @var boolean
+     * @access public
+     */
+    var $admin;
+    
+    /**
+     * @var boolean
+     * @access public
+     */
     var $op;
+    
+    /**
+     * @var boolean
+     * @access public
+     */
+    var $hop;
     
     /**
      * @var boolean

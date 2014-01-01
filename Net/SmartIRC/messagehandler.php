@@ -120,9 +120,21 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         }
                         
                         // he was maybe op or voice, update comming
+                        if (isset($channel->founders[$ircdata->nick])) {
+                            $channel->founders[$newnick] = $channel->founders[$ircdata->nick];
+                            unset($channel->founders[$ircdata->nick]);
+                        }
+                        if (isset($channel->admins[$ircdata->nick])) {
+                            $channel->admins[$newnick] = $channel->admins[$ircdata->nick];
+                            unset($channel->admins[$ircdata->nick]);
+                        }
                         if (isset($channel->ops[$ircdata->nick])) {
                             $channel->ops[$newnick] = $channel->ops[$ircdata->nick];
                             unset($channel->ops[$ircdata->nick]);
+                        }
+                        if (isset($channel->hops[$ircdata->nick])) {
+                            $channel->hops[$newnick] = $channel->hops[$ircdata->nick];
+                            unset($channel->hops[$ircdata->nick]);
                         }
                         if (isset($channel->voices[$ircdata->nick])) {
                             $channel->voices[$newnick] = $channel->voices[$ircdata->nick];
@@ -162,6 +174,34 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         $remove = false;
                     break;
                     // user modes
+                    case 'q':
+                        $nick = array_shift($parameters);
+                        $lowerednick = strtolower($nick);
+                        if ($add) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding founder: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $channel->founders[$nick] = true;
+                            $channel->users[$lowerednick]->founder = true;
+                        }
+                        if ($remove) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing founder: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            unset($channel->founders[$nick]);
+                            $channel->users[$lowerednick]->founder = false;
+                        }
+                    break;
+                    case 'a':
+                        $nick = array_shift($parameters);
+                        $lowerednick = strtolower($nick);
+                        if ($add) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding admin: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $channel->admins[$nick] = true;
+                            $channel->users[$lowerednick]->admin = true;
+                        }
+                        if ($remove) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing admin: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            unset($channel->admins[$nick]);
+                            $channel->users[$lowerednick]->admin = false;
+                        }
+                    break;
                     case 'o':
                         $nick = array_shift($parameters);
                         $lowerednick = strtolower($nick);
@@ -174,6 +214,20 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
                             unset($channel->ops[$nick]);
                             $channel->users[$lowerednick]->op = false;
+                        }
+                    break;
+                    case 'h':
+                        $nick = array_shift($parameters);
+                        $lowerednick = strtolower($nick);
+                        if ($add) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding half-op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $channel->hops[$nick] = true;
+                            $channel->users[$lowerednick]->hop = true;
+                        }
+                        if ($remove) {
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing half-op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            unset($channel->hops[$nick]);
+                            $channel->users[$lowerednick]->hop = false;
                         }
                     break;
                     case 'v':
@@ -341,9 +395,12 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $user->server = $ircdata->rawmessageex[6];
                 $user->nick = $ircdata->rawmessageex[7];
                 
-                $user->op = false;
-                $user->voice = false;
                 $user->ircop = false;
+                $user->founder = false;
+                $user->admin = false;
+                $user->op = false;
+                $user->hop = false;
+                $user->voice = false;
                 
                 $usermode = $ircdata->rawmessageex[8];
                 $usermodelength = strlen($usermode);
@@ -355,16 +412,26 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         case 'G':
                             $user->away = true;
                         break;
+                        case '*':
+                            $user->ircop = true;
+                        break;
+                        case '~':
+                            $user->founder = true;
+                        break;
+                        case '&':
+                            $user->admin = true;
+                        break;
                         case '@':
                             $user->op = true;
+                        break;
+                        case '%':
+                            $user->hop = true;
                         break;
                         case '+':
                             $user->voice = true;
                         break;
-                        case '*':
-                            $user->ircop = true;
-                        break;
                     }
+        		    $user->modes .= $usermode[$i];
                 }
                  
                 $user->hopcount = substr($ircdata->rawmessageex[9], 1);
@@ -387,23 +454,30 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 
                 $usermode = substr($userarray[$i], 0, 1);
                 switch ($usermode) {
+                    case '~':
+                        $user->founder = true;
+                        $user->nick = substr($userarray[$i], 1);
+                    break;
+                    case '&':
+                        $user->admin = true;
+                        $user->nick = substr($userarray[$i], 1);
+                    break;
                     case '@':
                         $user->op = true;
+                        $user->nick = substr($userarray[$i], 1);
+                    break;
+                    case '%':
+                        $user->hop = true;
                         $user->nick = substr($userarray[$i], 1);
                     break;
                     case '+':
                         $user->voice = true;
                         $user->nick = substr($userarray[$i], 1);
                     break;
-                    // RFC violating IRC servers might break us
-                    case '~':
-                    case '&':
-                    case '%':
-                        $user->nick = substr($userarray[$i], 1);
-                    break;
                     default:
                         $user->nick = $userarray[$i];
                 }
+                $user->modes .= $usermode[$i];
                 
                 $this->_adduser($channel, $user);
             }
