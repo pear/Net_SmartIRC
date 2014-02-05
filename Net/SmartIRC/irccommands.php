@@ -116,9 +116,13 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
         $channellist = implode(',', $channelarray);
         
         if ($key !== null) {
-            $this->_send('JOIN '.$channellist.' '.$key, $priority);
+            foreach ($channelarray as $idx => $value) {
+                $this->_send('JOIN '.$value.' '.$key, $priority);
+            }
         } else {
-            $this->_send('JOIN '.$channellist, $priority);
+            foreach ($channelarray as $idx => $value) {
+                $this->_send('JOIN '.$value, $priority);
+            }
         }
     }
     

@@ -80,6 +80,14 @@ Before you can let the Net_SmartIRC do the IRC handling for you, you first have 
 if you want to use real sockets instead of fsocks you would do this (highly recommend):
 $irc->setUseSockets(true);
 
+and if you want to bind your real socket connection to use only one IP on a
+machine with more than one of them, follow that with:
+$irc->setBindAddress('192.168.0.1');
+-or-
+$irc->setBindAddress('192.168.0.1',57943);
+if you want to bind a port as well. Of course, use your own IP and port as
+those are just examples.
+
 or if you want to get debug messages for testing:
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 
