@@ -2676,10 +2676,28 @@ class Net_SmartIRC_base
                             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: found him on channel: '.$channel->name.' destroying...', __FILE__, __LINE__);
                             unset($channel->users[$lowerednick]);
                             
+                            if (isset($channel->founders[$nick])) {
+                                // die!
+                                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from founder list', __FILE__, __LINE__);
+                                unset($channel->founders[$nick]);
+                            }
+                            
+                            if (isset($channel->admins[$nick])) {
+                                // die!
+                                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from admin list', __FILE__, __LINE__);
+                                unset($channel->admins[$nick]);
+                            }
+                            
                             if (isset($channel->ops[$nick])) {
                                 // die!
                                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from op list', __FILE__, __LINE__);
                                 unset($channel->ops[$nick]);
+                            }
+                            
+                            if (isset($channel->hops[$nick])) {
+                                // die!
+                                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from hop list', __FILE__, __LINE__);
+                                unset($channel->hops[$nick]);
                             }
                             
                             if (isset($channel->voices[$nick])) {
@@ -2697,9 +2715,24 @@ class Net_SmartIRC_base
                 $channel = &$this->_channels[strtolower($ircdata->channel)];
                 unset($channel->users[$lowerednick]);
                 
+                if (isset($channel->founders[$nick])) {
+                    $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from founder list', __FILE__, __LINE__);
+                    unset($channel->founders[$nick]);
+                }
+                
+                if (isset($channel->admins[$nick])) {
+                    $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from admin list', __FILE__, __LINE__);
+                    unset($channel->admins[$nick]);
+                }
+                
                 if (isset($channel->ops[$nick])) {
                     $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from op list', __FILE__, __LINE__);
                     unset($channel->ops[$nick]);
+                }
+                
+                if (isset($channel->hops[$nick])) {
+                    $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing him from hop list', __FILE__, __LINE__);
+                    unset($channel->hops[$nick]);
                 }
                 
                 if (isset($channel->voices[$nick])) {
