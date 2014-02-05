@@ -2053,9 +2053,19 @@ class Net_SmartIRC_base
                 // the socket got data to read
                 $rawdata = socket_read($this->_socket, 10240);
             } else if ($result === false) {
-                // panic! panic! something went wrong!
-                $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket_select() returned false, something went wrong! Reason: '.socket_strerror(socket_last_error()), __FILE__, __LINE__);
-                exit;
+                if (socket_last_error() == 4) {
+                    // we got hit with a SIGHUP signal
+                    $rawdata = null;
+                    global $bot;
+                    
+                    if (is_callable(array($bot, 'reload'))) {
+                        $bot->reload();
+                    }
+                } else {
+                    // panic! panic! something went wrong!
+                    $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket_select() returned false, something went wrong! Reason: '.socket_strerror(socket_last_error()), __FILE__, __LINE__);
+                    exit;
+                }
             } else {
                 // no data
                 $rawdata = null;
