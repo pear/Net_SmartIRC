@@ -266,7 +266,7 @@ class Net_SmartIRC_base
      * Stores the path to the modules that can be loaded.
      *
      * @var string
-     * @access privat
+     * @access private
      */
     var $_modulepath = '';
     
@@ -274,7 +274,7 @@ class Net_SmartIRC_base
      * Stores all objects of the modules.
      *
      * @var string
-     * @access privat
+     * @access private
      */
     var $_modules = array();
     
@@ -1784,8 +1784,25 @@ class Net_SmartIRC_base
             return false;
         }
         
-        // looks like the module satisfies us
-        $module = new $classname;
+        // looks like the module satisfies us, so instantiate it
+        if (in_array('module_init', $methods)) {
+            // we're using an old module_init style module
+            $module = new $classname;
+        } else if (func_num_args() == 1) {
+            // we're using a new __construct style module, which maintains its
+            // own reference to the $irc client object it's being used on
+            $module = new $classname($this);
+        } else {
+            // we're using new style AND we have args to pass to the constructor
+            if (func_num_args() == 2) {
+                // only one arg, so pass it as is
+                $module = new $classname($this, func_get_arg(1));
+            } else {
+                // multiple args, so pass them in an array
+                $module = new $classname($this, array_slice(func_get_args(), 1));
+            }
+        }
+        
         $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully created'
             .' instance of: '.$classname, __FILE__, __LINE__
         );
