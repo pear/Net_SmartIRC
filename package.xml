@@ -3,38 +3,36 @@
  <name>Net_SmartIRC</name>
  <channel>pear.php.net</channel>
  <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
- <description>Net_SmartIRC is a PHP class for communication with IRC networks,
-which conforms to the RFC 2812 (IRC protocol).
-It&apos;s an API that handles all IRC protocol messages.
-This class is designed for creating IRC bots, chats and show irc related info on webpages.
+ <description>Net_SmartIRC is a PHP class for communication with IRC networks conforming to RFC 2812 -- an API that handles all IRC protocol messages.
+This class is designed for creating IRC bots, chatting, and showing IRC-related info on web pages.
 
 Full featurelist of Net_SmartIRC
 -------------------------------------
-- full object oriented programmed
-- every received IRC message is parsed into an ircdata object
-  (it contains following info: from, nick, ident, host, channel, message, type, rawmessage)
-- actionhandler for the API
-  on different types of messages (channel/notice/query/kick/join..) callbacks can be registered
-- messagehandler for the API
-  class based messagehandling, using IRC reply codes
-- time events
-  callbacks to methods in intervals
-- send/receive floodprotection
+- full object-oriented programmed
+- every received IRC message is parsed into an object
+  (containing the following info: from, nick, ident, host, channel, message, type, rawmessage)
+- actionhandler for the API (on different types of messages [channel/notice/query/kick/join..], callbacks can be registered)
+- messagehandler for the API (class-based messagehandling using IRC reply codes)
+- time events (callbacks to methods in intervals)
+- send/receive flood protection
 - detects and changes nickname on nickname collisions
-- autoreconnect, if connection is lost
-- autoretry for connecting to IRC servers
+- auto-reconnect if connection is lost
+- auto-retry for initially connecting to IRC servers
 - debugging/logging system with log levels (destination can be file, stdout, syslog or browserout)
 - supports fsocks and PHP socket extension
-- supports PHP 4.1.x to 4.3.2 (also PHP 5.0.0b1)
-- sendbuffer with a queue that has 3 priority levels (high, medium, low) plus a bypass level (critical)
+- supports PHP as old as 4.4.x (but not for much longer)
+- send buffer with a queue that has 3 priority levels (high, medium, low) plus a bypass level (critical)
 - channel syncing (tracking of users/modes/topic etc in objects)
 - user syncing (tracking the user in channels, nick/ident/host/realname/server/hopcount in objects)
-- when channel syncing is acticated the following functions are available:
+- when channel syncing is activated, the following functions are available:
   isJoined
+  isFounder
+  isAdmin
   isOpped
+  isHopped
   isVoiced
   isBanned
-- on reconnect all joined channels will be rejoined, also when keys are used
+- on reconnect all joined channels will be rejoined, even when keys are used
 - own CTCP version reply can be set
 - IRC commands:
   pass
@@ -74,17 +72,22 @@ Full featurelist of Net_SmartIRC
   <email>amirsaied@gmail.com</email>
   <active>yes</active>
  </lead>
+ <lead>
+  <name>Garrett Whitehorn</name>
+  <user>garrettw</user>
+  <active>yes</active>
+ </lead>
  <contributor>
   <name>Nicolas CHAILLAN</name>
   <user>nicos</user>
   <email>nicos@php.net</email>
   <active>yes</active>
  </contributor>
- <date>2011-04-25</date>
- <time>16:49:01</time>
+ <date>2014-02-05</date>
+ <time>08:45:00</time>
  <version>
-  <release>1.0.3</release>
-  <api>1.0.0</api>
+  <release>1.1.0</release>
+  <api>1.1.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -92,12 +95,24 @@ Full featurelist of Net_SmartIRC
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
-Updated include paths Bug #17769	file included with relative path
+Bug #12539 patch: created a stock module as a stopgap fix
+Bug #13079 patch: Added full support for non-standard channel usermodes founder/admin/half-op
+Bug #16531 patch: removed erroneous substr() call which chopped off the first char
+Bug #16755 patch: added foreach loops to fix/enable joining multiple channels at once
+Bug #17729 patch: Removed define_syslog_variables and avoided warning for socket blocking
+Bug #17769 patch: updated include paths
+Req #18025 implemented: binding the socket to an IP
+Req #18403 implemented: formatting, spelling, and added support for __construct/__destruct on modules
+Bug #18774 patch: finished changing all '&amp;new' to 'new'
+Silenced PHP warnings when socket_select() receives a signal
+Added ability to dynamically reload client if user code supports it
+Added ability to pass arguments from user code to modules
+Added ability to send custom raw commands immediately after login() info
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="Net" md5sum="8dc4982aea1058c5118319548d242b1a" name="docs/DOCUMENTATION" role="doc" />
-   <file baseinstalldir="Net" md5sum="6c5b0c36a01d973f22409b9561106089" name="docs/HOWTO" role="doc" />
+   <file baseinstalldir="Net" md5sum="333e89b649e0c34cfc378675364ba6be" name="docs/HOWTO" role="doc" />
    <file baseinstalldir="Net" md5sum="bbffe4fb3d76026d399f990e9149ad43" name="docs/HTML/classtrees_Net_SmartIRC.html" role="doc" />
    <file baseinstalldir="Net" md5sum="e3bc88fc44c079bc28568039a3e963aa" name="docs/HTML/elementindex.html" role="doc" />
    <file baseinstalldir="Net" md5sum="bff24d864e3842ef548b4a319e21fb38" name="docs/HTML/elementindex_Net_SmartIRC.html" role="doc" />
@@ -212,10 +227,11 @@ Updated include paths Bug #17769	file included with relative path
    <file baseinstalldir="Net" md5sum="b60dac20a8875830d8bfe036cf9ff8a1" name="examples/example5.php" role="doc" />
    <file baseinstalldir="Net" md5sum="19f302e61709ac66129dabc8cee9326a" name="examples/example6.php" role="doc" />
    <file baseinstalldir="Net" md5sum="a8224bb442c1b0e90e24969afe562f9a" name="examples/example7.php" role="doc" />
-   <file baseinstalldir="/" md5sum="2b7b08fa2d9055923364d3a421470d56" name="Net/SmartIRC.php" role="php" />
-   <file baseinstalldir="/" md5sum="c6fa0ca02bd911c1d843aa3abc58eb24" name="Net/SmartIRC/defines.php" role="php" />
-   <file baseinstalldir="/" md5sum="82c13a67719ceacd78b68ef4b68c71c0" name="Net/SmartIRC/irccommands.php" role="php" />
-   <file baseinstalldir="/" md5sum="3957fb93e65fb197d1a6157817ae7411" name="Net/SmartIRC/messagehandler.php" role="php" />
+   <file baseinstalldir="Net" md5sum="756cc45ccc7bf7f9d977edad510b41fd" name="modules/PingFix.php" role="php" />
+   <file baseinstalldir="/" md5sum="fb98af6820f65c94ee5fcece2b8cf89a" name="Net/SmartIRC.php" role="php" />
+   <file baseinstalldir="/" md5sum="60919cb11afef5fd71ac87ceb40f0d17" name="Net/SmartIRC/defines.php" role="php" />
+   <file baseinstalldir="/" md5sum="a51a57461e06bbe1948b4d596c232d90" name="Net/SmartIRC/irccommands.php" role="php" />
+   <file baseinstalldir="/" md5sum="1cbafd40bbf48af788a6fa58ff4fc42b" name="Net/SmartIRC/messagehandler.php" role="php" />
    <file baseinstalldir="Net" md5sum="9d26bf4959af3305ad446b65e727f178" name="CHANGELOG" role="doc" />
    <file baseinstalldir="Net" md5sum="b9dd6657301b179e0bf33e0be7d5684d" name="CREDITS" role="doc" />
    <file baseinstalldir="Net" md5sum="02763b491c66f35684494f64e2779a2f" name="FEATURES" role="doc" />
@@ -669,17 +685,29 @@ Req #16526 Colour and bold codes are not supported - giggsey
   </release>
   <release>
    <version>
-    <release>1.0.3</release>
-    <api>1.0.0</api>
+    <release>1.1.0</release>
+    <api>1.1.0</api>
    </version>
    <stability>
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2011-04-25</date>
+   <date>2014-02-05</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
-Updated include paths Bug #17769	file included with relative path
+Bug #12539 patch: created a stock module as a stopgap fix
+Bug #13079 patch: Added full support for non-standard channel usermodes founder/admin/half-op
+Bug #16531 patch: removed erroneous substr() call which chopped off the first char
+Bug #16755 patch: added foreach loops to fix/enable joining multiple channels at once
+Bug #17729 patch: Removed define_syslog_variables and avoided warning for socket blocking
+Bug #17769 patch: updated include paths
+Req #18025 implemented: binding the socket to an IP
+Req #18403 implemented: formatting, spelling, and added support for __construct/__destruct on modules
+Bug #18774 patch: finished changing all '&amp;new' to 'new'
+Silenced PHP warnings when socket_select() receives a signal
+Added ability to dynamically reload client if user code supports it
+Added ability to pass arguments from user code to modules
+Added ability to send custom raw commands immediately after login() info 
    </notes>
   </release>
  </changelog>

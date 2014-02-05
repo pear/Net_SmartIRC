@@ -119,6 +119,12 @@ class Net_SmartIRC_base
     var $_password;
     
     /**
+     * @var array
+     * @access private
+     */
+    var $_performs = array();
+    
+    /**
      * @var boolean
      * @access private
      */
@@ -858,7 +864,7 @@ class Net_SmartIRC_base
     {
         if ($boolean === true) {
             $this->_runasdaemon = true;
-            ingore_user_abort(true);
+            ignore_user_abort(true);
         } else {
             $this->_runasdaemon = false;
         }
@@ -1257,9 +1263,29 @@ class Net_SmartIRC_base
         
         $this->_send('NICK '.$this->_nick, SMARTIRC_CRITICAL);
         $this->_send('USER '.$this->_username.' '.$usermode.' '.SMARTIRC_UNUSED.' :'.$this->_realname, SMARTIRC_CRITICAL);
+        
+        if (count($this->_performs)) {
+            // if we have extra commands to send, do it now
+            foreach($this->_performs as $command) {
+                $this->_send($command, SMARTIRC_HIGH);
+            }
+            // if we sent "ns auth" commands, we may need to resend our nick
+            $this->_send('NICK '.$this->_nick, SMARTIRC_HIGH);
+        }
     }
     
     // </IRC methods>
+    
+    /**
+     * adds a command to the list of commands to be sent after login() info
+     * 
+     * @param string $cmd the command to add to the perform list
+     * @access public
+     */
+    function perform($cmd)
+    {
+        $this->_performs[] = $cmd;
+    }
     
     /**
      * checks if the passed nickname is our own nickname
