@@ -9,9 +9,10 @@
  * This is a PHP class for communication with IRC networks,
  * which conforms to the RFC 2812 (IRC protocol).
  * It's an API that handles all IRC protocol messages.
- * This class is designed for creating IRC bots, chats and show irc related info on webpages.
+ * This class is designed for creating IRC bots, chats and showing irc related
+ * info on webpages.
  *
- * Documenation, a HOWTO and examples are in SmartIRC included.
+ * Documentation, a HOWTO, and examples are included in SmartIRC.
  *
  * Here you will find a service bot which I am also developing
  * <http://cvs.meebey.net/atbs> and <http://cvs.meebey.net/phpbitch>
@@ -412,13 +413,13 @@ class Net_SmartIRC_base
     var $user;
     
     /**
-     * Constructor. Initiales the messagebuffer and "links" the replycodes from
+     * Constructor. Initiates the messagebuffer and "links" the replycodes from
      * global into properties. Also some PHP runtime settings are configured.
      *
      * @access public
      * @return void
      */
-    function Net_SmartIRC_base()
+    function __construct()
     {
         // precheck
         $this->_checkPHPVersion();
@@ -1752,13 +1753,13 @@ class Net_SmartIRC_base
         }
         
         $methods = get_class_methods($classname);
-        if (!in_array('module_init', $methods)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method'.$classname.'::module_init not found, aborting...', __FILE__, __LINE__);
+        if (!in_array('__construct', $methods) && !in_array('module_init', $methods)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method'.$classname.'::__construct not found, aborting...', __FILE__, __LINE__);
             return false;
         }
         
-        if (!in_array('module_exit', $methods)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method'.$classname.'::module_exit not found, aborting...', __FILE__, __LINE__);
+        if (!in_array('__destruct', $methods) && !in_array('module_exit', $methods)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method'.$classname.'::__destruct not found, aborting...', __FILE__, __LINE__);
             return false;
         }
         
@@ -1784,14 +1785,24 @@ class Net_SmartIRC_base
         }
         
         // looks like the module satisfies us
-        $module = &new $classname;
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful created instance of: '.$classname, __FILE__, __LINE__);
+        $module = new $classname;
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully created'
+            .' instance of: '.$classname, __FILE__, __LINE__
+        );
         
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: calling '.$classname.'::module_init()', __FILE__, __LINE__);
-        $module->module_init($this);
+        // check for deprecated init function and run it if it exists
+        if (in_array('module_init', get_class_methods($classname))) {
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: calling '
+                .$classname.'::module_init()', __FILE__, __LINE__
+            );
+            $module->module_init($this);
+        }
+        
         $this->_modules[$name] = &$module;
         
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful loaded module: '.$name, __FILE__, __LINE__);
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully loaded'
+            .' module: '.$name, __FILE__, __LINE__
+        );
         return true;
     }
     
@@ -1806,15 +1817,20 @@ class Net_SmartIRC_base
             $modulename = strtolower(get_class($module));
             
             if ($modulename == 'net_smartirc_module_'.$name) {
-                $module->module_exit($this);
-                unset($this->_modules[$i]);
+                if (in_array('module_exit', get_class_methods($modulename))) { 
+                    $module->module_exit($this);
+                }
+                unset($this->_modules[$i]); // should call __destruct() on it
                 $this->_reordermodules();
-                $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successful unloaded module: '.$name, __FILE__, __LINE__);
+                $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully'
+                    .' unloaded module: '.$name, __FILE__, __LINE__);
                 return true;
             }
         }
         
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: couldn\'t unloaded module: '.$name.' (it\'s not loaded!)', __FILE__, __LINE__);
+        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: couldn\'t unload'
+            .' module: '.$name.' (it\'s not loaded!)', __FILE__, __LINE__
+        );
         return false;
     }
     
@@ -3120,7 +3136,7 @@ class Net_SmartIRC_Error
 {
     var $error_msg;
     
-    function Net_SmartIRC_Error($message)
+    function __construct($message)
     {
         $this->error_msg = $message;
     }
