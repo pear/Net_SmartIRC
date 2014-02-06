@@ -272,6 +272,62 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
     }
     
     /**
+     * founders an user in the given channel
+     *
+     * @param string $channel
+     * @param string $nickname
+     * @param integer $priority message priority, default is SMARTIRC_MEDIUM
+     * @return void
+     * @access public
+     */
+    function founder($channel, $nickname, $priority = SMARTIRC_MEDIUM)
+    {
+        $this->mode($channel, '+q '.$nickname, $priority);
+    }
+    
+    /**
+     * defounders an user in the given channel
+     *
+     * @param string $channel
+     * @param string $nickname
+     * @param integer $priority message priority, default is SMARTIRC_MEDIUM
+     * @return void
+     * @access public
+     */
+    function defounder($channel, $nickname, $priority = SMARTIRC_MEDIUM)
+    {
+        $this->mode($channel, '-q '.$nickname, $priority);
+    }
+    
+    /**
+     * admins an user in the given channel
+     *
+     * @param string $channel
+     * @param string $nickname
+     * @param integer $priority message priority, default is SMARTIRC_MEDIUM
+     * @return void
+     * @access public
+     */
+    function admin($channel, $nickname, $priority = SMARTIRC_MEDIUM)
+    {
+        $this->mode($channel, '+a '.$nickname, $priority);
+    }
+    
+    /**
+     * deadmins an user in the given channel
+     *
+     * @param string $channel
+     * @param string $nickname
+     * @param integer $priority message priority, default is SMARTIRC_MEDIUM
+     * @return void
+     * @access public
+     */
+    function deadmin($channel, $nickname, $priority = SMARTIRC_MEDIUM)
+    {
+        $this->mode($channel, '-a '.$nickname, $priority);
+    }
+    
+    /**
      * ops an user in the given channel
      *
      * @param string $channel
@@ -297,6 +353,34 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
     function deop($channel, $nickname, $priority = SMARTIRC_MEDIUM)
     {
         $this->mode($channel, '-o '.$nickname, $priority);
+    }
+    
+    /**
+     * hops an user in the given channel
+     *
+     * @param string $channel
+     * @param string $nickname
+     * @param integer $priority message priority, default is SMARTIRC_MEDIUM
+     * @return void
+     * @access public
+     */
+    function hop($channel, $nickname, $priority = SMARTIRC_MEDIUM)
+    {
+        $this->mode($channel, '+h '.$nickname, $priority);
+    }
+    
+    /**
+     * dehops an user in the given channel
+     *
+     * @param string $channel
+     * @param string $nickname
+     * @param integer $priority message priority, default is SMARTIRC_MEDIUM
+     * @return void
+     * @access public
+     */
+    function dehop($channel, $nickname, $priority = SMARTIRC_MEDIUM)
+    {
+        $this->mode($channel, '-h '.$nickname, $priority);
     }
     
     /**
