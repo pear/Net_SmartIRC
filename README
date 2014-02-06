@@ -8,19 +8,13 @@
 Net_SmartIRC
 ----------------
 What is this?
-Net_SmartIRC is a PHP class for communication with IRC networks, which
-conforms to the RFC 2812 (IRC Protocol). It's an API that handles all IRC
-protocol messages. It is designed for creating IRC bots, chats and show irc
-related info on webpages.
-
-Please report bugs to:
-http://sourceforge.net/tracker/?group_id=60664&atid=494859
-
-Project Homepage:
-http://sourceforge.net/projects/phpsmartirc
+Net_SmartIRC is a PHP class for communication with IRC networks conforming to
+RFC 2812 -- an API that handles all IRC protocol messages. This class is
+designed for creating IRC bots, chatting, and showing IRC-related info on
+web pages.
 
 official PEAR package page:
-http://pear.php.net/package-info.php?package=Net_SmartIRC
+https://pear.php.net/package/Net_SmartIRC/
 
 files included in SmartIRC
 --------------------------
@@ -87,3 +81,8 @@ examples/
  
  example7.php
  This is an example how timers can be used and how to unregister them.
+
+modules/
+ PingFix.php
+ This is a module you can load with your script to fix a connection keep-alive
+ issue until it gets fixed in the main class code.

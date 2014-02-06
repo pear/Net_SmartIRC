@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Net_SmartIRC</name>
  <channel>pear.php.net</channel>
  <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
@@ -20,7 +20,7 @@ Full featurelist of Net_SmartIRC
 - auto-retry for initially connecting to IRC servers
 - debugging/logging system with log levels (destination can be file, stdout, syslog or browserout)
 - supports fsocks and PHP socket extension
-- supports PHP as old as 4.4.x (but not for much longer)
+- supports PHP as old as 4.4.4 (but not for much longer)
 - send buffer with a queue that has 3 priority levels (high, medium, low) plus a bypass level (critical)
 - channel syncing (tracking of users/modes/topic etc in objects)
 - user syncing (tracking the user in channels, nick/ident/host/realname/server/hopcount in objects)
@@ -61,9 +61,15 @@ Full featurelist of Net_SmartIRC
   whowas
   quit</description>
  <lead>
-  <name>Mirco &apos;meebey&apos; Bauer</name>
+  <name>Mirco Bauer</name>
   <user>meebey</user>
-  <email>mail@meebey.net</email>
+  <email>meebey@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Garrett Whitehorn</name>
+  <user>garrettw</user>
+  <email>garrettw87@gmail.com</email>
   <active>yes</active>
  </lead>
  <lead>
@@ -72,22 +78,17 @@ Full featurelist of Net_SmartIRC
   <email>amirsaied@gmail.com</email>
   <active>yes</active>
  </lead>
- <lead>
-  <name>Garrett Whitehorn</name>
-  <user>garrettw</user>
-  <active>yes</active>
- </lead>
  <contributor>
-  <name>Nicolas CHAILLAN</name>
+  <name>CHAILLAN Nicolas</name>
   <user>nicos</user>
   <email>nicos@php.net</email>
   <active>yes</active>
  </contributor>
- <date>2014-02-05</date>
- <time>08:45:00</time>
+ <date>2014-02-06</date>
+ <time>05:04:30</time>
  <version>
   <release>1.1.0</release>
-  <api>1.1.0</api>
+  <api>1.0.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -110,134 +111,154 @@ Added ability to pass arguments from user code to modules
 Added ability to send custom raw commands immediately after login() info
  </notes>
  <contents>
-  <dir baseinstalldir="/" name="/">
-   <file baseinstalldir="Net" md5sum="8dc4982aea1058c5118319548d242b1a" name="docs/DOCUMENTATION" role="doc" />
-   <file baseinstalldir="Net" md5sum="333e89b649e0c34cfc378675364ba6be" name="docs/HOWTO" role="doc" />
-   <file baseinstalldir="Net" md5sum="bbffe4fb3d76026d399f990e9149ad43" name="docs/HTML/classtrees_Net_SmartIRC.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="e3bc88fc44c079bc28568039a3e963aa" name="docs/HTML/elementindex.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="bff24d864e3842ef548b4a319e21fb38" name="docs/HTML/elementindex_Net_SmartIRC.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="78eeaad083ba60423e752975b981e29d" name="docs/HTML/errors.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="deee286c3d678a9c48369fdd78e7bd94" name="docs/HTML/index.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="6907981892eef7840eefaa3810e29a44" name="docs/HTML/li_Net_SmartIRC.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="579be7916eb1073c0c4458fc6fe19df8" name="docs/HTML/ric_CHANGELOG.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="68a52cca0fa193bcbc14da83b90ce7be" name="docs/HTML/ric_README.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="5189118af3e84698c51db5f8cac5525a" name="docs/HTML/media/background.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="4c480a60db1ab64317fe351a24396eb1" name="docs/HTML/media/empty.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="2cade077187cfc7a261bdc92005e5a1d" name="docs/HTML/media/style.css" role="doc" />
-   <file baseinstalldir="Net" md5sum="a22c563265f6dca88832edfba620b818" name="docs/HTML/media/TreeMenu.js" role="doc" />
-   <file baseinstalldir="Net" md5sum="9dc3fb889eab6ca02847e7cc44520747" name="docs/HTML/media/images/blank.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="a13e8860459c3a53973dc38871205383" name="docs/HTML/media/images/checkerboard.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="d2a3a3f17dabfc25dd37900b3cb8df0c" name="docs/HTML/media/images/Class.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="7e179d558e3814151049647df12eb636" name="docs/HTML/media/images/classFolder.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="f3b8fca6c1783aa1dcf28ba7da497694" name="docs/HTML/media/images/Constant.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="e629622face4e6f4694dfdfeaa4c91a5" name="docs/HTML/media/images/Constants.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="ab1964d424a50610ba0d3766b9ae1b82" name="docs/HTML/media/images/Constructor.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="3ca5f2269ca9d7fcbe874d76ae8eae1c" name="docs/HTML/media/images/Destructor.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="858dd3333287728312787509d5d08683" name="docs/HTML/media/images/Disk.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="49a707b2acbb93d780ca230507e119a0" name="docs/HTML/media/images/error.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="8c092768f85b3c268a506002a949b132" name="docs/HTML/media/images/file.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="22016624eb405c816ce2394d44d98eed" name="docs/HTML/media/images/FolderClosed.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="610c5e80451d2ffabc7babf0e352111e" name="docs/HTML/media/images/foldericon.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="d617e9fad5cd05a4e6ece312bc2c26d4" name="docs/HTML/media/images/FolderOpened.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="b2a256b396562ae95635a7d5bd2b2d96" name="docs/HTML/media/images/Functions.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="5b24ba92b54f0e193d7fb2bf7f22fb99" name="docs/HTML/media/images/GhostClass.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="8cdb41d4407690691fb1ab5265ee0b7c" name="docs/HTML/media/images/I.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="9c75e77d6c1dc1697f225c0f8a90ba85" name="docs/HTML/media/images/L.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="e332ca15b0b48ddb60ea8042d0c55a7d" name="docs/HTML/media/images/leftbg.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="10d4789e288c445ab5e6c4b93d01c884" name="docs/HTML/media/images/Lminus.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="498f5c3f351867da496ace814682cbfd" name="docs/HTML/media/images/Lplus.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="430a5f2c8db7877324fd54b995f30107" name="docs/HTML/media/images/minus.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="8e57a2bcf3b3a4c9119bfe527c0039ea" name="docs/HTML/media/images/msgError.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="e0baa027fb1437dcd9b7961dd9ff78d9" name="docs/HTML/media/images/msgFatalError.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="ee72fd7e1b0fc53bd5be86872a7fda58" name="docs/HTML/media/images/msgHint.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="3b2d8ff173626a4e80c0abe7288d5151" name="docs/HTML/media/images/msgInformation.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="8f864567bf80d6c404a4e1d5a1498043" name="docs/HTML/media/images/msgWarning.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="ff1cb9ec62def194cf467514a7e5287e" name="docs/HTML/media/images/openfoldericon.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="1f0ca8116ffeafac272a3f1a8325e408" name="docs/HTML/media/images/pearlogo.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="423a8689bb4529829739407cf0727844" name="docs/HTML/media/images/plus.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="494900899cff26908133bbe0fe95e04b" name="docs/HTML/media/images/PrivateDataMember.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="de7cbf4c17416f4a848b9a93a2dd11d1" name="docs/HTML/media/images/PrivateMethod.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="58a9d097d37e7c5f110a4fb4ba221490" name="docs/HTML/media/images/PrivateProperty.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="4219f4709956d84819d25028d7863442" name="docs/HTML/media/images/ProtectedDataMember.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="1727d3a16e4f6f4685a86d533e9e9888" name="docs/HTML/media/images/ProtectedMethod.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="a96316caff1e789644a9529c1f407a95" name="docs/HTML/media/images/ProtectedProperty.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="8a1d408251591c08151557c09422e8a2" name="docs/HTML/media/images/PublicDataMember.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="a31153932f42776296ed1363a0d4d20c" name="docs/HTML/media/images/PublicMethod.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="cc2fbd7e0a1ea20800c52d21e6c6ec47" name="docs/HTML/media/images/PublicProperty.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="8647a09907f1a5c35a56aaf41e8e0132" name="docs/HTML/media/images/spacer.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="4947e9e2ff6fd11dcf32e0ba1eca0564" name="docs/HTML/media/images/spacer2.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="6346415134bebdc6fcba24a14e6a2f69" name="docs/HTML/media/images/T.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="237ad92fd30501a08557867f642b7b0a" name="docs/HTML/media/images/Thumbs.db" role="doc" />
-   <file baseinstalldir="Net" md5sum="83ced60c3a5307605dc25ef7df3800bc" name="docs/HTML/media/images/Tminus.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="f0b02c1ecc496aafce1ca1f78bc53ddc" name="docs/HTML/media/images/Tplus.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="070077afb7ff9d6cf57fd6f5bfb94fd8" name="docs/HTML/media/images/Types.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="baa32e2bd12b434128d9807c3797bfc3" name="docs/HTML/media/images/Variable.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="f900b22ecd57772030b63b1b584b49ff" name="docs/HTML/media/images/Vars.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="e4f1b2d3f998559804aa1ac3450d88ad" name="docs/HTML/media/images/TreeMenuJS/branch.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="335459315ad97fe76b7a7ccce9e4c57e" name="docs/HTML/media/images/TreeMenuJS/branchbottom.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="0573af115f27abdcefb8bfcd3ce4a3e1" name="docs/HTML/media/images/TreeMenuJS/branchtop.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="dfbc92a0046265d8b706e11f64d34967" name="docs/HTML/media/images/TreeMenuJS/Class.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="57f736ee1be5479dd462b5a6d7b27507" name="docs/HTML/media/images/TreeMenuJS/classFolder.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="76148501c75947dc3ee8d4c439c05d31" name="docs/HTML/media/images/TreeMenuJS/Disk.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="771e93f7e4b25ca10ac899086eac3f59" name="docs/HTML/media/images/TreeMenuJS/file.png" role="doc" />
-   <file baseinstalldir="Net" md5sum="3665b03f0b6b099595415224ccc68285" name="docs/HTML/media/images/TreeMenuJS/folder.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="024eff25cb2e48ada72f4ce9f48d5934" name="docs/HTML/media/images/TreeMenuJS/FolderOpened.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="1362378c7dee497c5ee78804dedb3f66" name="docs/HTML/media/images/TreeMenuJS/Functions.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="4d5a8ed6dc7cd5d6e71fcb6acd100955" name="docs/HTML/media/images/TreeMenuJS/line.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="9445d29997b70a66fbf5e9430db2b49c" name="docs/HTML/media/images/TreeMenuJS/linebottom.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="e64b766cbe159f3b4fac5fb4c11bf780" name="docs/HTML/media/images/TreeMenuJS/minus.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="fb07076002b84c04f14f19c7cf6fe332" name="docs/HTML/media/images/TreeMenuJS/minusbottom.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="4edfa5cd18f12847054c5a603c345c50" name="docs/HTML/media/images/TreeMenuJS/minustop.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="5a65d2890a595d8218d4d00e59c47e9d" name="docs/HTML/media/images/TreeMenuJS/plus.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="5ac0b1e10996aa9ad70730527842739d" name="docs/HTML/media/images/TreeMenuJS/plusbottom.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="d0ae25b71adb33404ed64bd1a131bfe7" name="docs/HTML/media/images/TreeMenuJS/plustop.gif" role="doc" />
-   <file baseinstalldir="Net" md5sum="0de1b4051df6c62eb055babce734c00e" name="docs/HTML/media/lib/classTree.js" role="doc" />
-   <file baseinstalldir="Net" md5sum="888fe16f88292fa98b8294e71e4bc7c1" name="docs/HTML/media/lib/tab.webfx.css" role="doc" />
-   <file baseinstalldir="Net" md5sum="6a2c040a84f65a5d6693f2eb7d251a22" name="docs/HTML/media/lib/tabpane.js" role="doc" />
-   <file baseinstalldir="Net" md5sum="e6d4926512906802282e58d6723b1c73" name="docs/HTML/media/lib/ua.js" role="doc" />
-   <file baseinstalldir="Net" md5sum="f2f39c6a779049fa10190d65a722e817" name="docs/HTML/Net_SmartIRC/mybot.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="b201dd0264976fd85e66d6d8c2582a30" name="docs/HTML/Net_SmartIRC/Net_SmartIRC.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="63d338272ee461565196f4fc4a7f5196" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_actionhandler.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="50a8620635deb6a696d552aaa5fe26af" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_base.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="d53e8545c560675ca7e30c15c8d7d5a6" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_channel.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="6719717e20b88f6cfca56c9baef0e2ab" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_channeluser.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="80b7589c62ba6630fee07513ed05fc9f" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_data.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="0ad883d23f2ca73f38843964b9d350dc" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_Error.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="19b30d1b24e103fc397b2a1fdb31bb17" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_irccommands.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="1d8a8617704197b7134c7717ca1b292d" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_ircuser.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="44a023dd207d1e58fee219af19faad60" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_listenfor.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="f2220a36187de7602719c783645acabc" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_messagehandler.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="d212ebf27e70879b06c7bc725a186fb5" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_timehandler.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="522d873c0c395a30b3b0ad9843bc3f3a" name="docs/HTML/Net_SmartIRC/Net_SmartIRC_user.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="e36707417297707e7f9ea64d626ff945" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example2_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="45f8d69d17395d43d33496ca3361c749" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example3_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="45f8d69d17395d43d33496ca3361c749" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example4_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="45f8d69d17395d43d33496ca3361c749" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example5_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="45f8d69d17395d43d33496ca3361c749" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example6_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="625a463fa426ad3feb5d075fb008395b" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example7_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="3ebbc8e7b24841265e502fc1890a0c0b" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_examples_example_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="17d75a0318075fd60acf7e6814b51d18" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_defines_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="37d6cdf0676f13345b8cc56ad99f123d" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_irccommands_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="613bcb62b98a324eef335d1c418956fd" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_messagehandler_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="0e027a3eb3fec0c90412c3c76127130c" name="docs/HTML/Net_SmartIRC/_SmartIRC-0.5.5_SmartIRC_php.html" role="doc" />
-   <file baseinstalldir="Net" md5sum="67be0902e2b13cb6597efd50a71625b7" name="examples/example.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="e41e971f79d67ad7db35e00b04650634" name="examples/example2.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="22f62d73c7d3487f3234e70832c070b2" name="examples/example3.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="716ae717b7138b90aa0f5004f33999e8" name="examples/example4.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="b60dac20a8875830d8bfe036cf9ff8a1" name="examples/example5.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="19f302e61709ac66129dabc8cee9326a" name="examples/example6.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="a8224bb442c1b0e90e24969afe562f9a" name="examples/example7.php" role="doc" />
-   <file baseinstalldir="Net" md5sum="756cc45ccc7bf7f9d977edad510b41fd" name="modules/PingFix.php" role="php" />
-   <file baseinstalldir="/" md5sum="fb98af6820f65c94ee5fcece2b8cf89a" name="Net/SmartIRC.php" role="php" />
-   <file baseinstalldir="/" md5sum="60919cb11afef5fd71ac87ceb40f0d17" name="Net/SmartIRC/defines.php" role="php" />
-   <file baseinstalldir="/" md5sum="a51a57461e06bbe1948b4d596c232d90" name="Net/SmartIRC/irccommands.php" role="php" />
-   <file baseinstalldir="/" md5sum="1cbafd40bbf48af788a6fa58ff4fc42b" name="Net/SmartIRC/messagehandler.php" role="php" />
-   <file baseinstalldir="Net" md5sum="9d26bf4959af3305ad446b65e727f178" name="CHANGELOG" role="doc" />
-   <file baseinstalldir="Net" md5sum="b9dd6657301b179e0bf33e0be7d5684d" name="CREDITS" role="doc" />
-   <file baseinstalldir="Net" md5sum="02763b491c66f35684494f64e2779a2f" name="FEATURES" role="doc" />
-   <file baseinstalldir="Net" md5sum="da2cc128149d52bea82c2e52b440f216" name="LICENSE" role="doc" />
-   <file baseinstalldir="Net" md5sum="d54da5e99b9c293c1d8f1bb43cdd33d7" name="README" role="doc" />
-  </dir>
+  <dir baseinstalldir="Net" name="/">
+   <dir name="docs">
+    <dir name="HTML">
+     <dir name="media">
+      <dir name="images">
+       <dir name="TreeMenuJS">
+        <file baseinstalldir="Net" name="branch.gif" role="doc" />
+        <file baseinstalldir="Net" name="branchbottom.gif" role="doc" />
+        <file baseinstalldir="Net" name="branchtop.gif" role="doc" />
+        <file baseinstalldir="Net" name="Class.gif" role="doc" />
+        <file baseinstalldir="Net" name="classFolder.gif" role="doc" />
+        <file baseinstalldir="Net" name="Disk.gif" role="doc" />
+        <file baseinstalldir="Net" name="file.png" role="doc" />
+        <file baseinstalldir="Net" name="folder.gif" role="doc" />
+        <file baseinstalldir="Net" name="FolderOpened.gif" role="doc" />
+        <file baseinstalldir="Net" name="Functions.gif" role="doc" />
+        <file baseinstalldir="Net" name="line.gif" role="doc" />
+        <file baseinstalldir="Net" name="linebottom.gif" role="doc" />
+        <file baseinstalldir="Net" name="minus.gif" role="doc" />
+        <file baseinstalldir="Net" name="minusbottom.gif" role="doc" />
+        <file baseinstalldir="Net" name="minustop.gif" role="doc" />
+        <file baseinstalldir="Net" name="plus.gif" role="doc" />
+        <file baseinstalldir="Net" name="plusbottom.gif" role="doc" />
+        <file baseinstalldir="Net" name="plustop.gif" role="doc" />
+       </dir> <!-- /docs/HTML/media/images/TreeMenuJS -->
+       <file baseinstalldir="Net" name="blank.png" role="doc" />
+       <file baseinstalldir="Net" name="checkerboard.gif" role="doc" />
+       <file baseinstalldir="Net" name="Class.gif" role="doc" />
+       <file baseinstalldir="Net" name="classFolder.gif" role="doc" />
+       <file baseinstalldir="Net" name="Constant.gif" role="doc" />
+       <file baseinstalldir="Net" name="Constants.gif" role="doc" />
+       <file baseinstalldir="Net" name="Constructor.gif" role="doc" />
+       <file baseinstalldir="Net" name="Destructor.gif" role="doc" />
+       <file baseinstalldir="Net" name="Disk.gif" role="doc" />
+       <file baseinstalldir="Net" name="error.gif" role="doc" />
+       <file baseinstalldir="Net" name="file.png" role="doc" />
+       <file baseinstalldir="Net" name="FolderClosed.gif" role="doc" />
+       <file baseinstalldir="Net" name="foldericon.png" role="doc" />
+       <file baseinstalldir="Net" name="FolderOpened.gif" role="doc" />
+       <file baseinstalldir="Net" name="Functions.gif" role="doc" />
+       <file baseinstalldir="Net" name="GhostClass.gif" role="doc" />
+       <file baseinstalldir="Net" name="I.png" role="doc" />
+       <file baseinstalldir="Net" name="L.png" role="doc" />
+       <file baseinstalldir="Net" name="leftbg.gif" role="doc" />
+       <file baseinstalldir="Net" name="Lminus.png" role="doc" />
+       <file baseinstalldir="Net" name="Lplus.png" role="doc" />
+       <file baseinstalldir="Net" name="minus.gif" role="doc" />
+       <file baseinstalldir="Net" name="msgError.gif" role="doc" />
+       <file baseinstalldir="Net" name="msgFatalError.gif" role="doc" />
+       <file baseinstalldir="Net" name="msgHint.gif" role="doc" />
+       <file baseinstalldir="Net" name="msgInformation.gif" role="doc" />
+       <file baseinstalldir="Net" name="msgWarning.gif" role="doc" />
+       <file baseinstalldir="Net" name="openfoldericon.png" role="doc" />
+       <file baseinstalldir="Net" name="pearlogo.gif" role="doc" />
+       <file baseinstalldir="Net" name="plus.gif" role="doc" />
+       <file baseinstalldir="Net" name="PrivateDataMember.gif" role="doc" />
+       <file baseinstalldir="Net" name="PrivateMethod.gif" role="doc" />
+       <file baseinstalldir="Net" name="PrivateProperty.gif" role="doc" />
+       <file baseinstalldir="Net" name="ProtectedDataMember.gif" role="doc" />
+       <file baseinstalldir="Net" name="ProtectedMethod.gif" role="doc" />
+       <file baseinstalldir="Net" name="ProtectedProperty.gif" role="doc" />
+       <file baseinstalldir="Net" name="PublicDataMember.gif" role="doc" />
+       <file baseinstalldir="Net" name="PublicMethod.gif" role="doc" />
+       <file baseinstalldir="Net" name="PublicProperty.gif" role="doc" />
+       <file baseinstalldir="Net" name="spacer.gif" role="doc" />
+       <file baseinstalldir="Net" name="spacer2.gif" role="doc" />
+       <file baseinstalldir="Net" name="T.png" role="doc" />
+       <file baseinstalldir="Net" name="Thumbs.db" role="doc" />
+       <file baseinstalldir="Net" name="Tminus.png" role="doc" />
+       <file baseinstalldir="Net" name="Tplus.png" role="doc" />
+       <file baseinstalldir="Net" name="Types.gif" role="doc" />
+       <file baseinstalldir="Net" name="Variable.gif" role="doc" />
+       <file baseinstalldir="Net" name="Vars.gif" role="doc" />
+      </dir> <!-- /docs/HTML/media/images -->
+      <dir name="lib">
+       <file baseinstalldir="Net" name="classTree.js" role="doc" />
+       <file baseinstalldir="Net" name="tab.webfx.css" role="doc" />
+       <file baseinstalldir="Net" name="tabpane.js" role="doc" />
+       <file baseinstalldir="Net" name="ua.js" role="doc" />
+      </dir> <!-- /docs/HTML/media/lib -->
+      <file baseinstalldir="Net" name="background.png" role="doc" />
+      <file baseinstalldir="Net" name="empty.png" role="doc" />
+      <file baseinstalldir="Net" name="style.css" role="doc" />
+      <file baseinstalldir="Net" name="TreeMenu.js" role="doc" />
+     </dir> <!-- /docs/HTML/media -->
+     <dir name="Net_SmartIRC">
+      <file baseinstalldir="Net" name="mybot.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_actionhandler.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_base.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_channel.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_channeluser.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_data.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_Error.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_irccommands.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_ircuser.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_listenfor.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_messagehandler.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_timehandler.html" role="doc" />
+      <file baseinstalldir="Net" name="Net_SmartIRC_user.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example2_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example3_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example4_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example5_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example6_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example7_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_SmartIRC_defines_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_SmartIRC_irccommands_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_SmartIRC_messagehandler_php.html" role="doc" />
+      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_SmartIRC_php.html" role="doc" />
+     </dir> <!-- /docs/HTML/Net_SmartIRC -->
+     <file baseinstalldir="Net" name="classtrees_Net_SmartIRC.html" role="doc" />
+     <file baseinstalldir="Net" name="elementindex.html" role="doc" />
+     <file baseinstalldir="Net" name="elementindex_Net_SmartIRC.html" role="doc" />
+     <file baseinstalldir="Net" name="errors.html" role="doc" />
+     <file baseinstalldir="Net" name="index.html" role="doc" />
+     <file baseinstalldir="Net" name="li_Net_SmartIRC.html" role="doc" />
+     <file baseinstalldir="Net" name="ric_CHANGELOG.html" role="doc" />
+     <file baseinstalldir="Net" name="ric_README.html" role="doc" />
+    </dir> <!-- /docs/HTML -->
+    <file baseinstalldir="Net" name="DOCUMENTATION" role="doc" />
+    <file baseinstalldir="Net" name="HOWTO" role="doc" />
+   </dir> <!-- /docs -->
+   <dir name="examples">
+    <file baseinstalldir="Net" name="example.php" role="doc" />
+    <file baseinstalldir="Net" name="example2.php" role="doc" />
+    <file baseinstalldir="Net" name="example3.php" role="doc" />
+    <file baseinstalldir="Net" name="example4.php" role="doc" />
+    <file baseinstalldir="Net" name="example5.php" role="doc" />
+    <file baseinstalldir="Net" name="example6.php" role="doc" />
+    <file baseinstalldir="Net" name="example7.php" role="doc" />
+   </dir> <!-- /examples -->
+   <dir name="modules">
+    <file baseinstalldir="Net" name="PingFix.php" role="php" />
+   </dir> <!-- /modules -->
+   <dir name="SmartIRC">
+    <file baseinstalldir="Net" name="defines.php" role="php" />
+    <file baseinstalldir="Net" name="irccommands.php" role="php" />
+    <file baseinstalldir="Net" name="messagehandler.php" role="php" />
+   </dir> <!-- /SmartIRC -->
+   <file baseinstalldir="Net" name="CHANGELOG" role="doc" />
+   <file baseinstalldir="Net" name="CREDITS" role="doc" />
+   <file baseinstalldir="Net" name="FEATURES" role="doc" />
+   <file baseinstalldir="Net" name="LICENSE" role="doc" />
+   <file baseinstalldir="Net" name="README" role="doc" />
+   <file baseinstalldir="Net" name="SmartIRC.php" role="php" />
+  </dir> <!-- / -->
  </contents>
  <dependencies>
   <required>
@@ -686,13 +707,13 @@ Req #16526 Colour and bold codes are not supported - giggsey
   <release>
    <version>
     <release>1.1.0</release>
-    <api>1.1.0</api>
+    <api>1.0.0</api>
    </version>
    <stability>
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2014-02-05</date>
+   <date>2010-10-25</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
 Bug #12539 patch: created a stock module as a stopgap fix
