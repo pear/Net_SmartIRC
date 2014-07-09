@@ -46,12 +46,18 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     {
         if ($this->_channelsyncing) {
             if ($this->_nick == $ircdata->nick) {
-                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: joining channel: '.$ircdata->channel, __FILE__, __LINE__);
+                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                    'DEBUG_CHANNELSYNCING: joining channel: '.$ircdata->channel,
+                    __FILE__, __LINE__
+                );
                 $channel = new Net_SmartIRC_channel();
                 $channel->name = $ircdata->channel;
                 $microint = $this->_microint();
                 $channel->synctime_start = $microint;
-                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: synctime_start for '.$ircdata->channel.' set to: '.$microint, __FILE__, __LINE__);
+                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                    'DEBUG_CHANNELSYNCING: synctime_start for '
+                    .$ircdata->channel.' set to: '.$microint, __FILE__, __LINE__
+                );
                 $this->_channels[strtolower($channel->name)] = &$channel;
                 
                 // the class will get his own who data from the whole who channel list
@@ -63,7 +69,10 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $this->who($ircdata->nick);
             }
             
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '.$ircdata->nick.' joins channel: '.$ircdata->channel, __FILE__, __LINE__);
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '
+                .$ircdata->nick.' joins channel: '.$ircdata->channel,
+                __FILE__, __LINE__
+            );
             $channel = &$this->_channels[strtolower($ircdata->channel)];
             $user = new Net_SmartIRC_channeluser();
             $user->nick = $ircdata->nick;
@@ -112,7 +121,9 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     if ($ircdata->nick == $uservalue->nick) {
                         // found him
                         // time for updating the object and his nickname
-                        $channel->users[$lowerednewnick] = $channel->users[$lowerednick];
+                        $channel->users[$lowerednewnick]
+                            = $channel->users[$lowerednick]
+                        ;
                         $channel->users[$lowerednewnick]->nick = $newnick;
                         
                         if ($lowerednewnick != $lowerednick) {
@@ -145,7 +156,10 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         } else if ($this->_channelsyncing) {
             // it's not, and we do channel syching
             $channel = &$this->_channels[strtolower($ircdata->channel)];
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: updating channel mode for: '.$channel->name, __FILE__, __LINE__);
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                'DEBUG_CHANNELSYNCING: updating channel mode for: '
+                .$channel->name, __FILE__, __LINE__
+            );
             $mode = $ircdata->rawmessageex[3];
             $parameters = array_slice($ircdata->rawmessageex, 4);
             
@@ -169,12 +183,20 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         $nick = array_shift($parameters);
                         $lowerednick = strtolower($nick);
                         if ($add) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding founder: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: adding founder: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             $channel->founders[$nick] = true;
                             $channel->users[$lowerednick]->founder = true;
                         }
                         if ($remove) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing founder: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: removing founder: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             unset($channel->founders[$nick]);
                             $channel->users[$lowerednick]->founder = false;
                         }
@@ -184,12 +206,20 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         $nick = array_shift($parameters);
                         $lowerednick = strtolower($nick);
                         if ($add) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding admin: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: adding admin: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             $channel->admins[$nick] = true;
                             $channel->users[$lowerednick]->admin = true;
                         }
                         if ($remove) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing admin: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: removing admin: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             unset($channel->admins[$nick]);
                             $channel->users[$lowerednick]->admin = false;
                         }
@@ -199,12 +229,20 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         $nick = array_shift($parameters);
                         $lowerednick = strtolower($nick);
                         if ($add) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: adding op: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             $channel->ops[$nick] = true;
                             $channel->users[$lowerednick]->op = true;
                         }
                         if ($remove) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: removing op: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             unset($channel->ops[$nick]);
                             $channel->users[$lowerednick]->op = false;
                         }
@@ -214,12 +252,20 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         $nick = array_shift($parameters);
                         $lowerednick = strtolower($nick);
                         if ($add) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding half-op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: adding half-op: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             $channel->hops[$nick] = true;
                             $channel->users[$lowerednick]->hop = true;
                         }
                         if ($remove) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing half-op: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: removing half-op: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             unset($channel->hops[$nick]);
                             $channel->users[$lowerednick]->hop = false;
                         }
@@ -229,12 +275,20 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         $nick = array_shift($parameters);
                         $lowerednick = strtolower($nick);
                         if ($add) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding voice: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: adding voice: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             $channel->voices[$nick] = true;
                             $channel->users[$lowerednick]->voice = true;
                         }
                         if ($remove) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing voice: '.$nick.' to channel: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: removing voice: '.$nick
+                                .' to channel: '.$channel->name,
+                                __FILE__, __LINE__
+                            );
                             unset($channel->voices[$nick]);
                             $channel->users[$lowerednick]->voice = false;
                         }
@@ -243,11 +297,17 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     case 'k':
                         $key = array_shift($parameters);
                         if ($add) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: stored channel key for: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: stored channel key for: '
+                                .$channel->name, __FILE__, __LINE__
+                            );
                             $channel->key = $key;
                         }
                         if ($remove) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removed channel key for: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: removed channel key for: '
+                                .$channel->name, __FILE__, __LINE__
+                            );
                             $channel->key = '';
                         }
                         break;
@@ -255,11 +315,17 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     case 'l':
                         if ($add) {
                             $limit = array_shift($parameters);
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: stored user limit for: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: stored user limit for: '
+                                .$channel->name, __FILE__, __LINE__
+                            );
                             $channel->user_limit = $limit;
                         }
                         if ($remove) {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removed user limit for: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: removed user limit for: '
+                                .$channel->name, __FILE__, __LINE__
+                            );
                             $channel->user_limit = false;
                         }
                         break;
@@ -269,20 +335,34 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         if ($mode[$i] == 'b') {
                             $hostmask = array_shift($parameters);
                             if ($add) {
-                                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: adding ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
+                                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                    'DEBUG_CHANNELSYNCING: adding ban: '
+                                    .$hostmask.' for: '.$channel->name,
+                                    __FILE__, __LINE__
+                                );
                                 $channel->bans[$hostmask] = true;
                             }
                             if ($remove) {
-                                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: removing ban: '.$hostmask.' for: '.$channel->name, __FILE__, __LINE__);
+                                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                    'DEBUG_CHANNELSYNCING: removing ban: '
+                                    .$hostmask.' for: '.$channel->name,
+                                    __FILE__, __LINE__
+                                );
                                 unset($channel->bans[$hostmask]);
                             }
                         } else {
-                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: storing unknown channelmode ('.$mode.') in channel->mode for: '.$channel->name, __FILE__, __LINE__);
+                            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                                'DEBUG_CHANNELSYNCING: storing unknown channelmode ('
+                                .$mode.') in channel->mode for: '
+                                .$channel->name, __FILE__, __LINE__
+                            );
                             if ($add) {
                                 $channel->mode .= $mode[$i];
                             }
                             if ($remove) {
-                                $channel->mode = str_replace($mode[$i], '', $channel->mode);
+                                $channel->mode = str_replace($mode[$i], '',
+                                    $channel->mode
+                                );
                             }
                         }
                 }
@@ -525,10 +605,13 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     .' set to: '.$microint, __FILE__, __LINE__
                 );
                 
-                $channel->synctime = ((float)$channel->synctime_stop - (float)$channel->synctime_start);
+                $channel->synctime = (float)$channel->synctime_stop
+                    - (float)$channel->synctime_start
+                ;
                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
-                    'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel.' in '
-                    .round($channel->synctime, 2).' secs', __FILE__, __LINE__
+                    'DEBUG_CHANNELSYNCING: synced channel '.$ircdata->channel
+                    .' in '.round($channel->synctime, 2).' secs',
+                    __FILE__, __LINE__
                 );
             }
         }
