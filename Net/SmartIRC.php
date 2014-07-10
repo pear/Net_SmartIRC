@@ -154,7 +154,12 @@ class Net_SmartIRC_base
      * @var array
      * @access private
      */
-    private $_messagebuffer = array();
+    private $_messagebuffer = array(
+		SMARTIRC_CRITICAL => array(),
+		SMARTIRC_HIGH     => array(),
+		SMARTIRC_MEDIUM   => array(),
+		SMARTIRC_LOW 	  => array(),
+	);
     
     /**
      * @var integer
@@ -438,15 +443,10 @@ class Net_SmartIRC_base
      */
     public function __construct()
     {
-        // precheck
-        $this->_checkPHPVersion();
+        // check php version
         
         ob_implicit_flush(true);
         @set_time_limit(0);
-        $this->_messagebuffer[SMARTIRC_CRITICAL] = array();
-        $this->_messagebuffer[SMARTIRC_HIGH] = array();
-        $this->_messagebuffer[SMARTIRC_MEDIUM] = array();
-        $this->_messagebuffer[SMARTIRC_LOW] = array();
         
         $this->replycodes = &$GLOBALS['SMARTIRC_replycodes'];
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
@@ -476,40 +476,38 @@ class Net_SmartIRC_base
      */
     public function setUseSockets($boolean)
     {
-        if ($boolean === true) {
-            if (@extension_loaded('sockets')) {
+        if (!$boolean) {
+            $this->_usesockets = false;
+            return;
+        }
+        
+        if (@extension_loaded('sockets')) {
+            $this->_usesockets = true;
+        } else {
+            $this->log(SMARTIRC_DEBUG_NOTICE,
+                'WARNING: socket extension not loaded, trying to load it...',
+                __FILE__, __LINE__
+            );
+            
+            if (strtoupper(substr(PHP_OS, 0,3) == 'WIN')) {
+                $load_status = @dl('php_sockets.dll');
+            } else {
+                $load_status = @dl('sockets.so');
+            }
+
+            if ($load_status) {
+                $this->log(SMARTIRC_DEBUG_NOTICE,
+                    'WARNING: socket extension successfully loaded',
+                    __FILE__, __LINE__
+                );
                 $this->_usesockets = true;
             } else {
                 $this->log(SMARTIRC_DEBUG_NOTICE,
-                    'WARNING: socket extension not loaded, trying to load it...',
-                    __FILE__, __LINE__
+                    "WARNING: couldn't load the socket extension, "
+                    .'will use fsocks instead', __FILE__, __LINE__
                 );
-                
-                if (strtoupper(substr(PHP_OS, 0,3) == 'WIN')) {
-                    $load_status = @dl('php_sockets.dll');
-                } else {
-                    $load_status = @dl('sockets.so');
-                }
- 
-                if ($load_status) {
-                    $this->log(SMARTIRC_DEBUG_NOTICE,
-                        'WARNING: socket extension succesfully loaded',
-                        __FILE__, __LINE__
-                    );
-                    $this->_usesockets = true;
-                } else {
-                    $this->log(SMARTIRC_DEBUG_NOTICE,
-                        'WARNING: couldn\'t load the socket extension',
-                        __FILE__, __LINE__
-                    );
-                    $this->log(SMARTIRC_DEBUG_NOTICE,
-                        'WARNING: your PHP build doesn\'t support real sockets, '
-                        .'will use fsocks instead', __FILE__, __LINE__);
-                    $this->_usesockets = false;
-                }
+                $this->_usesockets = false;
             }
-        } else {
-            $this->_usesockets = false;
         }
     }
     
@@ -608,18 +606,14 @@ class Net_SmartIRC_base
      */
     public function setChannelSyncing($boolean)
     {
-        if (is_bool($boolean)) {
-            $this->_channelsyncing = $boolean;
-        } else {
-            $this->_channelsyncing = false;
-        }
-        
-        if ($this->_channelsyncing == true) {
+        if ($boolean) {
+            $this->_channelsyncing = true;
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
                 'DEBUG_CHANNELSYNCING: Channel syncing enabled',
                 __FILE__, __LINE__
             );
         } else {
+            $this->_channelsyncing = false;
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
                 'DEBUG_CHANNELSYNCING: Channel syncing disabled',
                 __FILE__, __LINE__
@@ -639,17 +633,13 @@ class Net_SmartIRC_base
      */
     public function setUserSyncing($boolean)
     {
-        if (is_bool($boolean)) {
-            $this->_usersyncing = $boolean;
-        } else {
-            $this->_usersyncing = false;
-        }
-        
-        if ($this->_usersyncing == true) {
-            $this->log(SMARTIRC_DEBUG_USERSYNCING,
+        if ($boolean) {
+            $this->_usersyncing = true;
+			$this->log(SMARTIRC_DEBUG_USERSYNCING,
                 'DEBUG_USERSYNCING: User syncing enabled', __FILE__, __LINE__);
         } else {
-            $this->log(SMARTIRC_DEBUG_USERSYNCING,
+            $this->_usersyncing = false;
+			$this->log(SMARTIRC_DEBUG_USERSYNCING,
                 'DEBUG_USERSYNCING: User syncing disabled', __FILE__, __LINE__);
         }
     }
@@ -796,8 +786,8 @@ class Net_SmartIRC_base
      */
     public function setAutoReconnect($boolean)
     {
-        if (is_bool($boolean)) {
-            $this->_autoreconnect = $boolean;
+        if ($boolean) {
+            $this->_autoreconnect = true;
         } else {
             $this->_autoreconnect = false;
         }
@@ -812,8 +802,8 @@ class Net_SmartIRC_base
      */
     public function setAutoRetry($boolean)
     {
-        if (is_bool($boolean)) {
-            $this->_autoretry = $boolean;
+        if ($boolean) {
+            $this->_autoretry = true;
         } else {
             $this->_autoretry = false;
         }
@@ -887,7 +877,7 @@ class Net_SmartIRC_base
     }
 
     /**
-     * Sets wheter the script should be run as a daemon or not
+     * Sets whether the script should be run as a daemon or not
      * ( actually disables/enables ignore_user_abort() )
      *
      * @param boolean $boolean
@@ -896,7 +886,7 @@ class Net_SmartIRC_base
      */
     public function setRunAsDaemon($boolean)
     {
-        if ($boolean === true) {
+        if ($boolean) {
             $this->_runasdaemon = true;
             ignore_user_abort(true);
         } else {
@@ -968,7 +958,7 @@ class Net_SmartIRC_base
      * @see SMARTIRC_DEBUG_NOTICE
      * @param integer $level bit constants (SMARTIRC_DEBUG_*)
      * @param string $entry the new log entry
-     * @return void
+     * @return boolean
      * @access public
      */
     public function log($level, $entry, $file = null, $line = null)
@@ -988,16 +978,14 @@ class Net_SmartIRC_base
         if (!($level & $this->_debug)
             || $this->_logdestination == SMARTIRC_NONE
         ) {
-            return;
+            return true;
         }
         
         if (substr($entry, -1) != "\n") {
             $entry .= "\n";
         }
         
-        if ($file !== null
-            && $line !== null
-        ) {
+        if ($file !== null && $line !== null) {
             $file = basename($file);
             $entry = $file.'('.$line.') '.$entry;
         } else {
@@ -1076,7 +1064,7 @@ class Net_SmartIRC_base
      */
     public function &getChannel($channelname)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE,
                 'WARNING: getChannel() is called and the required Channel '
                 .'Syncing is not activated!', __FILE__, __LINE__
@@ -1101,9 +1089,11 @@ class Net_SmartIRC_base
      */
     public function &getUser($channelname, $username)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: getUser() is called and'
-            .' the required Channel Syncing is not activated!', __FILE__, __LINE__);
+                .' the required Channel Syncing is not activated!',
+                __FILE__, __LINE__
+            );
             return self::NULLGUARD;
         }
         
@@ -1204,7 +1194,7 @@ class Net_SmartIRC_base
         $this->_lasttx = $this->_lastrx;
         $this->_updatestate();
         
-        return $result !== false;
+        return ($result !== false);
     }
     
     /**
@@ -1344,7 +1334,8 @@ class Net_SmartIRC_base
         
         if (!is_numeric($usermode)) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: login() usermode ('
-                .$usermode.') is not valid, will use 0 instead', __FILE__, __LINE__
+                .$usermode.') is not valid, will use 0 instead',
+                __FILE__, __LINE__
             );
             $usermode = 0;
         }
@@ -1401,7 +1392,7 @@ class Net_SmartIRC_base
      */
     public function isJoined($channel, $nickname = null)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isJoined() is called '
                 .'and the required Channel Syncing is not activated!',
                 __FILE__, __LINE__
@@ -1430,7 +1421,7 @@ class Net_SmartIRC_base
      */
     public function isFounder($channel, $nickname = null)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isFounder() is called '
                 .'and the required Channel Syncing is not activated!',
                 __FILE__, __LINE__
@@ -1460,7 +1451,7 @@ class Net_SmartIRC_base
      */
     public function isAdmin($channel, $nickname = null)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isAdmin() is called '
                 .'and the required Channel Syncing is not activated!',
                 __FILE__, __LINE__
@@ -1490,7 +1481,7 @@ class Net_SmartIRC_base
      */
     public function isOpped($channel, $nickname = null)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isOpped() is called '
                 .'and the required Channel Syncing is not activated!',
                 __FILE__, __LINE__
@@ -1520,7 +1511,7 @@ class Net_SmartIRC_base
      */
     public function isHopped($channel, $nickname = null)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isHopped() is called '
                 .'and the required Channel Syncing is not activated!',
                 __FILE__, __LINE__
@@ -1550,7 +1541,7 @@ class Net_SmartIRC_base
      */
     public function isVoiced($channel, $nickname = null)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isVoiced() is called '
                 .'and the required Channel Syncing is not activated!',
                 __FILE__, __LINE__
@@ -1580,7 +1571,7 @@ class Net_SmartIRC_base
      */
     public function isBanned($channel, $hostmask)
     {
-        if ($this->_channelsyncing != true) {
+        if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: isBanned() is called '
                 .'and the required Channel Syncing is not activated!',
                 __FILE__, __LINE__
@@ -1589,8 +1580,9 @@ class Net_SmartIRC_base
         }
         
         return ($this->isJoined($channel)
-            && array_search($hostmask, $this->_channels[strtolower($channel)]->bans)
-                !== false
+            && array_search($hostmask,
+                $this->_channels[strtolower($channel)]->bans
+            ) !== false
         );
     }
     
@@ -1624,21 +1616,21 @@ class Net_SmartIRC_base
     public function listenOnce()
     {
         // TODO: inspect this function to make sure it works right
-        if ($this->_state() == SMARTIRC_STATE_CONNECTED) {
-            $this->_rawreceive();
-            if ($this->_connectionerror) {
-                if ($this->_autoreconnect) {
-                    $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will reconnect!', __FILE__, __LINE__);
-                    $this->reconnect();
-                } else {
-                    $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will disconnect!', __FILE__, __LINE__);
-                    $this->disconnect();
-                }
-            }
-            return true;
-        } else {
+        if ($this->_state() != SMARTIRC_STATE_CONNECTED) {
             return false;
         }
+        
+        $this->_rawreceive();
+        if ($this->_connectionerror) {
+            if ($this->_autoreconnect) {
+                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will reconnect!', __FILE__, __LINE__);
+                $this->reconnect();
+            } else {
+                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will disconnect!', __FILE__, __LINE__);
+                $this->disconnect();
+            }
+        }
+        return true;
     }
     
     /**
@@ -1986,7 +1978,7 @@ class Net_SmartIRC_base
     
     // <private methods>
     /**
-     * changes a already used nickname to a new nickname plus 3 random digits
+     * changes an already used nickname to a new nickname plus 3 random digits
      *
      * @return void
      * @access private
@@ -2143,7 +2135,7 @@ class Net_SmartIRC_base
      */
     private function _checktimeout()
     {
-        if ($this->_autoreconnect == true) {
+        if ($this->_autoreconnect) {
             $timestamp = time();
             if ($this->_lastrx < ($timestamp - $this->_rxtimeout)) {
                 $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
@@ -2164,9 +2156,9 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sends a raw message to the IRC server (don't use this!!)
+     * sends a raw message to the IRC server
      *
-     * Use message() or send() instead.
+     * Don't use this directly! Use message() or send() instead.
      *
      * @param string $data
      * @return boolean
@@ -2192,11 +2184,11 @@ class Net_SmartIRC_base
         if ($result === false) {
             // writing to the socket failed, means the connection is broken
             $this->_connectionerror = true;
-            return false;
         } else {
             $this->_lasttx = time();
-            return true;
         }
+        
+        return ($result !== false);
     }
     
     /**
@@ -2382,22 +2374,22 @@ class Net_SmartIRC_base
      */
     private function _selecttimeout()
     {
-        if ($this->_messagebuffersize == 0) {
-            $this->_selecttimeout = null;
-            
-            if ($this->_mintimer) {
-                $this->_calculateselecttimeout($this->_mintimer);
-            }
-            
-            if ($this->_autoreconnect) {
-                $this->_calculateselecttimeout($this->_rxtimeout*1000);
-            }
-            
-            $this->_calculateselecttimeout($this->_maxtimer);
-            return $this->_selecttimeout;
-        } else {
+        if ($this->_messagebuffersize != 0) {
             return $this->_senddelay;
         }
+        
+        $this->_selecttimeout = null;
+        
+        if ($this->_mintimer) {
+            $this->_calculateselecttimeout($this->_mintimer);
+        }
+        
+        if ($this->_autoreconnect) {
+            $this->_calculateselecttimeout($this->_rxtimeout*1000);
+        }
+        
+        $this->_calculateselecttimeout($this->_maxtimer);
+        return $this->_selecttimeout;
     }
     
     /**
@@ -2659,7 +2651,7 @@ class Net_SmartIRC_base
                 );
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER,
                     'DEBUG_MESSAGEHANDLER: this IRC server ('.$this->_address
-                    .':'.$this->port.") doesn't conform to RFC 2812!",
+                    .") doesn't conform to RFC 2812!",
                     __FILE__, __LINE__
                 );
                 return false;
@@ -2922,15 +2914,6 @@ class Net_SmartIRC_base
                 }
             }
         }
-    }
-    
-    /**
-     * @return void
-     * @access private
-     */
-    private function _checkPHPVersion()
-    {
-        // doing nothing at the moment
     }
     
     /**
@@ -3353,7 +3336,7 @@ class Net_SmartIRC_listenfor
             'DEBUG_ACTIONHANDLER: listenfor handler called', __FILE__, __LINE__
         );
         $this->result[] = $ircdata;
-        $irc->disconnect(true);
+        $irc->disconnect();
     }
 }
 
