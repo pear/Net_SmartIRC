@@ -50,6 +50,12 @@ require_once 'Net/SmartIRC/defines.php';
 define('SMARTIRC_VERSION', '1.1.0-dev ($Revision$)');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+    die('Your version of PHP does not support this version of SmartIRC! '
+        .'Please upgrade to a newer version of PHP.'
+    );
+}
+
 /**
  * main SmartIRC class
  *
@@ -130,7 +136,7 @@ class Net_SmartIRC_base
      * @var boolean
      * @access private
      */
-    private $_state = false;
+    private $_state = SMARTIRC_STATE_DISCONNECTED;
     
     /**
      * @var array
@@ -295,7 +301,7 @@ class Net_SmartIRC_base
      * @var string
      * @access private
      */
-    private $_ctcpversion;
+    private $_ctcpversion = SMARTIRC_VERSIONSTRING;
     
     /**
      * @var mixed
@@ -441,19 +447,25 @@ class Net_SmartIRC_base
      * @access public
      * @return void
      */
-    public function __construct()
+    public function __construct($params = array())
     {
-        // check php version
-        
         ob_implicit_flush(true);
         @set_time_limit(0);
         
         $this->replycodes = &$GLOBALS['SMARTIRC_replycodes'];
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
         
-        // hack till PHP allows (PHP5) $object->somemethod($param)->memberofobject
+        // you'll want to pass an array that includes keys like:
+        // Modulepath, Debug, UseSockets, ChannelSyncing, AutoRetry, RunAsDaemon
+        // so we can call their setters here
+        foreach ($params as $varname => $val) {
+            $funcname = 'set' . $varname;
+            $this->$funcname($val);
+        }
+        
+        // PHP allows $this->getChannel($param)->memberofobject,
+        // but we need to not break BC.
         $this->channel = &$this->_channels;
-        // another hack
         $this->user = &$this->_users;
         
         if (isset($_SERVER['REQUEST_METHOD'])) {
@@ -478,7 +490,7 @@ class Net_SmartIRC_base
     {
         if (!$boolean) {
             $this->_usesockets = false;
-            return;
+            return true;
         }
         
         if (@extension_loaded('sockets')) {
@@ -489,13 +501,11 @@ class Net_SmartIRC_base
                 __FILE__, __LINE__
             );
             
-            if (strtoupper(substr(PHP_OS, 0,3) == 'WIN')) {
-                $load_status = @dl('php_sockets.dll');
-            } else {
-                $load_status = @dl('sockets.so');
-            }
-
-            if ($load_status) {
+            if ((strtoupper(substr(PHP_OS, 0,3)) == 'WIN'
+                    && @dl('php_sockets.dll')
+                )
+                || @dl('sockets.so')
+            ) {
                 $this->log(SMARTIRC_DEBUG_NOTICE,
                     'WARNING: socket extension successfully loaded',
                     __FILE__, __LINE__
@@ -509,6 +519,8 @@ class Net_SmartIRC_base
                 $this->_usesockets = false;
             }
         }
+        
+        return $this->_usesockets;
     }
     
     /**
@@ -524,6 +536,10 @@ class Net_SmartIRC_base
     public function setBindAddress($addr = null, $port = 0)
     {
         if ($this->_usesockets) {
+            if ($port == 0 && ($cpos = strpos($addr, ':'))) {
+                $addr = substr($addr, 0, $cpos);
+                $port = substr($addr, $cpos + 1);
+            }
             $this->bindaddress = $addr;
             $this->bindport = $port;
         }
@@ -1212,7 +1228,7 @@ class Net_SmartIRC_base
      */
     function disconnect($quick = false)
     {
-        if ($this->_state() != SMARTIRC_STATE_CONNECTED) {
+        if ($this->_updatestate() != SMARTIRC_STATE_CONNECTED) {
             return false;
         }
         
@@ -1597,7 +1613,7 @@ class Net_SmartIRC_base
      */
     public function listen()
     {
-        while ($this->_state() == SMARTIRC_STATE_CONNECTED) {
+        while ($this->_updatestate() == SMARTIRC_STATE_CONNECTED) {
             $this->listenOnce();
         }
             
@@ -1616,7 +1632,7 @@ class Net_SmartIRC_base
     public function listenOnce()
     {
         // TODO: inspect this function to make sure it works right
-        if ($this->_state() != SMARTIRC_STATE_CONNECTED) {
+        if ($this->_updatestate() != SMARTIRC_STATE_CONNECTED) {
             return false;
         }
         
@@ -2166,7 +2182,7 @@ class Net_SmartIRC_base
      */
     private function _rawsend($data)
     {
-        if ($this->_state() != SMARTIRC_STATE_CONNECTED) {
+        if ($this->_updatestate() != SMARTIRC_STATE_CONNECTED) {
             return false;
         }
         
@@ -2204,15 +2220,15 @@ class Net_SmartIRC_base
         
         $this->_checkbuffer();
         
-        $timeout = $this->_selecttimeout();
         if ($this->_usesockets) {
-            $sread = array($this->_socket);
             // this will trigger a warning when catching a signal
-            $result = @socket_select($sread, $w = null, $e = null, 0, $timeout*1000);
+            $result = @socket_select(array($this->_socket), $w = null,
+                $e = null, 0, $this->_selecttimeout() * 1000
+            );
             
             if ($result == 1) {
                 // the socket got data to read
-                $rawdata = socket_read($this->_socket, 10240);
+                $rawdata = socket_read($this->_socket, 1024);
             } else if ($result === false) {
                 if (socket_last_error() == 4) {
                     // we got hit with a SIGHUP signal
@@ -2237,7 +2253,7 @@ class Net_SmartIRC_base
             }
         } else {
             usleep($this->_receivedelay*1000);
-            $rawdata = fread($this->_socket, 10240);
+            $rawdata = fread($this->_socket, 1024);
         }
         
         if ($rawdata === false) {
@@ -2595,7 +2611,7 @@ class Net_SmartIRC_base
     }
     
     /**
-     * updates the current connection state
+     * updates and returns the current connection state
      *
      * @return boolean
      * @access private
@@ -2607,28 +2623,14 @@ class Net_SmartIRC_base
             if ($this->_socket !== false
                 && (strtolower($rtype) == 'socket' || $rtype == 'stream')
             ) {
-                $this->_state = true;
-                return true;
+                $this->_state = SMARTIRC_STATE_CONNECTED;
             }
         } else {
-            $this->_state = false;
+            $this->_state = SMARTIRC_STATE_DISCONNECTED;
             $this->_loggedin = false;
-            return false;
         }
-    }
-    
-    /**
-     * returns the current connection state
-     *
-     * @return integer SMARTIRC_STATE_CONNECTED or SMARTIRC_STATE_DISCONNECTED
-     * @access private
-     */
-    private function _state()
-    {
-        return ($this->_updatestate())
-            ? SMARTIRC_STATE_CONNECTED
-            : SMARTIRC_STATE_DISCONNECTED
-        ;
+        
+        return $this->_state;
     }
     
     /**

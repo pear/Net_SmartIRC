@@ -1,46 +1,19 @@
 todo:
 
-$irc = new Net_SmartIRC(); what do we need in the constructor?
-
-replycodes are in defines.php and public vars in base class??
-public $channel, $user? make private + getters/setters... + __get/__set for BC?
-
-implement php version check. probably at least 5.0
-get rid of hacks in __construct as well as global references
-
-move logger out to its own class and pass in as a dependency w/ class consts
-	log()
-	setLogDestination()
-	setLogFile()
-	
-
 make new function to rename setDebug() to setDebugLevel(), like setChannelSynching
 make function to handle deprecated renamed function calls??
 fix method names with improper camel case?
 
 do we need set/start/stop/showBenchmark()?
 
-set _ctcpversion in ___construct?
-
 set up class constants for base class for methods that appear to need them
 
 organize methods by type/purpose and by alphabet
 
 todo comment in connect()
-
-evaluate propriety of return values on all methods
-
-change most defines to class constants
-
-why would we need connect() and login() to be called separately?
-
 todo on listenOnce()
 
-actionhandler is already a separate class, but not enough. see registerActionhandler()
-also registerTimehandler()
-
-loadModule() should be able to take any class name
-also it needs to be pulling in module classes that have the proper iface
+evaluate propriety of return values on all methods
 
 why do we have send() and _send()?
 
@@ -48,10 +21,7 @@ _checkBuffer() may not work right
 
 _rawReceive() says 'global $bot;' ...BAD!
 
-* some of the commands that send messages trigger server responses.
-* those commands need to start listeners for those responses that confirm state.
-
-integrate my ping fix into base code
+integrate my ping fix into base code somehow.
 
 _selecttimeout() may have an easier way of being written without needing calculateselecttimeout()
 
@@ -67,5 +37,30 @@ classes are chained together with inheritance. making a new Net_SmartIRC() calls
 Net_SmartIRC <- *_messagehandler <- *_irccommands <- *_base
 like concatenating classes or something. crazy. fix it.
 
-then we have several structs, basically. is that the best way to do it?
-(data, actionhandler, timehandler, channel, user, channeluser<-user, ircuser<-user)
+autoreconnect shouldn't be an option. it should be hard coded as true.
+
+there needs to be a stoplisten method that a bot can call that returns control to the calling script.
+
+**API** replycodes are in defines.php and public vars in base class??
+**API** public $channel, $user? make private + getters/setters... + __get/__set for BC?
+**API** move logger out to its own class and pass in as a dependency w/ class consts
+	log()
+	setLogDestination()
+	setLogFile()
+**API** change most defines to class constants
+**API** why would we need connect() and login() to be called separately?
+**API** loadModule() should be able to take any class name
+	- also it needs to be pulling in module classes that have the proper iface
+**API** registerTimeHandler should probably convert times from s to ms internally
+**API** then we have several structs, basically. is that the best way to do it?
+	(data, actionhandler, timehandler, channel, user, channeluser<-user, ircuser<-user)
+
+
+actionhandler is already a separate class, but not enough. see registerActionhandler()
+also registerTimehandler()
+
+* some of the commands that send messages trigger server responses.
+* those commands need to start listeners for those responses that confirm state.
+* and then do something on failure.
+
+test non-socket usage!

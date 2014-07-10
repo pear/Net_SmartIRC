@@ -31,19 +31,17 @@ class mybot
 {
     function onjoin_greeting(&$irc, &$data)
     {
-        // if _we_ join, don't greet ourself, just jump out via return
-        if ($data->nick == $irc->_nick)
-            return;
-        
-        // now check if this is the right channel
-        if ($data->channel == '#test')
+        // if _we_ join, don't greet ourself
+        // then check if this is the right channel
+        if ($data->nick != $irc->_nick && $data->channel == '#test') {
             // it is, lets greet the joint user
             $irc->message(SMARTIRC_TYPE_CHANNEL, '#test', 'hi '.$data->nick);
+        }
     }
 }
 
-$bot = &new mybot();
-$irc = &new Net_SmartIRC();
+$bot = new mybot();
+$irc = new Net_SmartIRC();
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(TRUE);
 $irc->registerActionhandler(SMARTIRC_TYPE_JOIN, '.*', $bot, 'onjoin_greeting');

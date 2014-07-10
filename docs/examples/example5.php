@@ -43,8 +43,8 @@ class mybot
     }
 }
 
-$bot = &new mybot();
-$irc = &new Net_SmartIRC();
+$bot = new mybot();
+$irc = new Net_SmartIRC();
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(TRUE);
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!kick', $bot, 'kick');

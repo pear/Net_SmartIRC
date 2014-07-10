@@ -48,8 +48,8 @@ class mybot
     }
 }
 
-$bot = &new mybot();
-$irc = &new Net_SmartIRC();
+$bot = new mybot();
+$irc = new Net_SmartIRC();
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(TRUE);
 // activating the channel synching is important, or we won't have $irc->channel[] available

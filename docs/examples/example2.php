@@ -27,7 +27,7 @@
 // this code shows how you could show on your homepage how many users are in a specific channel
 include_once('Net/SmartIRC.php');
 
-$irc = &new Net_SmartIRC();
+$irc = new Net_SmartIRC();
 $irc->startBenchmark();
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(TRUE);
