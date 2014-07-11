@@ -2875,30 +2875,6 @@ class Net_SmartIRC_base
         }
     }
     
-    private function _addIrcUser()
-    {
-    }
-    
-    private function _updateIrcUser()
-    {
-    }
-    
-    private function _removeIrcUser()
-    {
-    }
-    
-    private function _addChannelUser()
-    {
-    }
-    
-    private function _updateChannelUser()
-    {
-    }
-    
-    private function _removeChannelUser()
-    {
-    }
-    
     // </private methods>
     
     function isError($object)

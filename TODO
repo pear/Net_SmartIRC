@@ -19,8 +19,6 @@ integrate my ping fix into base code somehow.
 
 why is a function called _microint() returning a float????
 
-what are the funcs from line 2926 to 2951 doing?? or supposed to do?
-
 figure out visibility for isError() and throwError()
 
 classes are chained together with inheritance. making a new Net_SmartIRC() calls:
