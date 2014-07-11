@@ -10,7 +10,7 @@ todo on listenOnce()
 
 evaluate propriety of return values on all methods
 
-_rawReceive() says 'global $bot;' ...BAD!
+listenOnce() says 'global $bot;' ...BAD!
 
 integrate my ping fix into base code somehow.
 

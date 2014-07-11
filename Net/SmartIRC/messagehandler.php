@@ -29,7 +29,10 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     /* misc */
     function _event_ping(&$ircdata)
     {
-        $this->_pong(substr($ircdata->rawmessage, 5));
+        $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: Ping? Pong!',
+            __FILE__, __LINE__
+        );
+        $this->send('PONG '.substr($ircdata->rawmessage, 5), SMARTIRC_CRITICAL);
     }
     
     function _event_error(&$ircdata)
