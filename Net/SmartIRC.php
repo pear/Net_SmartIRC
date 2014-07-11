@@ -511,304 +511,6 @@ class Net_SmartIRC_base
     }
     
     /**
-     * Enables/disables the usage of real sockets.
-     *
-     * Enables/disables the usage of real sockets instead of fsocks
-     * (works only if your PHP build has loaded the PHP socket extension)
-     * Default: false
-     *
-     * @param bool $boolean
-     * @return void
-     * @access public
-     */
-    public function setUseSockets($boolean)
-    {
-        if (!$boolean) {
-            $this->_usesockets = false;
-            return true;
-        }
-        
-        if (@extension_loaded('sockets')) {
-            $this->_usesockets = true;
-        } else {
-            $this->log(SMARTIRC_DEBUG_NOTICE,
-                'WARNING: socket extension not loaded, trying to load it...',
-                __FILE__, __LINE__
-            );
-            
-            if ((strtoupper(substr(PHP_OS, 0,3)) == 'WIN'
-                    && @dl('php_sockets.dll')
-                )
-                || @dl('sockets.so')
-            ) {
-                $this->log(SMARTIRC_DEBUG_NOTICE,
-                    'WARNING: socket extension successfully loaded',
-                    __FILE__, __LINE__
-                );
-                $this->_usesockets = true;
-            } else {
-                $this->log(SMARTIRC_DEBUG_NOTICE,
-                    "WARNING: couldn't load the socket extension, "
-                    .'will use fsocks instead', __FILE__, __LINE__
-                );
-                $this->_usesockets = false;
-            }
-        }
-        
-        return $this->_usesockets;
-    }
-    
-    /**
-     * Sets an IP address (and optionally, a port) to bind the socket to.
-     * 
-     * Limits the bot to claiming only one of the machine's IPs as its home.
-     * Only works with setUseSockets(TRUE). Call with no parameters to unbind.
-     * 
-     * @param string $addr
-     * @return bool
-     * @access public
-     */
-    public function setBindAddress($addr = null, $port = 0)
-    {
-        if ($this->_usesockets) {
-            if ($port == 0 && ($cpos = strpos($addr, ':'))) {
-                $addr = substr($addr, 0, $cpos);
-                $port = substr($addr, $cpos + 1);
-            }
-            $this->bindaddress = $addr;
-            $this->bindport = $port;
-        }
-        return $this->_usesockets;
-    }
-    
-    /**
-     * Sets the level of debug messages.
-     *
-     * Sets the debug level (bitwise), useful for testing/developing your code.
-     * Here the list of all possible debug levels:
-     * SMARTIRC_DEBUG_NONE
-     * SMARTIRC_DEBUG_NOTICE
-     * SMARTIRC_DEBUG_CONNECTION
-     * SMARTIRC_DEBUG_SOCKET
-     * SMARTIRC_DEBUG_IRCMESSAGES
-     * SMARTIRC_DEBUG_MESSAGETYPES
-     * SMARTIRC_DEBUG_ACTIONHANDLER
-     * SMARTIRC_DEBUG_TIMEHANDLER
-     * SMARTIRC_DEBUG_MESSAGEHANDLER
-     * SMARTIRC_DEBUG_CHANNELSYNCING
-     * SMARTIRC_DEBUG_MODULES
-     * SMARTIRC_DEBUG_USERSYNCING
-     * SMARTIRC_DEBUG_ALL
-     *
-     * Default: SMARTIRC_DEBUG_NOTICE
-     *
-     * @see DOCUMENTATION
-     * @see SMARTIRC_DEBUG_NOTICE
-     * @param integer $level
-     * @return void
-     * @access public
-     */
-    public function setDebugLevel($level)
-    {
-        $this->_debuglevel = $level;
-    }
-    
-    /**
-     * Enables/disables the benchmark engine.
-     * 
-     * @param boolean $boolean
-     * @return void
-     * @access public
-     */
-    public function setBenchmark($boolean)
-    {
-        $this->_benchmark = ($boolean) ? true : false;
-    }
-    
-    /**
-     * Enables/disables channel syncing.
-     *
-     * Channel syncing means, all users on all channel we are joined are tracked in the
-     * channel array. This makes it very handy for botcoding.
-     * 
-     * @param boolean $boolean
-     * @return void
-     * @access public
-     */
-    public function setChannelSyncing($boolean)
-    {
-        if ($boolean) {
-            $this->_channelsyncing = true;
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
-                'DEBUG_CHANNELSYNCING: Channel syncing enabled',
-                __FILE__, __LINE__
-            );
-        } else {
-            $this->_channelsyncing = false;
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
-                'DEBUG_CHANNELSYNCING: Channel syncing disabled',
-                __FILE__, __LINE__
-            );
-        }
-    }
-
-    /**
-     * Enables/disables user syncing.
-     *
-     * User syncing means, all users we have or had contact with through channel, query or
-     * notice are tracked in the $irc->user array. This is very handy for botcoding.
-     *
-     * @param boolean $boolean
-     * @return void
-     * @access public
-     */
-    public function setUserSyncing($boolean)
-    {
-        if ($boolean) {
-            $this->_usersyncing = true;
-			$this->log(SMARTIRC_DEBUG_USERSYNCING,
-                'DEBUG_USERSYNCING: User syncing enabled', __FILE__, __LINE__);
-        } else {
-            $this->_usersyncing = false;
-			$this->log(SMARTIRC_DEBUG_USERSYNCING,
-                'DEBUG_USERSYNCING: User syncing disabled', __FILE__, __LINE__);
-        }
-    }
-    
-    /**
-     * Sets the CTCP version reply string.
-     * 
-     * @param string $versionstring
-     * @return void
-     * @access public
-     */
-    public function setCtcpVersion($versionstring)
-    {
-        $this->_ctcpversion = $versionstring;
-    }
-    
-    /**
-     * Sets the destination of all log messages.
-     *
-     * Sets the destination of log messages.
-     * $type can be:
-     * SMARTIRC_FILE for saving the log into a file
-     * SMARTIRC_STDOUT for echoing the log to stdout
-     * SMARTIRC_SYSLOG for sending the log to the syslog
-     * Default: SMARTIRC_STDOUT
-     *
-     * @see SMARTIRC_STDOUT
-     * @param integer $type must be on of the constants
-     * @return void
-     * @access public
-     */
-    public function setLogDestination($type)
-    {
-        switch ($type) {
-            case SMARTIRC_FILE:
-            case SMARTIRC_STDOUT:
-            case SMARTIRC_SYSLOG:
-            case SMARTIRC_BROWSEROUT:
-            case SMARTIRC_NONE:
-                $this->_logdestination = $type;
-                break;
-            
-            default:
-                $this->log(SMARTIRC_DEBUG_NOTICE,
-                    'WARNING: unknown logdestination type ('.$type
-                    .'), will use STDOUT instead', __FILE__, __LINE__);
-                $this->_logdestination = SMARTIRC_STDOUT;
-        }
-    }
-    
-    /**
-     * Sets the file for the log if the destination is set to file.
-     *
-     * Sets the logfile, if {@link setLogDestination logdestination} is set to SMARTIRC_FILE.
-     * This should be only used with full path!
-     *
-     * @param string $file 
-     * @return void
-     * @access public
-     */
-    public function setLogFile($file)
-    {
-        $this->_logfile = $file;
-    }
-    
-    /**
-     * Sets the delaytime before closing the socket when disconnect.
-     *
-     * @param integer $milliseconds
-     * @return void
-     * @access public
-     */
-    public function setDisconnectTime($milliseconds)
-    {
-        if (is_integer($milliseconds) && $milliseconds >= 100) {
-            $this->_disconnecttime = $milliseconds;
-        } else {
-            $this->_disconnecttime = 100;
-        }
-    }
-    
-    /**
-     * Sets the delaytime before attempting reconnect.
-     * Value of 0 disables the delay entirely.
-     *
-     * @param integer $milliseconds
-     * @return void
-     * @access public
-     */
-    public function setReconnectDelay($milliseconds)
-    {
-        if (is_integer($milliseconds)) {
-            $this->_reconnectdelay = $milliseconds;
-        } else {
-            $this->_reconnectdelay = 10000;
-        }
-    }
-
-    /**
-     * Sets the delay for receiving data from the IRC server.
-     *
-     * Sets the delaytime between messages that are received, this reduces your CPU load.
-     * Don't set this too low (min 100ms).
-     * Default: 100
-     *
-     * @param integer $milliseconds
-     * @return void
-     * @access public
-     */
-    public function setReceiveDelay($milliseconds)
-    {
-        if (is_integer($milliseconds) && $milliseconds >= 100) {
-            $this->_receivedelay = $milliseconds;
-        } else {
-            $this->_receivedelay = 100;
-        }
-    }
-    
-    /**
-     * Sets the delay for sending data to the IRC server.
-     *
-     * Sets the delaytime between messages that are sent, because IRC servers doesn't like floods.
-     * This will avoid sending your messages too fast to the IRC server.
-     * Default: 250
-     *
-     * @param integer $milliseconds
-     * @return void
-     * @access public
-     */
-    public function setSendDelay($milliseconds) {
-        if (is_integer($milliseconds)) {
-            $this->_senddelay = $milliseconds;
-        } else {
-            $this->_senddelay = 250;
-        }
-    }
-    
-    /**
      * Enables/disables autoreconnecting.
      * 
      * @param boolean $boolean
@@ -862,6 +564,263 @@ class Net_SmartIRC_base
     }
 
     /**
+     * Enables/disables the benchmark engine.
+     * 
+     * @param boolean $boolean
+     * @return void
+     * @access public
+     */
+    public function setBenchmark($boolean)
+    {
+        $this->_benchmark = ($boolean) ? true : false;
+    }
+    
+    /**
+     * Sets an IP address (and optionally, a port) to bind the socket to.
+     * 
+     * Limits the bot to claiming only one of the machine's IPs as its home.
+     * Only works with setUseSockets(TRUE). Call with no parameters to unbind.
+     * 
+     * @param string $addr
+     * @return bool
+     * @access public
+     */
+    public function setBindAddress($addr = null, $port = 0)
+    {
+        if ($this->_usesockets) {
+            if ($port == 0 && ($cpos = strpos($addr, ':'))) {
+                $addr = substr($addr, 0, $cpos);
+                $port = substr($addr, $cpos + 1);
+            }
+            $this->bindaddress = $addr;
+            $this->bindport = $port;
+        }
+        return $this->_usesockets;
+    }
+    
+    /**
+     * Enables/disables channel syncing.
+     *
+     * Channel syncing means, all users on all channel we are joined are tracked in the
+     * channel array. This makes it very handy for botcoding.
+     * 
+     * @param boolean $boolean
+     * @return void
+     * @access public
+     */
+    public function setChannelSyncing($boolean)
+    {
+        if ($boolean) {
+            $this->_channelsyncing = true;
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                'DEBUG_CHANNELSYNCING: Channel syncing enabled',
+                __FILE__, __LINE__
+            );
+        } else {
+            $this->_channelsyncing = false;
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                'DEBUG_CHANNELSYNCING: Channel syncing disabled',
+                __FILE__, __LINE__
+            );
+        }
+    }
+
+    /**
+     * Sets the CTCP version reply string.
+     * 
+     * @param string $versionstring
+     * @return void
+     * @access public
+     */
+    public function setCtcpVersion($versionstring)
+    {
+        $this->_ctcpversion = $versionstring;
+    }
+    
+    /**
+     * Sets the level of debug messages.
+     *
+     * Sets the debug level (bitwise), useful for testing/developing your code.
+     * Here the list of all possible debug levels:
+     * SMARTIRC_DEBUG_NONE
+     * SMARTIRC_DEBUG_NOTICE
+     * SMARTIRC_DEBUG_CONNECTION
+     * SMARTIRC_DEBUG_SOCKET
+     * SMARTIRC_DEBUG_IRCMESSAGES
+     * SMARTIRC_DEBUG_MESSAGETYPES
+     * SMARTIRC_DEBUG_ACTIONHANDLER
+     * SMARTIRC_DEBUG_TIMEHANDLER
+     * SMARTIRC_DEBUG_MESSAGEHANDLER
+     * SMARTIRC_DEBUG_CHANNELSYNCING
+     * SMARTIRC_DEBUG_MODULES
+     * SMARTIRC_DEBUG_USERSYNCING
+     * SMARTIRC_DEBUG_ALL
+     *
+     * Default: SMARTIRC_DEBUG_NOTICE
+     *
+     * @see DOCUMENTATION
+     * @see SMARTIRC_DEBUG_NOTICE
+     * @param integer $level
+     * @return void
+     * @access public
+     */
+    public function setDebugLevel($level)
+    {
+        $this->_debuglevel = $level;
+    }
+    
+    /**
+     * Sets the delaytime before closing the socket when disconnect.
+     *
+     * @param integer $milliseconds
+     * @return void
+     * @access public
+     */
+    public function setDisconnectTime($milliseconds)
+    {
+        if (is_integer($milliseconds) && $milliseconds >= 100) {
+            $this->_disconnecttime = $milliseconds;
+        } else {
+            $this->_disconnecttime = 100;
+        }
+    }
+    
+    /**
+     * Sets the destination of all log messages.
+     *
+     * Sets the destination of log messages.
+     * $type can be:
+     * SMARTIRC_FILE for saving the log into a file
+     * SMARTIRC_STDOUT for echoing the log to stdout
+     * SMARTIRC_SYSLOG for sending the log to the syslog
+     * Default: SMARTIRC_STDOUT
+     *
+     * @see SMARTIRC_STDOUT
+     * @param integer $type must be on of the constants
+     * @return void
+     * @access public
+     */
+    public function setLogDestination($type)
+    {
+        switch ($type) {
+            case SMARTIRC_FILE:
+            case SMARTIRC_STDOUT:
+            case SMARTIRC_SYSLOG:
+            case SMARTIRC_BROWSEROUT:
+            case SMARTIRC_NONE:
+                $this->_logdestination = $type;
+                break;
+            
+            default:
+                $this->log(SMARTIRC_DEBUG_NOTICE,
+                    'WARNING: unknown logdestination type ('.$type
+                    .'), will use STDOUT instead', __FILE__, __LINE__);
+                $this->_logdestination = SMARTIRC_STDOUT;
+        }
+    }
+    
+    /**
+     * Sets the file for the log if the destination is set to file.
+     *
+     * Sets the logfile, if {@link setLogDestination logdestination} is set to SMARTIRC_FILE.
+     * This should be only used with full path!
+     *
+     * @param string $file 
+     * @return void
+     * @access public
+     */
+    public function setLogFile($file)
+    {
+        $this->_logfile = $file;
+    }
+    
+    /**
+     * Sets the paths for the modules.
+     *
+     * @param integer $path
+     * @return void
+     * @access public
+     */
+    public function setModulePath($path)
+    {
+        $this->_modulepath = $path;
+    }
+
+    /**
+     * Sets the delay for receiving data from the IRC server.
+     *
+     * Sets the delaytime between messages that are received, this reduces your CPU load.
+     * Don't set this too low (min 100ms).
+     * Default: 100
+     *
+     * @param integer $milliseconds
+     * @return void
+     * @access public
+     */
+    public function setReceiveDelay($milliseconds)
+    {
+        if (is_integer($milliseconds) && $milliseconds >= 100) {
+            $this->_receivedelay = $milliseconds;
+        } else {
+            $this->_receivedelay = 100;
+        }
+    }
+    
+    /**
+     * Sets the delaytime before attempting reconnect.
+     * Value of 0 disables the delay entirely.
+     *
+     * @param integer $milliseconds
+     * @return void
+     * @access public
+     */
+    public function setReconnectDelay($milliseconds)
+    {
+        if (is_integer($milliseconds)) {
+            $this->_reconnectdelay = $milliseconds;
+        } else {
+            $this->_reconnectdelay = 10000;
+        }
+    }
+
+    /**
+     * Sets whether the script should be run as a daemon or not
+     * ( actually disables/enables ignore_user_abort() )
+     *
+     * @param boolean $boolean
+     * @return void
+     * @access public
+     */
+    public function setRunAsDaemon($boolean)
+    {
+        if ($boolean) {
+            $this->_runasdaemon = true;
+            ignore_user_abort(true);
+        } else {
+            $this->_runasdaemon = false;
+        }
+    }
+    
+    /**
+     * Sets the delay for sending data to the IRC server.
+     *
+     * Sets the delaytime between messages that are sent, because IRC servers doesn't like floods.
+     * This will avoid sending your messages too fast to the IRC server.
+     * Default: 250
+     *
+     * @param integer $milliseconds
+     * @return void
+     * @access public
+     */
+    public function setSendDelay($milliseconds) {
+        if (is_integer($milliseconds)) {
+            $this->_senddelay = $milliseconds;
+        } else {
+            $this->_senddelay = 250;
+        }
+    }
+    
+    /**
      * Sets the receive timeout.
      *
      * If the timeout occurs, the connection will be reinitialized
@@ -900,33 +859,74 @@ class Net_SmartIRC_base
     }
     
     /**
-     * Sets the paths for the modules.
+     * Enables/disables user syncing.
      *
-     * @param integer $path
-     * @return void
-     * @access public
-     */
-    public function setModulePath($path)
-    {
-        $this->_modulepath = $path;
-    }
-
-    /**
-     * Sets whether the script should be run as a daemon or not
-     * ( actually disables/enables ignore_user_abort() )
+     * User syncing means, all users we have or had contact with through channel, query or
+     * notice are tracked in the $irc->user array. This is very handy for botcoding.
      *
      * @param boolean $boolean
      * @return void
      * @access public
      */
-    public function setRunAsDaemon($boolean)
+    public function setUserSyncing($boolean)
     {
         if ($boolean) {
-            $this->_runasdaemon = true;
-            ignore_user_abort(true);
+            $this->_usersyncing = true;
+			$this->log(SMARTIRC_DEBUG_USERSYNCING,
+                'DEBUG_USERSYNCING: User syncing enabled', __FILE__, __LINE__);
         } else {
-            $this->_runasdaemon = false;
+            $this->_usersyncing = false;
+			$this->log(SMARTIRC_DEBUG_USERSYNCING,
+                'DEBUG_USERSYNCING: User syncing disabled', __FILE__, __LINE__);
         }
+    }
+    
+    /**
+     * Enables/disables the usage of real sockets.
+     *
+     * Enables/disables the usage of real sockets instead of fsocks
+     * (works only if your PHP build has loaded the PHP socket extension)
+     * Default: false
+     *
+     * @param bool $boolean
+     * @return void
+     * @access public
+     */
+    public function setUseSockets($boolean)
+    {
+        if (!$boolean) {
+            $this->_usesockets = false;
+            return true;
+        }
+        
+        if (@extension_loaded('sockets')) {
+            $this->_usesockets = true;
+        } else {
+            $this->log(SMARTIRC_DEBUG_NOTICE,
+                'WARNING: socket extension not loaded, trying to load it...',
+                __FILE__, __LINE__
+            );
+            
+            if ((strtoupper(substr(PHP_OS, 0,3)) == 'WIN'
+                    && @dl('php_sockets.dll')
+                )
+                || @dl('sockets.so')
+            ) {
+                $this->log(SMARTIRC_DEBUG_NOTICE,
+                    'WARNING: socket extension successfully loaded',
+                    __FILE__, __LINE__
+                );
+                $this->_usesockets = true;
+            } else {
+                $this->log(SMARTIRC_DEBUG_NOTICE,
+                    "WARNING: couldn't load the socket extension, "
+                    .'will use fsocks instead', __FILE__, __LINE__
+                );
+                $this->_usesockets = false;
+            }
+        }
+        
+        return $this->_usesockets;
     }
     
     /**
@@ -2388,53 +2388,75 @@ class Net_SmartIRC_base
     
     // <private methods>
     /**
-     * changes an already used nickname to a new nickname plus 3 random digits
+     * adds an user to the channelobject or updates his info
+     *
+     * @param object $channel
+     * @param object $newuser
+     * @return void
+     * @access private
+     */
+    private function _adduser(&$channel, &$newuser)
+    {
+        $lowerednick = strtolower($newuser->nick);
+        if ($this->isJoined($channel->name, $newuser->nick)) {
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '
+                .'updating user: '.$newuser->nick.' on channel: '
+                .$channel->name, __FILE__, __LINE__
+            );
+            
+            // lets update the existing user
+            $currentuser = &$channel->users[$lowerednick];
+            
+            $props = array('ident', 'host', 'realname', 'ircop', 'founder',
+                'admin', 'op', 'hop', 'voice', 'away', 'server', 'hopcount'
+            );
+            foreach ($props as $prop) {
+                if ($newuser->$prop !== null) {
+                    $currentuser->$prop = $newuser->$prop;
+                }
+            }
+        } else {
+            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '
+                .'adding user: '.$newuser->nick.' to channel: '.$channel->name,
+                __FILE__, __LINE__
+            );
+            
+            // he is new just add the reference to him
+            $channel->users[$lowerednick] = &$newuser;
+        }
+        
+        $user = &$channel->users[$lowerednick];
+        $modes = array('founder', 'admin', 'op', 'hop', 'voice');
+        
+        foreach ($modes as $mode) {
+            if ($user->$mode) {
+                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
+                    "DEBUG_CHANNELSYNCING: adding $mode: ".$user->nick
+                    .' to channel: '.$channel->name, __FILE__, __LINE__
+                );
+                $ms = $mode.'s';
+                $channel->$ms[$user->nick] = true;
+            }
+        }
+    }
+    
+    /**
+     * Delay reconnect
      *
      * @return void
      * @access private
      */
-    private function _nicknameinuse()
+    private function _delayReconnect()
     {
-        $newnickname = substr($this->_nick, 0, 5) . rand(0, 999);
-        $this->changeNick($newnickname, SMARTIRC_CRITICAL);
+        if ($this->_reconnectdelay > 0) {
+            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying '
+                .'reconnect for '.$this->_reconnectdelay.' ms',
+                __FILE__, __LINE__
+            );
+            usleep($this->_reconnectdelay * 1000);
+        }
     }
     
-    /**
-     * sends a raw message to the IRC server
-     *
-     * Don't use this directly! Use message() or send() instead.
-     *
-     * @param string $data
-     * @return boolean
-     * @access private
-     */
-    private function _rawsend($data)
-    {
-        if ($this->_updatestate() != SMARTIRC_STATE_CONNECTED) {
-            return false;
-        }
-        
-        $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: sent: "'
-            .$data.'"', __FILE__, __LINE__
-        );
-        
-        if ($this->_usesockets) {
-            $result = socket_write($this->_socket, $data.SMARTIRC_CRLF);
-        } else {
-            $result = fwrite($this->_socket, $data.SMARTIRC_CRLF);
-        }
-        
-        
-        if ($result === false) {
-            // writing to the socket failed, means the connection is broken
-            $this->_connectionerror = true;
-        } else {
-            $this->_lasttx = time();
-        }
-        
-        return ($result !== false);
-    }
-
     /**
      * determines the messagetype of $line
      *
@@ -2569,98 +2591,53 @@ class Net_SmartIRC_base
     }
     
     /**
-     * updates and returns the current connection state
+     * changes an already used nickname to a new nickname plus 3 random digits
      *
+     * @return void
+     * @access private
+     */
+    private function _nicknameinuse()
+    {
+        $newnickname = substr($this->_nick, 0, 5) . rand(0, 999);
+        $this->changeNick($newnickname, SMARTIRC_CRITICAL);
+    }
+    
+    /**
+     * sends a raw message to the IRC server
+     *
+     * Don't use this directly! Use message() or send() instead.
+     *
+     * @param string $data
      * @return boolean
      * @access private
      */
-    private function _updatestate()
+    private function _rawsend($data)
     {
-        if (is_resource($this->_socket)) {
-            $rtype = get_resource_type($this->_socket);
-            if ($this->_socket !== false
-                && (strtolower($rtype) == 'socket' || $rtype == 'stream')
-            ) {
-                $this->_state = SMARTIRC_STATE_CONNECTED;
-            }
-        } else {
-            $this->_state = SMARTIRC_STATE_DISCONNECTED;
-            $this->_loggedin = false;
+        if ($this->_updatestate() != SMARTIRC_STATE_CONNECTED) {
+            return false;
         }
         
-        return $this->_state;
+        $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: sent: "'
+            .$data.'"', __FILE__, __LINE__
+        );
+        
+        if ($this->_usesockets) {
+            $result = socket_write($this->_socket, $data.SMARTIRC_CRLF);
+        } else {
+            $result = fwrite($this->_socket, $data.SMARTIRC_CRLF);
+        }
+        
+        
+        if ($result === false) {
+            // writing to the socket failed, means the connection is broken
+            $this->_connectionerror = true;
+        } else {
+            $this->_lasttx = time();
+        }
+        
+        return ($result !== false);
     }
 
-    /**
-     * Delay reconnect
-     *
-     * @return void
-     * @access private
-     */
-    private function _delayReconnect()
-    {
-        if ($this->_reconnectdelay > 0) {
-            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying '
-                .'reconnect for '.$this->_reconnectdelay.' ms',
-                __FILE__, __LINE__
-            );
-            usleep($this->_reconnectdelay * 1000);
-        }
-    }
-    
-    /**
-     * adds an user to the channelobject or updates his info
-     *
-     * @param object $channel
-     * @param object $newuser
-     * @return void
-     * @access private
-     */
-    private function _adduser(&$channel, &$newuser)
-    {
-        $lowerednick = strtolower($newuser->nick);
-        if ($this->isJoined($channel->name, $newuser->nick)) {
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '
-                .'updating user: '.$newuser->nick.' on channel: '
-                .$channel->name, __FILE__, __LINE__
-            );
-            
-            // lets update the existing user
-            $currentuser = &$channel->users[$lowerednick];
-            
-            $props = array('ident', 'host', 'realname', 'ircop', 'founder',
-                'admin', 'op', 'hop', 'voice', 'away', 'server', 'hopcount'
-            );
-            foreach ($props as $prop) {
-                if ($newuser->$prop !== null) {
-                    $currentuser->$prop = $newuser->$prop;
-                }
-            }
-        } else {
-            $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '
-                .'adding user: '.$newuser->nick.' to channel: '.$channel->name,
-                __FILE__, __LINE__
-            );
-            
-            // he is new just add the reference to him
-            $channel->users[$lowerednick] = &$newuser;
-        }
-        
-        $user = &$channel->users[$lowerednick];
-        $modes = array('founder', 'admin', 'op', 'hop', 'voice');
-        
-        foreach ($modes as $mode) {
-            if ($user->$mode) {
-                $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
-                    "DEBUG_CHANNELSYNCING: adding $mode: ".$user->nick
-                    .' to channel: '.$channel->name, __FILE__, __LINE__
-                );
-                $ms = $mode.'s';
-                $channel->$ms[$user->nick] = true;
-            }
-        }
-    }
-    
     /**
      * removes an user from one channel or all if he quits
      *
@@ -2749,6 +2726,29 @@ class Net_SmartIRC_base
         }
     }
     
+    /**
+     * updates and returns the current connection state
+     *
+     * @return boolean
+     * @access private
+     */
+    private function _updatestate()
+    {
+        if (is_resource($this->_socket)) {
+            $rtype = get_resource_type($this->_socket);
+            if ($this->_socket !== false
+                && (strtolower($rtype) == 'socket' || $rtype == 'stream')
+            ) {
+                $this->_state = SMARTIRC_STATE_CONNECTED;
+            }
+        } else {
+            $this->_state = SMARTIRC_STATE_DISCONNECTED;
+            $this->_loggedin = false;
+        }
+        
+        return $this->_state;
+    }
+
     // </private methods>
     
     function isError($object)

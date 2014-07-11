@@ -1,7 +1,5 @@
 todo:
 
-do we need set/start/stop/showBenchmark()?
-
 set up class constants for base class for methods that appear to need them
 
 organize methods by type/purpose and by alphabet
@@ -13,8 +11,6 @@ evaluate propriety of return values on all methods
 listenOnce() says 'global $bot;' ...BAD!
 
 integrate my ping fix into base code somehow.
-
-why is a function called _microint() returning a float????
 
 figure out visibility for isError() and throwError()
 
