@@ -6,12 +6,9 @@ set up class constants for base class for methods that appear to need them
 
 organize methods by type/purpose and by alphabet
 
-todo comment in connect()
 todo on listenOnce()
 
 evaluate propriety of return values on all methods
-
-_checkBuffer() may not work right
 
 _rawReceive() says 'global $bot;' ...BAD!
 

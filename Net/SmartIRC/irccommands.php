@@ -49,13 +49,13 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
             case SMARTIRC_TYPE_CHANNEL:
             case SMARTIRC_TYPE_QUERY:
                 foreach ($messagearray as $message) {
-                    $this->_send('PRIVMSG '.$destination.' :'.$message, $priority);
+                    $this->send('PRIVMSG '.$destination.' :'.$message, $priority);
                 }
                 break;
             
             case SMARTIRC_TYPE_ACTION:
                 foreach ($messagearray as $message) {
-                    $this->_send('PRIVMSG '.$destination.' :'.chr(1).'ACTION '
+                    $this->send('PRIVMSG '.$destination.' :'.chr(1).'ACTION '
                         .$message.chr(1), $priority
                     );
                 }
@@ -63,14 +63,14 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
             
             case SMARTIRC_TYPE_NOTICE:
                 foreach ($messagearray as $message) {
-                    $this->_send('NOTICE '.$destination.' :'.$message, $priority);
+                    $this->send('NOTICE '.$destination.' :'.$message, $priority);
                 }
                 break;
             
             case SMARTIRC_TYPE_CTCP: // backwards compatibilty
             case SMARTIRC_TYPE_CTCP_REPLY:
                 foreach ($messagearray as $message) {
-                    $this->_send('NOTICE '.$destination.' :'.chr(1).$message
+                    $this->send('NOTICE '.$destination.' :'.chr(1).$message
                         .chr(1), $priority
                     );
                 }
@@ -78,7 +78,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
             
             case SMARTIRC_TYPE_CTCP_REQUEST:
                 foreach ($messagearray as $message) {
-                    $this->_send('PRIVMSG '.$destination.' :'.chr(1).$message
+                    $this->send('PRIVMSG '.$destination.' :'.chr(1).$message
                         .chr(1), $priority
                     );
                 }
@@ -129,11 +129,11 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
         
         if ($key !== null) {
             foreach ($channelarray as $idx => $value) {
-                $this->_send('JOIN '.$value.' '.$key, $priority);
+                $this->send('JOIN '.$value.' '.$key, $priority);
             }
         } else {
             foreach ($channelarray as $idx => $value) {
-                $this->_send('JOIN '.$value, $priority);
+                $this->send('JOIN '.$value, $priority);
             }
         }
     }
@@ -157,9 +157,9 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
         $channellist = implode(',', $channelarray);
         
         if ($reason !== null) {
-            $this->_send('PART '.$channellist.' :'.$reason, $priority);
+            $this->send('PART '.$channellist.' :'.$reason, $priority);
         } else {
-            $this->_send('PART '.$channellist, $priority);
+            $this->send('PART '.$channellist, $priority);
         }
     }
     
@@ -183,9 +183,9 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
         $nicknamelist = implode(',', $nicknamearray);
         
         if ($reason !== null) {
-            $this->_send('KICK '.$channel.' '.$nicknamelist.' :'.$reason, $priority);
+            $this->send('KICK '.$channel.' '.$nicknamelist.' :'.$reason, $priority);
         } else {
-            $this->_send('KICK '.$channel.' '.$nicknamelist, $priority);
+            $this->send('KICK '.$channel.' '.$nicknamelist, $priority);
         }
     }
     
@@ -208,9 +208,9 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
             }
             
             $channellist = implode(',', $channelarray);
-            $this->_send('LIST '.$channellist, $priority);
+            $this->send('LIST '.$channellist, $priority);
         } else {
-            $this->_send('LIST', $priority);
+            $this->send('LIST', $priority);
         }
     }
 
@@ -232,9 +232,9 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
             }
             
             $channellist = implode(',', $channelarray);
-            $this->_send('NAMES '.$channellist, $priority);
+            $this->send('NAMES '.$channellist, $priority);
         } else {
-            $this->_send('NAMES', $priority);
+            $this->send('NAMES', $priority);
         }
     }
     
@@ -249,7 +249,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      */
     public function setTopic($channel, $newtopic, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('TOPIC '.$channel.' :'.$newtopic, $priority);
+        $this->send('TOPIC '.$channel.' :'.$newtopic, $priority);
     }
     
     /**
@@ -262,7 +262,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      */
     public function getTopic($channel, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('TOPIC '.$channel, $priority);
+        $this->send('TOPIC '.$channel, $priority);
     }
     
     /**
@@ -279,9 +279,9 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
     public function mode($target, $newmode = null, $priority = SMARTIRC_MEDIUM)
     {
         if ($newmode !== null) {
-            $this->_send('MODE '.$target.' '.$newmode, $priority);
+            $this->send('MODE '.$target.' '.$newmode, $priority);
         } else {
-            $this->_send('MODE '.$target, $priority);
+            $this->send('MODE '.$target, $priority);
         }
     }
     
@@ -470,7 +470,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      */
     public function invite($nickname, $channel, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('INVITE '.$nickname.' '.$channel, $priority);
+        $this->send('INVITE '.$nickname.' '.$channel, $priority);
     }
     
     /**
@@ -485,7 +485,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      */
     public function changeNick($newnick, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('NICK '.$newnick, $priority);
+        $this->send('NICK '.$newnick, $priority);
         $this->_nick = $newnick;
     }
     
@@ -499,7 +499,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      */
     public function who($target, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('WHO '.$target, $priority);
+        $this->send('WHO '.$target, $priority);
     }
     
     /**
@@ -512,7 +512,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      */
     public function whois($target, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('WHOIS '.$target, $priority);
+        $this->send('WHOIS '.$target, $priority);
     }
     
     /**
@@ -526,7 +526,7 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
      */
     public function whowas($target, $priority = SMARTIRC_MEDIUM)
     {
-        $this->_send('WHOWAS '.$target, $priority);
+        $this->send('WHOWAS '.$target, $priority);
     }
     
     /**
@@ -540,9 +540,9 @@ class Net_SmartIRC_irccommands extends Net_SmartIRC_base
     public function quit($quitmessage = null, $priority = SMARTIRC_CRITICAL)
     {
         if ($quitmessage !== null) {
-            $this->_send('QUIT :'.$quitmessage, $priority);
+            $this->send('QUIT :'.$quitmessage, $priority);
         } else {
-            $this->_send('QUIT', $priority);
+            $this->send('QUIT', $priority);
         }
 
         $this->disconnect(true);

@@ -628,11 +628,7 @@ class Net_SmartIRC_base
      */
     public function setBenchmark($boolean)
     {
-        if (is_bool($boolean)) {
-            $this->_benchmark = $boolean;
-        } else {
-            $this->_benchmark = false;
-        }
+        $this->_benchmark = ($boolean) ? true : false;
     }
     
     /**
@@ -861,7 +857,11 @@ class Net_SmartIRC_base
     public function setAutoRetryMax($autoretrymax)
     {
         if (is_integer($autoretrymax)) {
-            $this->_autoretrymax = $autoretrymax;
+            if ($autoretrymax == 0) {
+                $this->setAutoRetry(false);
+            } else {
+                $this->_autoretrymax = $autoretrymax;
+            }
         } else {
             $this->_autoretrymax = 5;
         }
@@ -943,7 +943,7 @@ class Net_SmartIRC_base
      */
     public function startBenchmark()
     {
-        $this->_benchmark_starttime = $this->_microint();
+        $this->_benchmark_starttime = microtime(true);
         $this->log(SMARTIRC_DEBUG_NOTICE, 'benchmark started', __FILE__, __LINE__);
     }
     
@@ -955,7 +955,7 @@ class Net_SmartIRC_base
      */
     public function stopBenchmark()
     {
-        $this->_benchmark_stoptime = $this->_microint();
+        $this->_benchmark_stoptime = microtime(true);
         $this->log(SMARTIRC_DEBUG_NOTICE, 'benchmark stopped', __FILE__, __LINE__);
         
         if ($this->_benchmark) {
@@ -1205,7 +1205,7 @@ class Net_SmartIRC_base
             $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: '.$error_msg,
                 __FILE__, __LINE__
             );
-            // TODO! needs to be return value
+            
             $this->throwError($error_msg);
             
             if ($this->_autoretry
@@ -1213,8 +1213,10 @@ class Net_SmartIRC_base
             ) {
                  $this->_delayReconnect();
                  $this->_autoretrycount++;
-                 $this->reconnect();
+                 return $this->reconnect();
             }
+            
+            return false;
         } else {
             $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connected',
                 __FILE__, __LINE__
@@ -1324,7 +1326,11 @@ class Net_SmartIRC_base
         }
         
         $this->disconnect(true);
-        $this->connect($this->_address, $this->_port);
+        
+        if (!$this->connect($this->_address, $this->_port)) {
+            return false;
+        }
+        
         $this->login($this->_nick, $this->_realname, $this->_usermode,
             $this->_username, $this->_password
         );
@@ -1337,6 +1343,8 @@ class Net_SmartIRC_base
                 $this->join($value['name']);
             }
         }
+        
+        return true;
     }
     
     /**
@@ -1876,7 +1884,7 @@ class Net_SmartIRC_base
         $newtimehandler->interval = $interval;
         $newtimehandler->object = &$object;
         $newtimehandler->method = $methodname;
-        $newtimehandler->lastmicrotimestamp = $this->_microint();
+        $newtimehandler->lastmicrotimestamp = microtime(true);
         
         $this->_timehandler[] = &$newtimehandler;
         $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: timehandler('
@@ -2056,115 +2064,6 @@ class Net_SmartIRC_base
     
     // <private methods>
     /**
-     * checks the buffer if there are messages to send
-     *
-     * @return boolean
-     * @access private
-     */
-    private function _checkbuffer()
-    {
-        if (!$this->_loggedin) {
-            return false;
-        }
-        
-        static $highsent = 0;
-        static $lastmicrotimestamp = 0;
-        
-        if ($lastmicrotimestamp == 0) {
-            $lastmicrotimestamp = $this->_microint();
-        }
-        
-        $highcount = count($this->_messagebuffer[SMARTIRC_HIGH]);
-        $mediumcount = count($this->_messagebuffer[SMARTIRC_MEDIUM]);
-        $lowcount = count($this->_messagebuffer[SMARTIRC_LOW]);
-        $this->_messagebuffersize = $highcount+$mediumcount+$lowcount;
-        
-        // don't send them too fast
-        if ($this->_microint() >= ($lastmicrotimestamp+($this->_senddelay/1000))) {
-            $result = null;
-            if ($highcount > 0 && $highsent <= 2) {
-                $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_HIGH]));
-                $lastmicrotimestamp = $this->_microint();
-                $highsent++;
-            } else if ($mediumcount > 0) {
-                $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_MEDIUM]));
-                $lastmicrotimestamp = $this->_microint();
-                $highsent = 0;
-            } else if ($lowcount > 0) {
-                $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_LOW]));
-                $lastmicrotimestamp = $this->_microint();
-            }
-        }
-        
-        return true;
-    }
-    
-    /**
-     * Checks the running timers and calls the registered timehandler,
-     * when the interval is reached.
-     *
-     * @return boolean
-     * @access private
-     */
-    private function _checktimer()
-    {
-        if (!$this->_loggedin) {
-            return false;
-        }
-        
-        $handlercount = count($this->_timehandler);
-        for ($i = 0; $i < $handlercount; $i++) {
-            $handlerobject = &$this->_timehandler[$i];
-            $microtimestamp = $this->_microint();
-            if ($microtimestamp >= $handlerobject->lastmicrotimestamp
-                + ($handlerobject->interval/1000)
-            ) {
-                $methodobject = &$handlerobject->object;
-                $method = $handlerobject->method;
-                $handlerobject->lastmicrotimestamp = $microtimestamp;
-                
-                if (@method_exists($methodobject, $method)) {
-                    $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
-                        .'calling method "'.get_class($methodobject).'->'
-                        .$method.'"', __FILE__, __LINE__
-                    );
-                    $methodobject->$method($this);
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    /**
-     * Checks if a receive or transmit timeout occured and reconnects if configured
-     *
-     * @return void
-     * @access private
-     */
-    private function _checktimeout()
-    {
-        if ($this->_autoreconnect) {
-            $timestamp = time();
-            if ($this->_lastrx < ($timestamp - $this->_rxtimeout)) {
-                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
-                    .'receive timeout detected, doing reconnect...',
-                    __FILE__, __LINE__
-                );
-                $this->_delayReconnect();
-                $this->reconnect();
-            } else if ($this->_lasttx < ($timestamp - $this->_txtimeout)) {
-                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
-                    .'transmit timeout detected, doing reconnect...',
-                    __FILE__, __LINE__
-                );
-                $this->_delayReconnect();
-                $this->reconnect();
-            }
-        }
-    }
-    
-    /**
      * changes an already used nickname to a new nickname plus 3 random digits
      *
      * @return void
@@ -2240,7 +2139,36 @@ class Net_SmartIRC_base
         $lastpart = '';
         $rawdataar = array();
         
-        $this->_checkbuffer();
+        if ($this->_loggedin) {
+            static $highsent = 0;
+            static $lastmicrotimestamp = 0;
+            
+            if ($lastmicrotimestamp == 0) {
+                $lastmicrotimestamp = microtime(true);
+            }
+            
+            $highcount = count($this->_messagebuffer[SMARTIRC_HIGH]);
+            $mediumcount = count($this->_messagebuffer[SMARTIRC_MEDIUM]);
+            $lowcount = count($this->_messagebuffer[SMARTIRC_LOW]);
+            $this->_messagebuffersize = $highcount+$mediumcount+$lowcount;
+            
+            // don't send them too fast
+            if (microtime(true) >= ($lastmicrotimestamp+($this->_senddelay/1000))) {
+                $result = null;
+                if ($highcount > 0 && $highsent <= 2) {
+                    $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_HIGH]));
+                    $lastmicrotimestamp = microtime(true);
+                    $highsent++;
+                } else if ($mediumcount > 0) {
+                    $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_MEDIUM]));
+                    $lastmicrotimestamp = microtime(true);
+                    $highsent = 0;
+                } else if ($lowcount > 0) {
+                    $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_LOW]));
+                    $lastmicrotimestamp = microtime(true);
+                }
+            }
+        }
         
         if ($this->_usesockets) {
             // this will trigger a warning when catching a signal
@@ -2283,8 +2211,47 @@ class Net_SmartIRC_base
             $this->_connectionerror = true;
         }
         
-        $this->_checktimer();
-        $this->_checktimeout();
+        if ($this->_loggedin) {
+            $handlercount = count($this->_timehandler);
+            for ($i = 0; $i < $handlercount; $i++) {
+                $handlerobject = &$this->_timehandler[$i];
+                $microtimestamp = microtime(true);
+                if ($microtimestamp >= $handlerobject->lastmicrotimestamp
+                    + ($handlerobject->interval/1000)
+                ) {
+                    $methodobject = &$handlerobject->object;
+                    $method = $handlerobject->method;
+                    $handlerobject->lastmicrotimestamp = $microtimestamp;
+                    
+                    if (@method_exists($methodobject, $method)) {
+                        $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
+                            .'calling method "'.get_class($methodobject).'->'
+                            .$method.'"', __FILE__, __LINE__
+                        );
+                        $methodobject->$method($this);
+                    }
+                }
+            }
+        }
+        
+        if ($this->_autoreconnect) {
+            $timestamp = time();
+            if ($this->_lastrx < ($timestamp - $this->_rxtimeout)) {
+                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
+                    .'receive timeout detected, doing reconnect...',
+                    __FILE__, __LINE__
+                );
+                $this->_delayReconnect();
+                $this->reconnect();
+            } else if ($this->_lasttx < ($timestamp - $this->_txtimeout)) {
+                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
+                    .'transmit timeout detected, doing reconnect...',
+                    __FILE__, __LINE__
+                );
+                $this->_delayReconnect();
+                $this->reconnect();
+            }
+        }
         
         if ($rawdata !== null && !empty($rawdata)) {
             $this->_lastrx = time();
@@ -2720,18 +2687,6 @@ class Net_SmartIRC_base
             );
             usleep($this->_reconnectdelay * 1000);
         }
-    }
-    
-    /**
-     * getting current microtime, needed for benchmarks
-     *
-     * @return float
-     * @access private
-     */
-    private function _microint()
-    {
-        $parts = explode(' ', microtime());
-        return ((float)$parts[0] + (float)$parts[1]);
     }
     
     /**

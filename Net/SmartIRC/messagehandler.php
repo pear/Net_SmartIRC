@@ -34,7 +34,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     
     function _event_error(&$ircdata)
     {
-        if ($this->_autoretry == true) {
+        if ($this->_autoretry) {
             $this->_delayReconnect();
             $this->reconnect();
         } else {
@@ -598,11 +598,10 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             $channel = &$this->getChannel($ircdata->channel);
             if ($channel->synctime_stop == 0) {
                 // we received end of banlist and the stop timestamp is not set yet
-                $microint = $this->_microint();
-                $channel->synctime_stop = $microint;
+                $channel->synctime_stop = microtime(true);
                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
                     'DEBUG_CHANNELSYNCING: synctime_stop for '.$ircdata->channel
-                    .' set to: '.$microint, __FILE__, __LINE__
+                    .' set to: '.$channel->synctime_stop, __FILE__, __LINE__
                 );
                 
                 $channel->synctime = (float)$channel->synctime_stop
