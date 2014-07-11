@@ -44,10 +44,10 @@ class mybot
 
 $bot = new mybot();
 $irc = new Net_SmartIRC();
-$irc->setDebug(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(TRUE);
-$irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^test', $bot, 'query_test');
-$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^test', $bot, 'channel_test');
+$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
+$irc->setUseSockets(true);
+$irc->registerActionHandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^test', $bot, 'query_test');
+$irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^test', $bot, 'channel_test');
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example.php)', 0, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));

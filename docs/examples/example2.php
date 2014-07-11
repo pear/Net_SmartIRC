@@ -29,9 +29,9 @@ include_once('Net/SmartIRC.php');
 
 $irc = new Net_SmartIRC();
 $irc->startBenchmark();
-$irc->setDebug(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(TRUE);
-$irc->setBenchmark(TRUE);
+$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
+$irc->setUseSockets(true);
+$irc->setBenchmark(true);
 //$irc->connect('irc.freenet.de', 6667);
 $irc->connect('saberhagen.freenode.net', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example2.php)', 0, 'Net_SmartIRC');

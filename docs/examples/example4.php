@@ -50,11 +50,11 @@ class mybot
 
 $bot = new mybot();
 $irc = new Net_SmartIRC();
-$irc->setDebug(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(TRUE);
+$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
+$irc->setUseSockets(true);
 // activating the channel synching is important, or we won't have $irc->channel[] available
-$irc->setChannelSynching(TRUE);
-$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!realnamecheck', $bot, 'realname_check');
+$irc->setChannelSyncing(true);
+$irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!realnamecheck', $bot, 'realname_check');
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example4.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));

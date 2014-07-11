@@ -50,17 +50,17 @@ class mybot
 
 $bot = new mybot();
 $irc = new Net_SmartIRC();
-$irc->setDebug(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(TRUE);
+$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
+$irc->setUseSockets(true);
 
 // register saytime() to be called every 30 sec. (30,000 milliseconds)
-$irc->registerTimehandler(30000, $bot, 'saytime');
+$irc->registerTimeHandler(30000, $bot, 'saytime');
 
 // register saytime_once() to be called in 10 sec. (10,000 milliseconds) and save the assigned id
 // which is needed for unregistering the timehandler.
-$saytime_once_id = $irc->registerTimehandler(10000, $bot, 'saytime_once');
+$saytime_once_id = $irc->registerTimeHandler(10000, $bot, 'saytime_once');
 
-$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!quit', $bot, 'quit');
+$irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!quit', $bot, 'quit');
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example7.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));

@@ -48,12 +48,12 @@ class mybot
 
 $bot = new mybot();
 $irc = new Net_SmartIRC();
-$irc->setDebug(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(TRUE);
+$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
+$irc->setUseSockets(true);
 // Using Channel Syncing we will track all users on all channels we are joined
 // (Note. Use setChannelSyncing instead of setChannelSynching)
-$irc->setChannelSyncing(TRUE);
-$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!ops', $bot, 'op_list');
+$irc->setChannelSyncing(true);
+$irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!ops', $bot, 'op_list');
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example3.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));
