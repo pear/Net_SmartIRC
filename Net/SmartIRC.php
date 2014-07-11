@@ -1771,7 +1771,7 @@ class Net_SmartIRC_base
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
                     .'actionhandler('.$id.') unregistered', __FILE__, __LINE__
                 );
-                $this->_reorderactionhandler();
+                $this->_actionhandler = array_values($this->_actionhandler);
                 return true;
             }
         }
@@ -1805,7 +1805,7 @@ class Net_SmartIRC_base
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
                     .'actionhandler('.$id.') unregistered', __FILE__, __LINE__
                 );
-                $this->_reorderactionhandler();
+                $this->_actionhandler = array_values($this->_actionhandler);
                 return true;
             }
         }
@@ -1875,7 +1875,7 @@ class Net_SmartIRC_base
                 $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
                     .'timehandler('.$id.') unregistered', __FILE__, __LINE__
                 );
-                $this->_reordertimehandler();
+                $this->_timehandler = array_values($this->_timehandler);
                 $this->_updatemintimer();
                 return true;
             }
@@ -2004,7 +2004,7 @@ class Net_SmartIRC_base
                     $module->module_exit($this);
                 }
                 unset($this->_modules[$i]); // should call __destruct() on it
-                $this->_reordermodules();
+                $this->_modules = array_values($this->_modules);
                 $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully'
                     ." unloaded module: $name", __FILE__, __LINE__);
                 return true;
@@ -2467,39 +2467,6 @@ class Net_SmartIRC_base
         } else {
             $this->_mintimer = false;
         }
-    }
-    
-    /**
-     * reorders the actionhandler array, needed after removing one
-     *
-     * @return void
-     * @access private
-     */
-    private function _reorderactionhandler()
-    {
-        $this->_actionhandler = array_values($this->_actionhandler);
-    }
-    
-    /**
-     * reorders the timehandler array, needed after removing one
-     *
-     * @return void
-     * @access private
-     */
-    private function _reordertimehandler()
-    {
-        $this->_timehandler = array_values($this->_timehandler);
-    }
-    
-    /**
-     * reorders the modules array, needed after removing one
-     *
-     * @return void
-     * @access private
-     */
-    private function _reordermodules()
-    {
-        $this->_modules = array_values($this->_modules);
     }
 
     /**

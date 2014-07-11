@@ -21,8 +21,6 @@ integrate my ping fix into base code somehow.
 
 _selecttimeout() may have an easier way of being written without needing calculateselecttimeout()
 
-------:2437- substitute _reorder* with array_values() calls
-
 why is a function called _microint() returning a float????
 
 what are the funcs from line 2926 to 2951 doing?? or supposed to do?
