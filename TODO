@@ -11,8 +11,6 @@ todo on listenOnce()
 
 evaluate propriety of return values on all methods
 
-why do we have send() and _send()?
-
 _checkBuffer() may not work right
 
 _rawReceive() says 'global $bot;' ...BAD!

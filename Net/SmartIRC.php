@@ -1258,7 +1258,7 @@ class Net_SmartIRC_base
         }
         
         if (!$quick) {
-            $this->_send('QUIT', SMARTIRC_CRITICAL);
+            $this->send('QUIT', SMARTIRC_CRITICAL);
             usleep($this->_disconnecttime*1000);
         }
         
@@ -1370,7 +1370,7 @@ class Net_SmartIRC_base
         
         if ($password !== null) {
             $this->_password = $password;
-            $this->_send('PASS '.$this->_password, SMARTIRC_CRITICAL);
+            $this->send('PASS '.$this->_password, SMARTIRC_CRITICAL);
         }
         
         if (!is_numeric($usermode)) {
@@ -1381,18 +1381,18 @@ class Net_SmartIRC_base
             $usermode = 0;
         }
         
-        $this->_send('NICK '.$this->_nick, SMARTIRC_CRITICAL);
-        $this->_send('USER '.$this->_username.' '.$usermode.' '.SMARTIRC_UNUSED
+        $this->send('NICK '.$this->_nick, SMARTIRC_CRITICAL);
+        $this->send('USER '.$this->_username.' '.$usermode.' '.SMARTIRC_UNUSED
             .' :'.$this->_realname, SMARTIRC_CRITICAL
         );
         
         if (count($this->_performs)) {
             // if we have extra commands to send, do it now
             foreach ($this->_performs as $command) {
-                $this->_send($command, SMARTIRC_HIGH);
+                $this->send($command, SMARTIRC_HIGH);
             }
             // if we sent "ns auth" commands, we may need to resend our nick
-            $this->_send('NICK '.$this->_nick, SMARTIRC_HIGH);
+            $this->send('NICK '.$this->_nick, SMARTIRC_HIGH);
         }
     }
     
@@ -2047,26 +2047,6 @@ class Net_SmartIRC_base
      */
     public function send($data, $priority = SMARTIRC_MEDIUM)
     {
-        return $this->_send($data, $priority);
-    }
-    
-    /**
-     * sends an IRC message
-     *
-     * Adds a message to the messagequeue, with the optional priority.
-     * $priority:
-     * SMARTIRC_CRITICAL
-     * SMARTIRC_HIGH
-     * SMARTIRC_MEDIUM
-     * SMARTIRC_LOW
-     *
-     * @param string $data
-     * @param integer $priority must be one of the priority constants
-     * @return boolean
-     * @access private
-     */
-    private function _send($data, $priority = SMARTIRC_MEDIUM)
-    {
         switch ($priority) {
             case SMARTIRC_CRITICAL:
                 $this->_rawsend($data);
@@ -2404,7 +2384,7 @@ class Net_SmartIRC_base
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: Ping? Pong!',
             __FILE__, __LINE__
         );
-        $this->_send('PONG '.$data, SMARTIRC_CRITICAL);
+        $this->send('PONG '.$data, SMARTIRC_CRITICAL);
     }
     
     /**
