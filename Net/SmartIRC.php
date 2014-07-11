@@ -1410,6 +1410,43 @@ class Net_SmartIRC_base
     }
     
     /**
+     * sends an IRC message
+     *
+     * Adds a message to the messagequeue, with the optional priority.
+     * $priority:
+     * SMARTIRC_CRITICAL
+     * SMARTIRC_HIGH
+     * SMARTIRC_MEDIUM
+     * SMARTIRC_LOW
+     *
+     * @param string $data
+     * @param integer $priority must be one of the priority constants
+     * @return boolean
+     * @access public
+     */
+    public function send($data, $priority = SMARTIRC_MEDIUM)
+    {
+        switch ($priority) {
+            case SMARTIRC_CRITICAL:
+                $this->_rawsend($data);
+            break;
+            case SMARTIRC_HIGH:
+            case SMARTIRC_MEDIUM:
+            case SMARTIRC_LOW:
+                $this->_messagebuffer[$priority][] = $data;
+            break;
+            default:
+                $this->log(SMARTIRC_DEBUG_NOTICE, "WARNING: message ($data) "
+                    ."with an invalid priority passed ($priority), message is "
+                    .'ignored!', __FILE__, __LINE__
+                );
+                return false;
+        }
+        
+        return true;
+    }
+    
+    /**
      * checks if the passed nickname is our own nickname
      *
      * @param string $nickname
@@ -2019,55 +2056,6 @@ class Net_SmartIRC_base
     
     // <private methods>
     /**
-     * changes an already used nickname to a new nickname plus 3 random digits
-     *
-     * @return void
-     * @access private
-     */
-    private function _nicknameinuse()
-    {
-        $newnickname = substr($this->_nick, 0, 5) . rand(0, 999);
-        $this->changeNick($newnickname, SMARTIRC_CRITICAL);
-    }
-    
-    /**
-     * sends an IRC message
-     *
-     * Adds a message to the messagequeue, with the optional priority.
-     * $priority:
-     * SMARTIRC_CRITICAL
-     * SMARTIRC_HIGH
-     * SMARTIRC_MEDIUM
-     * SMARTIRC_LOW
-     *
-     * @param string $data
-     * @param integer $priority must be one of the priority constants
-     * @return boolean
-     * @access public
-     */
-    public function send($data, $priority = SMARTIRC_MEDIUM)
-    {
-        switch ($priority) {
-            case SMARTIRC_CRITICAL:
-                $this->_rawsend($data);
-            break;
-            case SMARTIRC_HIGH:
-            case SMARTIRC_MEDIUM:
-            case SMARTIRC_LOW:
-                $this->_messagebuffer[$priority][] = $data;
-            break;
-            default:
-                $this->log(SMARTIRC_DEBUG_NOTICE, "WARNING: message ($data) "
-                    ."with an invalid priority passed ($priority), message is "
-                    .'ignored!', __FILE__, __LINE__
-                );
-                return false;
-        }
-        
-        return true;
-    }
-    
-    /**
      * checks the buffer if there are messages to send
      *
      * @return boolean
@@ -2174,6 +2162,35 @@ class Net_SmartIRC_base
                 $this->reconnect();
             }
         }
+    }
+    
+    /**
+     * changes an already used nickname to a new nickname plus 3 random digits
+     *
+     * @return void
+     * @access private
+     */
+    private function _nicknameinuse()
+    {
+        $newnickname = substr($this->_nick, 0, 5) . rand(0, 999);
+        $this->changeNick($newnickname, SMARTIRC_CRITICAL);
+    }
+    
+    /**
+     * sends the pong for keeping alive
+     *
+     * Sends the PONG signal as reply of the PING from the IRC server.
+     *
+     * @param string $data
+     * @return void
+     * @access private
+     */
+    private function _pong($data)
+    {
+        $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: Ping? Pong!',
+            __FILE__, __LINE__
+        );
+        $this->send('PONG '.$data, SMARTIRC_CRITICAL);
     }
     
     /**
@@ -2371,23 +2388,6 @@ class Net_SmartIRC_base
     }
     
     /**
-     * sends the pong for keeping alive
-     *
-     * Sends the PONG signal as reply of the PING from the IRC server.
-     *
-     * @param string $data
-     * @return void
-     * @access private
-     */
-    private function _pong($data)
-    {
-        $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: Ping? Pong!',
-            __FILE__, __LINE__
-        );
-        $this->send('PONG '.$data, SMARTIRC_CRITICAL);
-    }
-    
-    /**
      * returns the calculated selecttimeout value
      *
      * @return integer selecttimeout in microseconds
@@ -2399,33 +2399,18 @@ class Net_SmartIRC_base
             return $this->_senddelay;
         }
         
-        $this->_selecttimeout = null;
+        $compare = array($this->_maxtimer);
         
         if ($this->_mintimer) {
-            $this->_calculateselecttimeout($this->_mintimer);
+            $compare[] = $this->_mintimer;
         }
         
         if ($this->_autoreconnect) {
-            $this->_calculateselecttimeout($this->_rxtimeout*1000);
+            $compare[] = $this->_rxtimeout*1000;
         }
         
-        $this->_calculateselecttimeout($this->_maxtimer);
+        $this->_selecttimeout = min($compare);
         return $this->_selecttimeout;
-    }
-    
-    /**
-     * calculates the selecttimeout value
-     *
-     * @return void
-     * @access private
-     */
-    private function _calculateselecttimeout($microseconds)
-    {
-        if ($this->_selecttimeout > $microseconds
-            || $this->_selecttimeout === null
-        ) {
-            $this->_selecttimeout = $microseconds;
-        }
     }
     
     /**
