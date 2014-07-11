@@ -1,9 +1,5 @@
 todo:
 
-make new function to rename setDebug() to setDebugLevel(), like setChannelSynching
-make function to handle deprecated renamed function calls??
-fix method names with improper camel case?
-
 do we need set/start/stop/showBenchmark()?
 
 set up class constants for base class for methods that appear to need them
@@ -54,6 +50,7 @@ there needs to be a stoplisten method that a bot can call that returns control t
 **API** registerTimeHandler should probably convert times from s to ms internally
 **API** then we have several structs, basically. is that the best way to do it?
 	(data, actionhandler, timehandler, channel, user, channeluser<-user, ircuser<-user)
+**API** connect and login need to be one method. and return success or failure.
 
 
 actionhandler is already a separate class, but not enough. see registerActionhandler()

@@ -154,7 +154,7 @@ class Net_SmartIRC_base
      * @var integer
      * @access private
      */
-    private $_debug = SMARTIRC_DEBUG_NOTICE;
+    private $_debuglevel = SMARTIRC_DEBUG_NOTICE;
     
     /**
      * @var array
@@ -471,8 +471,49 @@ class Net_SmartIRC_base
         if (isset($_SERVER['REQUEST_METHOD'])) {
             // the script is called from a browser, lets set default log destination
             // to SMARTIRC_BROWSEROUT (makes browser friendly output)
-            $this->setLogdestination(SMARTIRC_BROWSEROUT);
+            $this->setLogDestination(SMARTIRC_BROWSEROUT);
         }
+    }
+    
+    /**
+     * Handle calls to renamed functions
+     * 
+     * @param string $method
+     * @param array $args
+     * @return mixed
+     * @access public
+     */
+    public function __call($method, $args)
+    {
+        $map = array(
+            'setChannelSynching' => 'setChannelSyncing',
+            'setDebug' => 'setDebugLevel',
+            'setLogdestination' => 'setLogDestination',
+            'setLogfile' => 'setLogFile',
+            'setDisconnecttime' => 'setDisconnectTime',
+            'setReconnectdelay' => 'setReconnectDelay',
+            'setReceivedelay' => 'setReceiveDelay',
+            'setSenddelay' => 'setSendDelay',
+            'setModulepath' => 'setModulePath',
+            'registerActionhandler' => 'registerActionHandler',
+            'unregisterActionhandler' => 'unregisterActionHandler',
+            'unregisterActionid' => 'unregisterActionId',
+            'registerTimehandler' => 'registerTimeHandler',
+            'unregisterTimeid' => 'unregisterTimeId',
+        );
+        
+        if (array_key_exists($method, $map)) {
+            $this->log(SMARTIRC_DEBUG_NOTICE,
+                "WARNING: you are using $method() which is a deprecated "
+                ."method, using {$map[$method]}() instead!", __FILE__, __LINE__
+            );
+            return call_user_func_array(array($this, $map[$method]), $args);
+        }
+        
+        $this->log(SMARTIRC_DEBUG_NOTICE,
+            "WARNING: $method() does not exist!", __FILE__, __LINE__
+        );
+        return false;
     }
     
     /**
@@ -573,9 +614,9 @@ class Net_SmartIRC_base
      * @return void
      * @access public
      */
-    public function setDebug($level)
+    public function setDebugLevel($level)
     {
-        $this->_debug = $level;
+        $this->_debuglevel = $level;
     }
     
     /**
@@ -592,22 +633,6 @@ class Net_SmartIRC_base
         } else {
             $this->_benchmark = false;
         }
-    }
-    
-    /**
-     * Deprecated, use setChannelSyncing() instead!
-     *
-     * @deprecated
-     * @param boolean $boolean
-     * @return void
-     * @access public
-     */
-    public function setChannelSynching($boolean)
-    {
-        $this->log(SMARTIRC_DEBUG_NOTICE,
-            'WARNING: you are using setChannelSynching() which is a deprecated '
-            .'method, use setChannelSyncing() instead!', __FILE__, __LINE__);
-        $this->setChannelSyncing($boolean);
     }
     
     /**
@@ -687,7 +712,7 @@ class Net_SmartIRC_base
      * @return void
      * @access public
      */
-    public function setLogdestination($type)
+    public function setLogDestination($type)
     {
         switch ($type) {
             case SMARTIRC_FILE:
@@ -709,14 +734,14 @@ class Net_SmartIRC_base
     /**
      * Sets the file for the log if the destination is set to file.
      *
-     * Sets the logfile, if {@link setLogdestination logdestination} is set to SMARTIRC_FILE.
+     * Sets the logfile, if {@link setLogDestination logdestination} is set to SMARTIRC_FILE.
      * This should be only used with full path!
      *
      * @param string $file 
      * @return void
      * @access public
      */
-    public function setLogfile($file)
+    public function setLogFile($file)
     {
         $this->_logfile = $file;
     }
@@ -728,7 +753,7 @@ class Net_SmartIRC_base
      * @return void
      * @access public
      */
-    public function setDisconnecttime($milliseconds)
+    public function setDisconnectTime($milliseconds)
     {
         if (is_integer($milliseconds) && $milliseconds >= 100) {
             $this->_disconnecttime = $milliseconds;
@@ -745,7 +770,7 @@ class Net_SmartIRC_base
      * @return void
      * @access public
      */
-    public function setReconnectdelay($milliseconds)
+    public function setReconnectDelay($milliseconds)
     {
         if (is_integer($milliseconds)) {
             $this->_reconnectdelay = $milliseconds;
@@ -765,7 +790,7 @@ class Net_SmartIRC_base
      * @return void
      * @access public
      */
-    public function setReceivedelay($milliseconds)
+    public function setReceiveDelay($milliseconds)
     {
         if (is_integer($milliseconds) && $milliseconds >= 100) {
             $this->_receivedelay = $milliseconds;
@@ -785,7 +810,7 @@ class Net_SmartIRC_base
      * @return void
      * @access public
      */
-    public function setSenddelay($milliseconds) {
+    public function setSendDelay($milliseconds) {
         if (is_integer($milliseconds)) {
             $this->_senddelay = $milliseconds;
         } else {
@@ -887,7 +912,7 @@ class Net_SmartIRC_base
      * @return void
      * @access public
      */
-    public function setModulepath($path)
+    public function setModulePath($path)
     {
         $this->_modulepath = $path;
     }
@@ -991,7 +1016,7 @@ class Net_SmartIRC_base
             return false;
         }
         
-        if (!($level & $this->_debug)
+        if (!($level & $this->_debuglevel)
             || $this->_logdestination == SMARTIRC_NONE
         ) {
             return true;
@@ -1663,7 +1688,7 @@ class Net_SmartIRC_base
     public function listenFor($messagetype)
     {
         $listenfor = new Net_SmartIRC_listenfor();
-        $this->registerActionhandler($messagetype, '.*', $listenfor, 'handler');
+        $this->registerActionHandler($messagetype, '.*', $listenfor, 'handler');
         $this->listen();
         return $listenfor->result;
     }
@@ -1682,13 +1707,13 @@ class Net_SmartIRC_base
      * @return integer assigned actionhandler id
      * @access public
      */
-    public function registerActionhandler($handlertype, $regexhandler, &$object,
+    public function registerActionHandler($handlertype, $regexhandler, &$object,
         $methodname
     ) {
         // precheck
         if (!$this->_isValidType($handlertype)) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: passed invalid handler'
-                .'type to registerActionhandler()', __FILE__, __LINE__
+                .'type to registerActionHandler()', __FILE__, __LINE__
             );
             return false;
         }
@@ -1719,13 +1744,13 @@ class Net_SmartIRC_base
      * @return boolean
      * @access public
      */
-    public function unregisterActionhandler($handlertype, $regexhandler,
+    public function unregisterActionHandler($handlertype, $regexhandler,
         &$object, $methodname
     ) {
         // precheck
         if (!$this->_isValidType($handlertype)) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: passed invalid handler'
-                .'type to unregisterActionhandler()', __FILE__, __LINE__
+                .'type to unregisterActionHandler()', __FILE__, __LINE__
             );
             return false;
         }
@@ -1766,7 +1791,7 @@ class Net_SmartIRC_base
      * @return boolean
      * @access public
      */
-    public function unregisterActionid($id)
+    public function unregisterActionId($id)
     {
         $handler = &$this->_actionhandler;
         $handlercount = count($handler);
@@ -1805,7 +1830,7 @@ class Net_SmartIRC_base
      * @return integer assigned timehandler id
      * @access public
      */
-    public function registerTimehandler($interval, &$object, $methodname)
+    public function registerTimeHandler($interval, &$object, $methodname)
     {
         $id = $this->_timehandlerid++;
         $newtimehandler = new Net_SmartIRC_timehandler();
@@ -1836,7 +1861,7 @@ class Net_SmartIRC_base
      * @return boolean
      * @access public
      */
-    public function unregisterTimeid($id)
+    public function unregisterTimeId($id)
     {
         $handler = &$this->_timehandler;
         $handlercount = count($handler);
