@@ -1748,7 +1748,7 @@ class Net_SmartIRC_base
         $methodname
     ) {
         // precheck
-        if (!$this->_isValidType($handlertype)) {
+        if (!($handlertype & SMARTIRC_TYPE_ALL)) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: passed invalid handler'
                 .'type to registerActionHandler()', __FILE__, __LINE__
             );
@@ -1785,7 +1785,7 @@ class Net_SmartIRC_base
         &$object, $methodname
     ) {
         // precheck
-        if (!$this->_isValidType($handlertype)) {
+        if (!($handlertype & SMARTIRC_TYPE_ALL)) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: passed invalid handler'
                 .'type to unregisterActionHandler()', __FILE__, __LINE__
             );
@@ -2873,18 +2873,6 @@ class Net_SmartIRC_base
                 }
             }
         }
-    }
-    
-    /**
-     * checks if the passed handlertype is valid
-     *
-     * @param integer $handlertype
-     * @return boolean
-     * @access private
-     */
-    private function _isValidType($handlertype)
-    {
-        return (($handlertype & SMARTIRC_TYPE_ALL) == true);
     }
     
     private function _addIrcUser()
