@@ -340,12 +340,6 @@ class Net_SmartIRC_base
     private $_lasttx;
     
     /**
-     * @var boolean
-     * @access private
-     */
-    private $_autoreconnect = false;
-    
-    /**
      * @var integer
      * @access private
      */
@@ -494,9 +488,19 @@ class Net_SmartIRC_base
             'unregisterActionid' => 'unregisterActionId',
             'registerTimehandler' => 'registerTimeHandler',
             'unregisterTimeid' => 'unregisterTimeId',
+            'setAutoReconnect' => '',
         );
         
         if (array_key_exists($method, $map)) {
+            if (empty($map[$method])) {
+                $this->log(SMARTIRC_DEBUG_NOTICE,
+                    "WARNING: you are using $method() which is deprecated "
+                    ."functionality. Please do not call this method.",
+                    __FILE__, __LINE__
+                );
+                return false;
+            }
+            
             $this->log(SMARTIRC_DEBUG_NOTICE,
                 "WARNING: you are using $method() which is a deprecated "
                 ."method, using {$map[$method]}() instead!", __FILE__, __LINE__
@@ -508,22 +512,6 @@ class Net_SmartIRC_base
             "WARNING: $method() does not exist!", __FILE__, __LINE__
         );
         return false;
-    }
-    
-    /**
-     * Enables/disables autoreconnecting.
-     * 
-     * @param boolean $boolean
-     * @return void
-     * @access public
-     */
-    public function setAutoReconnect($boolean)
-    {
-        if ($boolean) {
-            $this->_autoreconnect = true;
-        } else {
-            $this->_autoreconnect = false;
-        }
     }
     
     /**
@@ -1677,11 +1665,7 @@ class Net_SmartIRC_base
      */
     public function listen()
     {
-        while ($this->_updatestate() == SMARTIRC_STATE_CONNECTED) {
-            $this->listenOnce();
-        }
-            
-        return false;
+        while ($this->listenOnce()) {}
     }
     
     /**
@@ -1695,14 +1679,11 @@ class Net_SmartIRC_base
      */
     public function listenOnce()
     {
-        // TODO: inspect this function to make sure it works right
         if ($this->_updatestate() != SMARTIRC_STATE_CONNECTED) {
             return false;
         }
         
-        $lastpart = '';
-        $rawdataar = array();
-        
+        // before we listen, let's send what's queued
         if ($this->_loggedin) {
             static $highsent = 0;
             static $lastmicrotimestamp = 0;
@@ -1735,14 +1716,11 @@ class Net_SmartIRC_base
         }
         
         if ($this->_usesockets) {
-            $compare = array($this->_maxtimer);
+            // calculate selecttimeout
+            $compare = array($this->_maxtimer, $this->_rxtimeout*1000);
             
             if ($this->_mintimer) {
                 $compare[] = $this->_mintimer;
-            }
-            
-            if ($this->_autoreconnect) {
-                $compare[] = $this->_rxtimeout*1000;
             }
             
             $selecttimeout = ($this->_messagebuffersize != 0)
@@ -1750,23 +1728,25 @@ class Net_SmartIRC_base
                 : min($compare)
             ;
             
-            // this will trigger a warning when catching a signal
+            // check the socket to see if data is waiting for us
+            // this will trigger a warning when catching a signal - silence it
             $result = @socket_select(array($this->_socket), $w = null,
                 $e = null, 0, $selecttimeout * 1000
             );
             
-            if ($result == 1) {
+            $rawdata = null;
+            
+            if ($result) {
                 // the socket got data to read
                 $rawdata = socket_read($this->_socket, 1024);
             } else if ($result === false) {
                 if (socket_last_error() == 4) {
                     // we got hit with a SIGHUP signal
-                    $rawdata = null;
-                    global $bot;
+                    // global $bot;
                     
-                    if (is_callable(array($bot, 'reload'))) {
-                        $bot->reload();
-                    }
+                    // if (is_callable(array($bot, 'reload'))) {
+                    //     $bot->reload();
+                    // }
                 } else {
                     // panic! panic! something went wrong!
                     $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: socket_select()'
@@ -1776,10 +1756,8 @@ class Net_SmartIRC_base
                     );
                     exit;
                 }
-            } else {
-                // no data
-                $rawdata = null;
             }
+            // no data on the socket
         } else {
             usleep($this->_receivedelay*1000);
             $rawdata = fread($this->_socket, 1024);
@@ -1790,19 +1768,18 @@ class Net_SmartIRC_base
             $this->_connectionerror = true;
         }
         
+        // see if any timehandler needs to be called
         if ($this->_loggedin) {
-            $handlercount = count($this->_timehandler);
-            for ($i = 0; $i < $handlercount; $i++) {
-                $handlerobject = &$this->_timehandler[$i];
+            foreach ($this->_timehandler as &$handlerobject) {
                 $microtimestamp = microtime(true);
                 if ($microtimestamp >= $handlerobject->lastmicrotimestamp
-                    + ($handlerobject->interval/1000)
+                    + ($handlerobject->interval / 1000)
                 ) {
                     $methodobject = &$handlerobject->object;
                     $method = $handlerobject->method;
                     $handlerobject->lastmicrotimestamp = $microtimestamp;
                     
-                    if (@method_exists($methodobject, $method)) {
+                    if (method_exists($methodobject, $method)) {
                         $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
                             .'calling method "'.get_class($methodobject).'->'
                             .$method.'"', __FILE__, __LINE__
@@ -1813,38 +1790,38 @@ class Net_SmartIRC_base
             }
         }
         
-        if ($this->_autoreconnect) {
-            $timestamp = time();
-            if ($this->_lastrx < ($timestamp - $this->_rxtimeout)) {
-                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
-                    .'receive timeout detected, doing reconnect...',
-                    __FILE__, __LINE__
-                );
-                $this->_delayReconnect();
-                $this->reconnect();
-            } else if ($this->_lasttx < ($timestamp - $this->_txtimeout)) {
-                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
-                    .'transmit timeout detected, doing reconnect...',
-                    __FILE__, __LINE__
-                );
-                $this->_delayReconnect();
-                $this->reconnect();
-            }
+        $timestamp = time();
+        if ($this->_lastrx < ($timestamp - $this->_rxtimeout)) {
+            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
+                .'receive timeout detected, doing reconnect...',
+                __FILE__, __LINE__
+            );
+            $this->_delayReconnect();
+            $this->reconnect();
+        } else if ($this->_lasttx < ($timestamp - $this->_txtimeout)) {
+            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
+                .'transmit timeout detected, doing reconnect...',
+                __FILE__, __LINE__
+            );
+            $this->_delayReconnect();
+            $this->reconnect();
         }
+
+        $rawdataar = array();
         
-        if ($rawdata !== null && !empty($rawdata)) {
-            $this->_lastrx = time();
+        // if we have data, split it up by message
+        if (!empty($rawdata)) {
+            $this->_lastrx = $timestamp;
             $rawdata = str_replace("\r", '', $rawdata);
-            $rawdata = $lastpart.$rawdata;
             
-            $lastpart = substr($rawdata, strrpos($rawdata ,"\n")+1);
+            // not sure what the point of this line was..
+            // $lastpart = substr($rawdata, strrpos($rawdata ,"\n")+1);
             $rawdata = substr($rawdata, 0, strrpos($rawdata ,"\n"));
             $rawdataar = explode("\n", $rawdata);
         }
         
         // loop through our received messages
-        while (count($rawdataar) > 0) {
-            $rawline = array_shift($rawdataar);
+        foreach ($rawdataar as $rawline) {
             $validmessage = false;
             
             $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
@@ -1858,6 +1835,7 @@ class Net_SmartIRC_base
             $ircdata->rawmessageex = $lineex;
             $messagecode = $lineex[0];
             
+            // parse message
             if (substr($rawline, 0, 1) == ':') {
                 $validmessage = true;
                 $line = substr($rawline, 1);
@@ -1935,7 +1913,8 @@ class Net_SmartIRC_base
                         .") doesn't conform to RFC 2812!",
                         __FILE__, __LINE__
                     );
-                    return false;
+                    // maybe not what we like, but we did listen successfully
+                    return true;
                 }
                 
                 $methodname = 'event_'.strtolower($this->nreplycodes[$messagecode]);
@@ -1948,7 +1927,7 @@ class Net_SmartIRC_base
             }
             
             // if exists call internal method for the handling
-            if (@method_exists($this, $_methodname)) {
+            if (method_exists($this, $_methodname)) {
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: '
                     .'calling internal method "'.get_class($this).'->'.$_methodname
                     .'" ('.$_codetype.')', __FILE__, __LINE__
@@ -1958,7 +1937,7 @@ class Net_SmartIRC_base
             }
             
             // if exists call user defined method for the handling
-            if (@method_exists($this, $methodname)) {
+            if (method_exists($this, $methodname)) {
                 $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: '
                     .'calling user defined method "'.get_class($this).'->'
                     .$methodname.'" ('.$_codetype.')', __FILE__, __LINE__
@@ -1976,15 +1955,16 @@ class Net_SmartIRC_base
             
             if ($validmessage) {
                 // now the actionhandlers are coming
-                $handlercount = count($this->_actionhandler);
-                for ($i = 0; $i < $handlercount; $i++) {
-                    $handlerobject = &$this->_actionhandler[$i];
+                foreach ($this->_actionhandler as $i => &$handlerobject) {
                     
-                    if (substr($handlerobject->message, 0, 1) == '/') {
-                        $regex = $handlerobject->message;
-                    } else {
-                        $regex = '/'.$handlerobject->message.'/';
-                    }
+                    $regex = 
+                        ($handlerobject->message{0}
+                            == $handlerobject->message{
+                                strlen($handlerobject->message) - 1
+                            }
+                        ) ? $handlerobject->message;
+                        : '/'.$handlerobject->message . '/'
+                    ;
                     
                     if (($handlerobject->type & $ircdata->type)
                         && preg_match($regex, $ircdata->message)
@@ -1998,7 +1978,7 @@ class Net_SmartIRC_base
                         $methodobject = &$handlerobject->object;
                         $method = $handlerobject->method;
                         
-                        if (@method_exists($methodobject, $method)) {
+                        if (method_exists($methodobject, $method)) {
                             $this->log(SMARTIRC_DEBUG_ACTIONHANDLER,
                                 'DEBUG_ACTIONHANDLER: calling method "'
                                 .get_class($methodobject).'->'.$method.'"',
@@ -2020,13 +2000,8 @@ class Net_SmartIRC_base
         }
         
         if ($this->_connectionerror) {
-            if ($this->_autoreconnect) {
-                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will reconnect!', __FILE__, __LINE__);
-                $this->reconnect();
-            } else {
-                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will disconnect!', __FILE__, __LINE__);
-                $this->disconnect();
-            }
+            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connection error detected, will reconnect!', __FILE__, __LINE__);
+            $this->reconnect();
         }
         return true;
     }

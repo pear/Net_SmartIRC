@@ -2,13 +2,11 @@ todo:
 
 set up class constants for base class for methods that appear to need them
 
-organize methods by type/purpose and by alphabet
-
-todo on listenOnce()
-
 evaluate propriety of return values on all methods
 
-listenOnce() says 'global $bot;' ...BAD!
+implement module reloading in listenOnce() for SIGHUP
+replace message parsing in listenOnce() with regexes.
+	each type of message needs a regex assigned to it.
 
 integrate my ping fix into base code somehow.
 
@@ -17,8 +15,6 @@ figure out visibility for isError() and throwError()
 classes are chained together with inheritance. making a new Net_SmartIRC() calls:
 Net_SmartIRC <- *_messagehandler <- *_irccommands <- *_base
 like concatenating classes or something. crazy. fix it.
-
-autoreconnect shouldn't be an option. it should be hard coded as true.
 
 there needs to be a stoplisten method that a bot can call that returns control to the calling script.
 
@@ -36,6 +32,8 @@ there needs to be a stoplisten method that a bot can call that returns control t
 **API** then we have several structs, basically. is that the best way to do it?
 	(data, actionhandler, timehandler, channel, user, channeluser<-user, ircuser<-user)
 **API** connect and login need to be one method. and return success or failure.
+**API** Net_SmartIRC_data is kind of a pointless class. could be an array,
+	but changing it would break BC.
 
 
 actionhandler is already a separate class, but not enough. see registerActionhandler()
