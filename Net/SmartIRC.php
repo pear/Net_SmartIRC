@@ -1730,8 +1730,9 @@ class Net_SmartIRC_base
             
             // check the socket to see if data is waiting for us
             // this will trigger a warning when catching a signal - silence it
-            $result = @socket_select(array($this->_socket), $w = null,
-                $e = null, 0, $selecttimeout * 1000
+            $sockarr = array($this->_socket);
+            $result = @socket_select($sockarr, $w = null, $e = null, 0,
+                $selecttimeout * 1000
             );
             
             $rawdata = null;
