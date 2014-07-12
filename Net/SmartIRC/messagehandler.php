@@ -411,12 +411,14 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_rpl_welcome(&$ircdata)
     {
         $this->_loggedin = true;
-        $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: logged in',
-            __FILE__, __LINE__
-        );
         
         // updating our nickname, that we got (maybe cutted...)
         $this->_nick = $ircdata->rawmessageex[2];
+        
+        $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: logged in as '
+            . $this->_nick, __FILE__, __LINE__
+        );
+        
     }
     
     function _event_rpl_motdstart(&$ircdata)

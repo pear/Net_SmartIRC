@@ -1698,7 +1698,10 @@ class Net_SmartIRC_base
             $this->_messagebuffersize = $highcount+$mediumcount+$lowcount;
             
             // don't send them too fast
-            if (microtime(true) >= ($lastmicrotimestamp+($this->_senddelay/1000))) {
+            if ($this->_messagebuffersize
+                && microtime(true) 
+                    >= ($lastmicrotimestamp+($this->_senddelay/1000))
+            ) {
                 $result = null;
                 if ($highcount > 0 && $highsent <= 2) {
                     $this->_rawsend(array_shift($this->_messagebuffer[SMARTIRC_HIGH]));
@@ -1963,7 +1966,7 @@ class Net_SmartIRC_base
                             == $handlerobject->message{
                                 strlen($handlerobject->message) - 1
                             }
-                        ) ? $handlerobject->message;
+                        ) ? $handlerobject->message
                         : '/'.$handlerobject->message . '/'
                     ;
                     
@@ -2570,9 +2573,9 @@ class Net_SmartIRC_base
      * changes an already used nickname to a new nickname plus 3 random digits
      *
      * @return void
-     * @access private
+     * @access protected
      */
-    private function _nicknameinuse()
+    protected function _nicknameinuse()
     {
         $newnickname = substr($this->_nick, 0, 5) . rand(0, 999);
         $this->changeNick($newnickname, SMARTIRC_CRITICAL);
