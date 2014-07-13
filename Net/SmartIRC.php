@@ -68,99 +68,99 @@ class Net_SmartIRC_base
 {
     /**
      * @var resource
-     * @access private
+     * @access protected
      */
-    private $_socket;
+    protected $_socket;
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_address;
+    protected $_address;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_port;
+    protected $_port;
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_bindaddress = null;
+    protected $_bindaddress = null;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_bindport = 0;
+    protected $_bindport = 0;
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_nick;
+    protected $_nick;
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_username;
+    protected $_username;
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_realname;
+    protected $_realname;
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_usermode;
+    protected $_usermode;
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_password;
+    protected $_password;
     
     /**
      * @var array
-     * @access private
+     * @access protected
      */
-    private $_performs = array();
+    protected $_performs = array();
     
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_state = SMARTIRC_STATE_DISCONNECTED;
+    protected $_state = SMARTIRC_STATE_DISCONNECTED;
     
     /**
      * @var array
-     * @access private
+     * @access protected
      */
-    private $_actionhandler = array();
+    protected $_actionhandler = array();
     
     /**
      * @var array
-     * @access private
+     * @access protected
      */
-    private $_timehandler = array();
+    protected $_timehandler = array();
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_debuglevel = SMARTIRC_DEBUG_NOTICE;
+    protected $_debuglevel = SMARTIRC_DEBUG_NOTICE;
     
     /**
      * @var array
-     * @access private
+     * @access protected
      */
-    private $_messagebuffer = array(
+    protected $_messagebuffer = array(
 		SMARTIRC_CRITICAL => array(),
 		SMARTIRC_HIGH     => array(),
 		SMARTIRC_MEDIUM   => array(),
@@ -169,211 +169,211 @@ class Net_SmartIRC_base
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_messagebuffersize;
+    protected $_messagebuffersize;
     
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_usesockets = false;
+    protected $_usesockets = false;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_receivedelay = 100;
+    protected $_receivedelay = 100;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_senddelay = 250;
+    protected $_senddelay = 250;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_logdestination = SMARTIRC_STDOUT;
+    protected $_logdestination = SMARTIRC_STDOUT;
     
     /**
      * @var resource
-     * @access private
+     * @access protected
      */
-    private $_logfilefp = 0;
+    protected $_logfilefp = 0;
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_logfile = 'Net_SmartIRC.log';
+    protected $_logfile = 'Net_SmartIRC.log';
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_disconnecttime = 1000;
+    protected $_disconnecttime = 1000;
     
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_loggedin = false;
+    protected $_loggedin = false;
     
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_benchmark = false;
+    protected $_benchmark = false;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_benchmark_starttime;
+    protected $_benchmark_starttime;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_benchmark_stoptime;
+    protected $_benchmark_stoptime;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_actionhandlerid = 0;
+    protected $_actionhandlerid = 0;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_timehandlerid = 0;
+    protected $_timehandlerid = 0;
     
     /**
      * @var array
-     * @access private
+     * @access protected
      */
-    private $_motd = array();
+    protected $_motd = array();
     
     /**
      * @var array
-     * @access private
+     * @access protected
      */
-    private $_channels = array();
+    protected $_channels = array();
     
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_channelsyncing = false;
+    protected $_channelsyncing = false;
     
     /**
      * @var array
-     * @access private
+     * @access protected
      */
-    private $_users = array();
+    protected $_users = array();
     
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_usersyncing = false;
+    protected $_usersyncing = false;
     
     /**
      * Stores the path to the modules that can be loaded.
      *
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_modulepath = '';
+    protected $_modulepath = '';
     
     /**
      * Stores all objects of the modules.
      *
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_modules = array();
+    protected $_modules = array();
     
     /**
      * @var string
-     * @access private
+     * @access protected
      */
-    private $_ctcpversion = SMARTIRC_VERSIONSTRING;
+    protected $_ctcpversion = SMARTIRC_VERSIONSTRING;
     
     /**
      * @var mixed
-     * @access private
+     * @access protected
      */
-    private $_mintimer = false;
+    protected $_mintimer = false;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_maxtimer = 300000;
+    protected $_maxtimer = 300000;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_txtimeout = 300;
+    protected $_txtimeout = 300;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_rxtimeout = 300;
+    protected $_rxtimeout = 300;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_lastrx;
+    protected $_lastrx;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_lasttx;
+    protected $_lasttx;
     
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_reconnectdelay = 10000;
+    protected $_reconnectdelay = 10000;
 
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_autoretry = false;
+    protected $_autoretry = false;
 
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_autoretrymax = 5;
+    protected $_autoretrymax = 5;
 
     /**
      * @var integer
-     * @access private
+     * @access protected
      */
-    private $_autoretrycount = 0;
+    protected $_autoretrycount = 0;
     
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_connectionerror = false;
+    protected $_connectionerror = false;
 
     /**
      * @var boolean
-     * @access private
+     * @access protected
      */
-    private $_runasdaemon = false;
+    protected $_runasdaemon = false;
     
 
     /**
@@ -2365,16 +2365,16 @@ class Net_SmartIRC_base
         return false;
     }
     
-    // <private methods>
+    // <protected methods>
     /**
      * adds an user to the channelobject or updates his info
      *
      * @param object $channel
      * @param object $newuser
      * @return void
-     * @access private
+     * @access protected
      */
-    private function _adduser(&$channel, &$newuser)
+    protected function _adduser(&$channel, &$newuser)
     {
         $lowerednick = strtolower($newuser->nick);
         if ($this->isJoined($channel->name, $newuser->nick)) {
@@ -2423,9 +2423,9 @@ class Net_SmartIRC_base
      * Delay reconnect
      *
      * @return void
-     * @access private
+     * @access protected
      */
-    private function _delayReconnect()
+    protected function _delayReconnect()
     {
         if ($this->_reconnectdelay > 0) {
             $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying '
@@ -2443,9 +2443,9 @@ class Net_SmartIRC_base
      *
      * @param string $line
      * @return integer SMARTIRC_TYPE_* constant
-     * @access private
+     * @access protected
      */
-    private function _gettype($line)
+    protected function _gettype($line)
     {
         if (preg_match('/^:[^ ]+? [0-9]{3} .+$/', $line)) {
             $lineex = explode(' ', $line);
@@ -2588,9 +2588,9 @@ class Net_SmartIRC_base
      *
      * @param string $data
      * @return boolean
-     * @access private
+     * @access protected
      */
-    private function _rawsend($data)
+    protected function _rawsend($data)
     {
         if ($this->_updatestate() != SMARTIRC_STATE_CONNECTED) {
             return false;
@@ -2622,9 +2622,9 @@ class Net_SmartIRC_base
      *
      * @param object $ircdata
      * @return void
-     * @access private
+     * @access protected
      */
-    private function _removeuser(&$ircdata)
+    protected function _removeuser(&$ircdata)
     {
         if ($ircdata->type & (SMARTIRC_TYPE_PART | SMARTIRC_TYPE_QUIT)) {
             $nick = $ircdata->nick;
@@ -2709,9 +2709,9 @@ class Net_SmartIRC_base
      * updates and returns the current connection state
      *
      * @return boolean
-     * @access private
+     * @access protected
      */
-    private function _updatestate()
+    protected function _updatestate()
     {
         if (is_resource($this->_socket)) {
             $rtype = get_resource_type($this->_socket);
@@ -2728,7 +2728,7 @@ class Net_SmartIRC_base
         return $this->_state;
     }
 
-    // </private methods>
+    // </protected methods>
     
     function isError($object)
     {

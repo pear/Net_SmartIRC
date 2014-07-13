@@ -55,7 +55,7 @@ class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 );
                 $channel = new Net_SmartIRC_channel();
                 $channel->name = $ircdata->channel;
-                $microint = $this->_microint();
+                $microint = microtime(true);
                 $channel->synctime_start = $microint;
                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
                     'DEBUG_CHANNELSYNCING: synctime_start for '
