@@ -67,6 +67,63 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 class Net_SmartIRC_base
 {
     /**
+     * This is to prevent an E_NOTICE for example in getChannel() if null needs
+     * to be returned.
+     * 
+     * @var null
+     * @access public
+     */
+    const NULLGUARD = null;
+    
+    /**
+     * @var integer
+     * @access public
+     */
+    const DEF_AUTORETRY_MAX = 5;
+    
+    /**
+     * @var integer
+     * @access public
+     */
+    const DEF_DISCONNECT_TIME = 1000;
+    
+    /**
+     * @var integer
+     * @access public
+     */
+    const DEF_LOGFILE = 'Net_SmartIRC.log';
+    
+    /**
+     * @var integer
+     * @access public
+     */
+    const DEF_MAX_TIMER = 300000;
+    
+    /**
+     * @var integer
+     * @access public
+     */
+    const DEF_RECEIVE_DELAY = 100;
+    
+    /**
+     * @var integer
+     * @access public
+     */
+    const DEF_RECONNECT_DELAY = 10000;
+    
+    /**
+     * @var integer
+     * @access public
+     */
+    const DEF_SEND_DELAY = 250;
+    
+    /**
+     * @var integer
+     * @access public
+     */
+    const DEF_TX_RX_TIMEOUT = 300;
+    
+    /**
      * @var resource
      * @access protected
      */
@@ -161,7 +218,6 @@ class Net_SmartIRC_base
      * @access protected
      */
     protected $_messagebuffer = array(
-		SMARTIRC_CRITICAL => array(),
 		SMARTIRC_HIGH     => array(),
 		SMARTIRC_MEDIUM   => array(),
 		SMARTIRC_LOW 	  => array(),
@@ -183,13 +239,13 @@ class Net_SmartIRC_base
      * @var integer
      * @access protected
      */
-    protected $_receivedelay = 100;
+    protected $_receivedelay = self::DEF_RECEIVE_DELAY;
     
     /**
      * @var integer
      * @access protected
      */
-    protected $_senddelay = 250;
+    protected $_senddelay = self::DEF_SEND_DELAY;
     
     /**
      * @var integer
@@ -207,13 +263,13 @@ class Net_SmartIRC_base
      * @var string
      * @access protected
      */
-    protected $_logfile = 'Net_SmartIRC.log';
+    protected $_logfile = self::DEF_LOGFILE;
     
     /**
      * @var integer
      * @access protected
      */
-    protected $_disconnecttime = 1000;
+    protected $_disconnecttime = self::DEF_DISCONNECT_TIME;
     
     /**
      * @var boolean
@@ -313,19 +369,19 @@ class Net_SmartIRC_base
      * @var integer
      * @access protected
      */
-    protected $_maxtimer = 300000;
+    protected $_maxtimer = self::DEF_MAX_TIMER;
     
     /**
      * @var integer
      * @access protected
      */
-    protected $_txtimeout = 300;
+    protected $_txtimeout = self::DEF_TX_RX_TIMEOUT;
     
     /**
      * @var integer
      * @access protected
      */
-    protected $_rxtimeout = 300;
+    protected $_rxtimeout = self::DEF_TX_RX_TIMEOUT;
     
     /**
      * @var integer
@@ -343,7 +399,7 @@ class Net_SmartIRC_base
      * @var integer
      * @access protected
      */
-    protected $_reconnectdelay = 10000;
+    protected $_reconnectdelay = self::DEF_RECONNECT_DELAY;
 
     /**
      * @var boolean
@@ -355,7 +411,7 @@ class Net_SmartIRC_base
      * @var integer
      * @access protected
      */
-    protected $_autoretrymax = 5;
+    protected $_autoretrymax = self::DEF_AUTORETRY_MAX;
 
     /**
      * @var integer
@@ -376,15 +432,6 @@ class Net_SmartIRC_base
     protected $_runasdaemon = false;
     
 
-    /**
-     * All IRC replycodes, the index is the replycode name.
-     *
-     * @see $SMARTIRC_replycodes
-     * @var array
-     * @access public
-     */
-    public $replycodes;
-    
     /**
      * All numeric IRC replycodes, the index is the numeric replycode.
      *
@@ -420,15 +467,6 @@ class Net_SmartIRC_base
     public $user;
     
     /**
-     * This is to prevent an E_NOTICE for example in getChannel() if null needs
-     * to be returned.
-     * 
-     * @var null
-     * @access public
-     */
-    const NULLGUARD = null;
-    
-    /**
      * Constructor. Initiates the messagebuffer and "links" the replycodes from
      * global into properties. Also some PHP runtime settings are configured.
      *
@@ -440,7 +478,6 @@ class Net_SmartIRC_base
         ob_implicit_flush(true);
         @set_time_limit(0);
         
-        $this->replycodes = &$GLOBALS['SMARTIRC_replycodes'];
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
         
         // you'll want to pass an array that includes keys like:
@@ -547,7 +584,7 @@ class Net_SmartIRC_base
                 $this->_autoretrymax = $autoretrymax;
             }
         } else {
-            $this->_autoretrymax = 5;
+            $this->_autoretrymax = self::DEF_AUTORETRY_MAX;
         }
     }
 
@@ -666,10 +703,12 @@ class Net_SmartIRC_base
      */
     public function setDisconnectTime($milliseconds)
     {
-        if (is_integer($milliseconds) && $milliseconds >= 100) {
+        if (is_integer($milliseconds)
+             && $milliseconds >= self::DEF_DISCONNECT_TIME
+        ) {
             $this->_disconnecttime = $milliseconds;
         } else {
-            $this->_disconnecttime = 100;
+            $this->_disconnecttime = self::DEF_DISCONNECT_TIME;
         }
     }
     
@@ -747,10 +786,12 @@ class Net_SmartIRC_base
      */
     public function setReceiveDelay($milliseconds)
     {
-        if (is_integer($milliseconds) && $milliseconds >= 100) {
+        if (is_integer($milliseconds)
+            && $milliseconds >= self::DEF_RECEIVE_DELAY
+        ) {
             $this->_receivedelay = $milliseconds;
         } else {
-            $this->_receivedelay = 100;
+            $this->_receivedelay = self::DEF_RECEIVE_DELAY;
         }
     }
     
@@ -767,7 +808,7 @@ class Net_SmartIRC_base
         if (is_integer($milliseconds)) {
             $this->_reconnectdelay = $milliseconds;
         } else {
-            $this->_reconnectdelay = 10000;
+            $this->_reconnectdelay = self::DEF_RECONNECT_DELAY;
         }
     }
 
@@ -804,7 +845,7 @@ class Net_SmartIRC_base
         if (is_integer($milliseconds)) {
             $this->_senddelay = $milliseconds;
         } else {
-            $this->_senddelay = 250;
+            $this->_senddelay = self::DEF_SEND_DELAY;
         }
     }
     
@@ -823,7 +864,7 @@ class Net_SmartIRC_base
         if (is_integer($seconds)) {
             $this->_rxtimeout = $seconds;
         } else {
-            $this->_rxtimeout = 300;
+            $this->_rxtimeout = self::DEF_TX_RX_TIMEOUT;
         }
     }
     
@@ -842,7 +883,7 @@ class Net_SmartIRC_base
         if (is_integer($seconds)) {
             $this->_txtimeout = $seconds;
         } else {
-            $this->_txtimeout = 300;
+            $this->_txtimeout = self::DEF_TX_RX_TIMEOUT;
         }
     }
     
@@ -1042,10 +1083,6 @@ class Net_SmartIRC_base
                 break;
             
             case SMARTIRC_SYSLOG:
-                if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-                    define_syslog_variables();
-                }
-                
                 if (!is_int($this->_logfilefp)) {
                     $this->_logfilefp = openlog('Net_SmartIRC', LOG_NDELAY,
                         LOG_DAEMON
@@ -1213,6 +1250,10 @@ class Net_SmartIRC_base
                 );
                 stream_set_blocking($this->_socket, 0);
             }
+            
+            $this->registerTimeHandler(($this->_rxtimeout / 8) * 1000,
+                $this, '_pingcheck'
+            );
         }
         
         $this->_lastrx = time();
@@ -2582,6 +2623,22 @@ class Net_SmartIRC_base
     }
     
     /**
+     * An active-pinging system to keep the bot from dropping the connection
+     * 
+     * @return void
+     * @access protected
+     */
+    protected function _pingcheck () {
+        $time = time();
+        if ($time - $this->_lastrx > $this->_rxtimeout) {
+            $this->reconnect();
+            $this->_lastrx = $time;
+        } elseif ($time - $this->_lastrx > $this->_rxtimeout/2) {
+            $this->send('PING '.$this->_address, SMARTIRC_CRITICAL);
+        }
+    }
+    
+    /**
      * sends a raw message to the IRC server
      *
      * Don't use this directly! Use message() or send() instead.
@@ -2730,14 +2787,14 @@ class Net_SmartIRC_base
 
     // </protected methods>
     
-    function isError($object)
+    function isError($object) // is this even needed/used?
     {
         return (is_object($object)
             && strtolower(get_class($object)) == 'net_smartirc_error'
         );
     }
     
-    function &throwError($message)
+    protected function &throwError($message)
     {
         return new Net_SmartIRC_Error($message);
     }

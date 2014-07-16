@@ -1,7 +1,5 @@
 todo:
 
-set up class constants for base class for methods that appear to need them
-
 evaluate propriety of return values on all methods
 
 implement module reloading in listenOnce() for SIGHUP
@@ -9,8 +7,6 @@ replace message parsing in listenOnce() with regexes.
 	each type of message needs a regex assigned to it.
 
 integrate my ping fix into base code somehow.
-
-figure out visibility for isError() and throwError()
 
 classes are chained together with inheritance. making a new Net_SmartIRC() calls:
 Net_SmartIRC <- *_messagehandler <- *_irccommands <- *_base
@@ -42,5 +38,3 @@ also registerTimehandler()
 * some of the commands that send messages trigger server responses.
 * those commands need to start listeners for those responses that confirm state.
 * and then do something on failure.
-
-test non-socket usage!
