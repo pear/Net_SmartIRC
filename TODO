@@ -6,13 +6,9 @@ implement module reloading in listenOnce() for SIGHUP
 replace message parsing in listenOnce() with regexes.
 	each type of message needs a regex assigned to it.
 
-integrate my ping fix into base code somehow.
-
 classes are chained together with inheritance. making a new Net_SmartIRC() calls:
 Net_SmartIRC <- *_messagehandler <- *_irccommands <- *_base
 like concatenating classes or something. crazy. fix it.
-
-there needs to be a stoplisten method that a bot can call that returns control to the calling script.
 
 **API** replycodes are in defines.php and public vars in base class??
 **API** public $channel, $user? make private + getters/setters... + __get/__set for BC?

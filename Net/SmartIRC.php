@@ -431,6 +431,12 @@ class Net_SmartIRC_base
      */
     protected $_runasdaemon = false;
     
+    /**
+     * @var boolean
+     * @access protected
+     */
+    protected $_interrupt = false;
+    
 
     /**
      * All numeric IRC replycodes, the index is the numeric replycode.
@@ -1696,6 +1702,17 @@ class Net_SmartIRC_base
     }
     
     /**
+     * Provides a mechanism to interrupt a listen() loop by a bot or something
+     * 
+     * @return boolean
+     * @access public
+     */
+    public function interrupt($ival = true)
+    {
+        return ($this->_interrupt = $ival);
+    }
+    
+    /**
      * goes into receive mode
      *
      * Goes into receive and idle mode. Only call this if you want to "spawn" the bot.
@@ -1706,7 +1723,7 @@ class Net_SmartIRC_base
      */
     public function listen()
     {
-        while ($this->listenOnce()) {}
+        while ($this->listenOnce() && !$this->_interrupt) {}
     }
     
     /**
