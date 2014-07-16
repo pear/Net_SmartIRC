@@ -1,7 +1,5 @@
 todo:
 
-evaluate propriety of return values on all methods
-
 implement module reloading in listenOnce() for SIGHUP
 replace message parsing in listenOnce() with regexes.
 	each type of message needs a regex assigned to it.

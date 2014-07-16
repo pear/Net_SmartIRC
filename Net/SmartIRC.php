@@ -561,16 +561,12 @@ class Net_SmartIRC_base
      * Enables/disables autoretry for connecting to a server.
      * 
      * @param boolean $boolean
-     * @return void
+     * @return boolean
      * @access public
      */
     public function setAutoRetry($boolean)
     {
-        if ($boolean) {
-            $this->_autoretry = true;
-        } else {
-            $this->_autoretry = false;
-        }
+        return ($this->_autoretry = ($boolean) ? true : false);
     }
 
     /**
@@ -578,7 +574,7 @@ class Net_SmartIRC_base
      * before giving up.
      *
      * @param integer $autoretrymax
-     * @return void
+     * @return integer
      * @access public
      */
     public function setAutoRetryMax($autoretrymax)
@@ -592,18 +588,19 @@ class Net_SmartIRC_base
         } else {
             $this->_autoretrymax = self::DEF_AUTORETRY_MAX;
         }
+        return $this->_autoretrymax;
     }
 
     /**
      * Enables/disables the benchmark engine.
      * 
      * @param boolean $boolean
-     * @return void
+     * @return boolean
      * @access public
      */
     public function setBenchmark($boolean)
     {
-        $this->_benchmark = ($boolean) ? true : false;
+        return ($this->_benchmark = ($boolean) ? true : false);
     }
     
     /**
@@ -636,7 +633,7 @@ class Net_SmartIRC_base
      * channel array. This makes it very handy for botcoding.
      * 
      * @param boolean $boolean
-     * @return void
+     * @return boolean
      * @access public
      */
     public function setChannelSyncing($boolean)
@@ -654,18 +651,19 @@ class Net_SmartIRC_base
                 __FILE__, __LINE__
             );
         }
+        return $this->_channelsyncing;
     }
 
     /**
      * Sets the CTCP version reply string.
      * 
      * @param string $versionstring
-     * @return void
+     * @return string
      * @access public
      */
     public function setCtcpVersion($versionstring)
     {
-        $this->_ctcpversion = $versionstring;
+        return ($this->_ctcpversion = $versionstring);
     }
     
     /**
@@ -692,19 +690,19 @@ class Net_SmartIRC_base
      * @see DOCUMENTATION
      * @see SMARTIRC_DEBUG_NOTICE
      * @param integer $level
-     * @return void
+     * @return integer
      * @access public
      */
     public function setDebugLevel($level)
     {
-        $this->_debuglevel = $level;
+        return ($this->_debuglevel = $level);
     }
     
     /**
      * Sets the delaytime before closing the socket when disconnect.
      *
      * @param integer $milliseconds
-     * @return void
+     * @return integer
      * @access public
      */
     public function setDisconnectTime($milliseconds)
@@ -716,6 +714,7 @@ class Net_SmartIRC_base
         } else {
             $this->_disconnecttime = self::DEF_DISCONNECT_TIME;
         }
+        return $this->_disconnecttime;
     }
     
     /**
@@ -730,7 +729,7 @@ class Net_SmartIRC_base
      *
      * @see SMARTIRC_STDOUT
      * @param integer $type must be on of the constants
-     * @return void
+     * @return integer
      * @access public
      */
     public function setLogDestination($type)
@@ -750,6 +749,7 @@ class Net_SmartIRC_base
                     .'), will use STDOUT instead', __FILE__, __LINE__);
                 $this->_logdestination = SMARTIRC_STDOUT;
         }
+        return $this->_logdestination;
     }
     
     /**
@@ -759,24 +759,24 @@ class Net_SmartIRC_base
      * This should be only used with full path!
      *
      * @param string $file 
-     * @return void
+     * @return string
      * @access public
      */
     public function setLogFile($file)
     {
-        $this->_logfile = $file;
+        return ($this->_logfile = $file);
     }
     
     /**
      * Sets the paths for the modules.
      *
      * @param integer $path
-     * @return void
+     * @return string
      * @access public
      */
     public function setModulePath($path)
     {
-        $this->_modulepath = $path;
+        return ($this->_modulepath = $path);
     }
 
     /**
@@ -787,7 +787,7 @@ class Net_SmartIRC_base
      * Default: 100
      *
      * @param integer $milliseconds
-     * @return void
+     * @return integer
      * @access public
      */
     public function setReceiveDelay($milliseconds)
@@ -799,6 +799,7 @@ class Net_SmartIRC_base
         } else {
             $this->_receivedelay = self::DEF_RECEIVE_DELAY;
         }
+        return $this->_receivedelay;
     }
     
     /**
@@ -806,7 +807,7 @@ class Net_SmartIRC_base
      * Value of 0 disables the delay entirely.
      *
      * @param integer $milliseconds
-     * @return void
+     * @return integer
      * @access public
      */
     public function setReconnectDelay($milliseconds)
@@ -816,6 +817,7 @@ class Net_SmartIRC_base
         } else {
             $this->_reconnectdelay = self::DEF_RECONNECT_DELAY;
         }
+        return $this->_reconnectdelay;
     }
 
     /**
@@ -823,7 +825,7 @@ class Net_SmartIRC_base
      * ( actually disables/enables ignore_user_abort() )
      *
      * @param boolean $boolean
-     * @return void
+     * @return boolean
      * @access public
      */
     public function setRunAsDaemon($boolean)
@@ -834,6 +836,7 @@ class Net_SmartIRC_base
         } else {
             $this->_runasdaemon = false;
         }
+        return $this->_runasdaemon;
     }
     
     /**
@@ -844,7 +847,7 @@ class Net_SmartIRC_base
      * Default: 250
      *
      * @param integer $milliseconds
-     * @return void
+     * @return integer
      * @access public
      */
     public function setSendDelay($milliseconds) {
@@ -853,6 +856,7 @@ class Net_SmartIRC_base
         } else {
             $this->_senddelay = self::DEF_SEND_DELAY;
         }
+        return $this->_senddelay;
     }
     
     /**
@@ -862,7 +866,7 @@ class Net_SmartIRC_base
      * Default: 300 seconds
      *
      * @param integer $seconds
-     * @return void
+     * @return integer
      * @access public
      */
     public function setReceiveTimeout($seconds)
@@ -872,6 +876,7 @@ class Net_SmartIRC_base
         } else {
             $this->_rxtimeout = self::DEF_TX_RX_TIMEOUT;
         }
+        return $this->_rxtimeout;
     }
     
     /**
@@ -881,7 +886,7 @@ class Net_SmartIRC_base
      * Default: 300 seconds
      *
      * @param integer $seconds
-     * @return void
+     * @return integer
      * @access public
      */
     public function setTransmitTimeout($seconds)
@@ -891,6 +896,7 @@ class Net_SmartIRC_base
         } else {
             $this->_txtimeout = self::DEF_TX_RX_TIMEOUT;
         }
+        return $this->_txtimeout;
     }
     
     /**
@@ -900,7 +906,7 @@ class Net_SmartIRC_base
      * notice are tracked in the $irc->user array. This is very handy for botcoding.
      *
      * @param boolean $boolean
-     * @return void
+     * @return boolean
      * @access public
      */
     public function setUserSyncing($boolean)
@@ -914,6 +920,7 @@ class Net_SmartIRC_base
 			$this->log(SMARTIRC_DEBUG_USERSYNCING,
                 'DEBUG_USERSYNCING: User syncing disabled', __FILE__, __LINE__);
         }
+        return $this->_usersyncing;
     }
     
     /**
@@ -924,7 +931,7 @@ class Net_SmartIRC_base
      * Default: false
      *
      * @param bool $boolean
-     * @return void
+     * @return boolean
      * @access public
      */
     public function setUseSockets($boolean)
@@ -1097,6 +1104,7 @@ class Net_SmartIRC_base
                 
                 syslog(LOG_INFO, $entry);
         }
+        return true;
     }
     
     /**
@@ -1335,7 +1343,7 @@ class Net_SmartIRC_base
      * Reconnects to the IRC server with the same login info,
      * it also rejoins the channels
      *
-     * @return void
+     * @return boolean
      * @access public
      */
     public function reconnect()
@@ -1439,6 +1447,7 @@ class Net_SmartIRC_base
      * adds a command to the list of commands to be sent after login() info
      * 
      * @param string $cmd the command to add to the perform list
+     * @return void
      * @access public
      */
     public function perform($cmd)
@@ -1718,7 +1727,7 @@ class Net_SmartIRC_base
      * Goes into receive and idle mode. Only call this if you want to "spawn" the bot.
      * No further lines of PHP code will be processed after this call, only the bot methods!
      *
-     * @return boolean
+     * @return void
      * @access public
      */
     public function listen()
@@ -2294,6 +2303,13 @@ class Net_SmartIRC_base
         return false;
     }
     
+    /**
+     * loads a module using preset path and given name
+     * 
+     * @param string $name
+     * @return boolean
+     * @access public
+     */
     public function loadModule($name)
     {
         // is the module already loaded?
@@ -2393,6 +2409,13 @@ class Net_SmartIRC_base
         return true;
     }
     
+    /**
+     * unloads a module by the name originally loaded with
+     * 
+     * @param string $name
+     * @return boolean
+     * @access public
+     */
     public function unloadModule($name)
     {
         $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: unloading module: '
