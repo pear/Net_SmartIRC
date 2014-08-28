@@ -1,6 +1,5 @@
 todo:
 
-implement module reloading in listenOnce() for SIGHUP
 replace message parsing in listenOnce() with regexes.
 	each type of message needs a regex assigned to it.
 
@@ -24,6 +23,9 @@ like concatenating classes or something. crazy. fix it.
 **API** connect and login need to be one method. and return success or failure.
 **API** Net_SmartIRC_data is kind of a pointless class. could be an array,
 	but changing it would break BC.
+**API** Instead of loadModule() loading files and stuff, make it just load classes
+	and let the user determine how to bring them into PHP. Then classes can be
+	named whatever. But they'll need to implement an interface which we need to make.
 
 
 actionhandler is already a separate class, but not enough. see registerActionhandler()
