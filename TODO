@@ -1,7 +1,6 @@
 todo:
 
-replace message parsing in listenOnce() with regexes.
-	each type of message needs a regex assigned to it.
+line 1844: replace with regex?
 
 classes are chained together with inheritance. making a new Net_SmartIRC() calls:
 Net_SmartIRC <- *_messagehandler <- *_irccommands <- *_base
