@@ -1,7 +1,5 @@
 todo:
 
-line 1844: replace with regex?
-
 classes are chained together with inheritance. making a new Net_SmartIRC() calls:
 Net_SmartIRC <- *_messagehandler <- *_irccommands <- *_base
 like concatenating classes or something. crazy. fix it.

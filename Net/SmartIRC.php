@@ -1839,33 +1839,180 @@ class Net_SmartIRC_base
             $ircdata->params = $params;
             $ircdata->message = $trailing;
             $ircdata->messageex = explode(' ', $trailing); // kept for BC
-            $ircdata->type = $this->_gettype($ircdata, $command);
             
-            // parse ident thingy -- replace with regex?
-            $exclamationpos = strpos($prefix, '!');
-            $atpos = strpos($prefix, '@');
-            $ircdata->nick = substr($prefix, 0, $exclamationpos);
-            $ircdata->ident = substr($prefix, $exclamationpos+1, 
-                $atpos-$exclamationpos-1
-            );
-            $ircdata->host = substr($prefix, $atpos+1);
+            // parse ident thingy
+            if (preg_match('/^(\S+)!(\S+)@(\S+)$/', $prefix, $matches)) {
+                $ircdata->nick = $matches[1];
+                $ircdata->ident = $matches[2];
+                $ircdata->host = $matches[3];
+            }
             
-            if ($ircdata->type
-                & (SMARTIRC_TYPE_CHANNEL
-                    | SMARTIRC_TYPE_ACTION
-                    | SMARTIRC_TYPE_MODECHANGE
-                    | SMARTIRC_TYPE_TOPICCHANGE
-                    | SMARTIRC_TYPE_KICK
-                    | SMARTIRC_TYPE_PART
-                    | SMARTIRC_TYPE_JOIN
-                    | SMARTIRC_TYPE_WHO
-                    | SMARTIRC_TYPE_BANLIST
-                    | SMARTIRC_TYPE_TOPIC
-                    | SMARTIRC_TYPE_CHANNELMODE
-                    | SMARTIRC_TYPE_NAME
-                )
-            ) {
-                $ircdata->channel = $params[0];
+            // figure out what SMARTIRC_TYPE this message is
+            switch ($command) {
+                case SMARTIRC_RPL_WELCOME:
+                case SMARTIRC_RPL_YOURHOST:
+                case SMARTIRC_RPL_CREATED:
+                case SMARTIRC_RPL_MYINFO:
+                case SMARTIRC_RPL_BOUNCE:
+                    $ircdata->type = SMARTIRC_TYPE_LOGIN;
+                    break;
+                
+                case SMARTIRC_RPL_LUSERCLIENT:
+                case SMARTIRC_RPL_LUSEROP:
+                case SMARTIRC_RPL_LUSERUNKNOWN:
+                case SMARTIRC_RPL_LUSERME:
+                case SMARTIRC_RPL_LUSERCHANNELS:
+                    $ircdata->type = SMARTIRC_TYPE_INFO;
+                    break;
+                
+                case SMARTIRC_RPL_MOTDSTART:
+                case SMARTIRC_RPL_MOTD:
+                case SMARTIRC_RPL_ENDOFMOTD:
+                    $ircdata->type = SMARTIRC_TYPE_MOTD;
+                    break;
+                
+                case SMARTIRC_RPL_NAMREPLY:
+                case SMARTIRC_RPL_ENDOFNAMES:
+                    $ircdata->type = SMARTIRC_TYPE_NAME;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case SMARTIRC_RPL_WHOREPLY:
+                case SMARTIRC_RPL_ENDOFWHO:
+                    $ircdata->type = SMARTIRC_TYPE_WHO;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case SMARTIRC_RPL_LISTSTART:
+                    $ircdata->type = SMARTIRC_TYPE_NONRELEVANT;
+                    break;
+                
+                case SMARTIRC_RPL_LIST:
+                case SMARTIRC_RPL_LISTEND:
+                    $ircdata->type = SMARTIRC_TYPE_LIST;
+                    break;
+                
+                case SMARTIRC_RPL_BANLIST:
+                case SMARTIRC_RPL_ENDOFBANLIST:
+                    $ircdata->type = SMARTIRC_TYPE_BANLIST;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case SMARTIRC_RPL_TOPIC:
+                    $ircdata->type = SMARTIRC_TYPE_TOPIC;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case SMARTIRC_RPL_WHOISUSER:
+                case SMARTIRC_RPL_WHOISSERVER:
+                case SMARTIRC_RPL_WHOISOPERATOR:
+                case SMARTIRC_RPL_WHOISIDLE:
+                case SMARTIRC_RPL_ENDOFWHOIS:
+                case SMARTIRC_RPL_WHOISCHANNELS:
+                    $ircdata->type = SMARTIRC_TYPE_WHOIS;
+                    break;
+                
+                case SMARTIRC_RPL_WHOWASUSER:
+                case SMARTIRC_RPL_ENDOFWHOWAS:
+                    $ircdata->type = SMARTIRC_TYPE_WHOWAS;
+                    break;
+                
+                case SMARTIRC_RPL_UMODEIS:
+                    $ircdata->type = SMARTIRC_TYPE_USERMODE;
+                    break;
+                
+                case SMARTIRC_RPL_CHANNELMODEIS:
+                    $ircdata->type = SMARTIRC_TYPE_CHANNELMODE;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case SMARTIRC_ERR_NICKNAMEINUSE:
+                case SMARTIRC_ERR_NOTREGISTERED:
+                    $ircdata->type = SMARTIRC_TYPE_ERROR;
+                    break;
+                
+                case 'PRIVMSG':
+                    if (strspn($ircdata->params[0], '&#+!')) {
+                        $ircdata->type = SMARTIRC_TYPE_CHANNEL;
+                        $ircdata->channel = $params[0];
+                        break;
+                    }
+                    if ($ircdata->message{0} == chr(1)) {
+                        if (preg_match('/^'.chr(1).'ACTION .*'.chr(1).'$/',
+                                       $ircdata->message
+                        )) {
+                            $ircdata->type = SMARTIRC_TYPE_ACTION;
+                            $ircdata->channel = $params[0];
+                            break;
+                        }
+                        if (preg_match('/^'.chr(1).'.*'.chr(1).'$/',
+                                       $ircdata->message
+                        )) {
+                            $ircdata->type = (SMARTIRC_TYPE_CTCP_REQUEST
+                                            | SMARTIRC_TYPE_CTCP
+                            );
+                            break;
+                        }
+                    }
+                    $ircdata->type = SMARTIRC_TYPE_QUERY;
+                    break;
+                
+                case 'NOTICE':
+                    if (preg_match('/^'.chr(1).'.*'.chr(1).'$/',
+                                   $ircdata->message
+                    )) {
+                        $ircdata->type = (SMARTIRC_TYPE_CTCP_REPLY
+                                        | SMARTIRC_TYPE_CTCP
+                        );
+                        break;
+                    }
+                    $ircdata->type = SMARTIRC_TYPE_NOTICE;
+                    break;
+                
+                case 'INVITE':
+                    $ircdata->type = SMARTIRC_TYPE_INVITE;
+                    break;
+                
+                case 'JOIN':
+                    $ircdata->type = SMARTIRC_TYPE_JOIN;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case 'TOPIC':
+                    $ircdata->type = SMARTIRC_TYPE_TOPICCHANGE;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case 'NICK':
+                    $ircdata->type = SMARTIRC_TYPE_NICKCHANGE;
+                    break;
+                
+                case 'KICK':
+                    $ircdata->type = SMARTIRC_TYPE_KICK;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case 'PART':
+                    $ircdata->type = SMARTIRC_TYPE_PART;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case 'MODE':
+                    $ircdata->type = SMARTIRC_TYPE_MODECHANGE;
+                    $ircdata->channel = $params[0];
+                    break;
+                
+                case 'QUIT':
+                    $ircdata->type = SMARTIRC_TYPE_QUIT;
+                    break;
+                
+                default:
+                    $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
+                        ."command UNKNOWN ($code): \"$line\"",
+                        __FILE__, __LINE__
+                    );
+                    $ircdata->type = SMARTIRC_TYPE_UNKNOWN;
+                    break;
             }
             
             $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: '
@@ -2413,134 +2560,6 @@ class Net_SmartIRC_base
                 __FILE__, __LINE__
             );
             usleep($this->_reconnectdelay * 1000);
-        }
-    }
-    
-    /**
-     * determines the messagetype of $line
-     *
-     * Analyses the type of an IRC message and returns the type.
-     *
-     * @param mixed $cmd
-     * @param object $data
-     * @return integer SMARTIRC_TYPE_* constant
-     */
-    protected function _gettype($cmd, $data)
-    {
-        switch ($cmd) {
-            case SMARTIRC_RPL_WELCOME:
-            case SMARTIRC_RPL_YOURHOST:
-            case SMARTIRC_RPL_CREATED:
-            case SMARTIRC_RPL_MYINFO:
-            case SMARTIRC_RPL_BOUNCE:
-                return SMARTIRC_TYPE_LOGIN;
-            
-            case SMARTIRC_RPL_LUSERCLIENT:
-            case SMARTIRC_RPL_LUSEROP:
-            case SMARTIRC_RPL_LUSERUNKNOWN:
-            case SMARTIRC_RPL_LUSERME:
-            case SMARTIRC_RPL_LUSERCHANNELS:
-                return SMARTIRC_TYPE_INFO;
-            
-            case SMARTIRC_RPL_MOTDSTART:
-            case SMARTIRC_RPL_MOTD:
-            case SMARTIRC_RPL_ENDOFMOTD:
-                return SMARTIRC_TYPE_MOTD;
-            
-            case SMARTIRC_RPL_NAMREPLY:
-            case SMARTIRC_RPL_ENDOFNAMES:
-                return SMARTIRC_TYPE_NAME;
-            
-            case SMARTIRC_RPL_WHOREPLY:
-            case SMARTIRC_RPL_ENDOFWHO:
-                return SMARTIRC_TYPE_WHO;
-            
-            case SMARTIRC_RPL_LISTSTART:
-                return SMARTIRC_TYPE_NONRELEVANT;
-            
-            case SMARTIRC_RPL_LIST:
-            case SMARTIRC_RPL_LISTEND:
-                return SMARTIRC_TYPE_LIST;
-            
-            case SMARTIRC_RPL_BANLIST:
-            case SMARTIRC_RPL_ENDOFBANLIST:
-                return SMARTIRC_TYPE_BANLIST;
-            
-            case SMARTIRC_RPL_TOPIC:
-                return SMARTIRC_TYPE_TOPIC;
-            
-            case SMARTIRC_RPL_WHOISUSER:
-            case SMARTIRC_RPL_WHOISSERVER:
-            case SMARTIRC_RPL_WHOISOPERATOR:
-            case SMARTIRC_RPL_WHOISIDLE:
-            case SMARTIRC_RPL_ENDOFWHOIS:
-            case SMARTIRC_RPL_WHOISCHANNELS:
-                return SMARTIRC_TYPE_WHOIS;
-            
-            case SMARTIRC_RPL_WHOWASUSER:
-            case SMARTIRC_RPL_ENDOFWHOWAS:
-                return SMARTIRC_TYPE_WHOWAS;
-            
-            case SMARTIRC_RPL_UMODEIS:
-                return SMARTIRC_TYPE_USERMODE;
-            
-            case SMARTIRC_RPL_CHANNELMODEIS:
-                return SMARTIRC_TYPE_CHANNELMODE;
-            
-            case SMARTIRC_ERR_NICKNAMEINUSE:
-            case SMARTIRC_ERR_NOTREGISTERED:
-                return SMARTIRC_TYPE_ERROR;
-            
-            case 'PRIVMSG':
-                if (strspn($data->params[0], '&#+!')) {
-                    return SMARTIRC_TYPE_CHANNEL;
-                }
-                if ($data->message{0} == chr(1)) {
-                    if (preg_match('/^'.chr(1).'ACTION .*'.chr(1).'$/', $data->message)) {
-                        return SMARTIRC_TYPE_ACTION;
-                    }
-                    if (preg_match('/^'.chr(1).'.*'.chr(1).'$/', $data->message)) {
-                        return (SMARTIRC_TYPE_CTCP_REQUEST | SMARTIRC_TYPE_CTCP);
-                    }
-                }
-                return SMARTIRC_TYPE_QUERY;
-            
-            case 'NOTICE':
-                if (preg_match('/^'.chr(1).'.*'.chr(1).'$/', $data->message)) {
-                    return (SMARTIRC_TYPE_CTCP_REPLY | SMARTIRC_TYPE_CTCP);
-                }
-                return SMARTIRC_TYPE_NOTICE;
-            
-            case 'INVITE':
-                return SMARTIRC_TYPE_INVITE;
-            
-            case 'JOIN':
-                return SMARTIRC_TYPE_JOIN;
-            
-            case 'TOPIC':
-                return SMARTIRC_TYPE_TOPICCHANGE;
-            
-            case 'NICK':
-                return SMARTIRC_TYPE_NICKCHANGE;
-            
-            case 'KICK':
-                return SMARTIRC_TYPE_KICK;
-            
-            case 'PART':
-                return SMARTIRC_TYPE_PART;
-            
-            case 'MODE':
-                return SMARTIRC_TYPE_MODECHANGE;
-            
-            case 'QUIT':
-                return SMARTIRC_TYPE_QUIT;
-            
-            default:
-                $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
-                    ."command UNKNOWN ($code): \"$line\"",
-                    __FILE__, __LINE__
-                );
-                return SMARTIRC_TYPE_UNKNOWN;
         }
     }
     
