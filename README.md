@@ -15,13 +15,11 @@ It's also well suited for bot development.
 - To provide a concise, easy-to-use module API to make it do exactly what you want.
 
 ## Future plans
-PEAR is slowly dying, and this package was originally written for PHP 4 (and the
-code shows it). My aim is to fix all submitted bugs, update the code structure
-as much as I can without breaking backward compatibility, and implement whatever
-new features are fairly simple to add. I will likely be using this package as a
-starting point for a new IRC library that uses better OO principles and is even
-easier to use, which will most likely be a Packagist/Composer package rather
-than a PEAR package.
+This package was originally written for PHP 4 (and the code shows it). My aim is
+to fix all submitted bugs, update the code structure as much as I can without
+breaking backward compatibility, and implement whatever new features are fairly
+simple to add. This package will likely be used as a starting point for a new
+IRC library that uses better OO principles and is even easier to use.
 
 ## How to contribute
 1. Read the TODO file or the roadmap on the main package homepage to see what needs doing
@@ -33,7 +31,7 @@ than a PEAR package.
 ## People involved
 - [Mirco 'meebey' Bauer] (https://github.com/meebey)
 - [Amir Mohammad Saied] (http://gluegadget.com/)
-- [Garrett Whitehorn] (http://github.com/garrettw)
+- [Garrett Whitehorn] (https://github.com/garrettw)
 - See the package homepage for the official list
 
 ## Files included
