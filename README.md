@@ -17,10 +17,11 @@ It's also well suited for bot development.
 ## Future plans
 This package was originally written for PHP 4 (and the code shows it). My aim is
 to fix all submitted bugs, update the code structure as much as I can without
-breaking backward compatibility, and implement whatever new features are fairly
-simple to add. This package will likely be used as a starting point for a new
-IRC library that uses better OO principles and is even easier to use.
-- Garrett W., current maintainer
+breaking backward compatibility, implement whatever new features are fairly
+simple to add, and update the documentation and examples. This package will
+likely be used as a starting point for a new IRC library that uses better OO
+principles and is even easier to use.
+-- Garrett W., current maintainer
 
 ## How to contribute
 1. Read the TODO file or the roadmap on the main package homepage to see what needs doing
