@@ -1443,9 +1443,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return true;
         }
         
-        return isset($this->_channels[strtolower($channel)]
-            ->users[strtolower($nickname)]
-        );
+        return isset($this->getChannel($channel)->users[strtolower($nickname)]);
     }
     
     /**
@@ -1472,8 +1470,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
         
         return ($this->isJoined($channel, $nickname)
-            && $this->_channels[strtolower($channel)]
-                ->users[strtolower($nickname)]->founder
+            && $this->getUser($channel, $nickname)->founder
         );
     }
     
@@ -1501,8 +1498,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
         
         return ($this->isJoined($channel, $nickname)
-            && $this->_channels[strtolower($channel)]
-                ->users[strtolower($nickname)]->admin
+            && $this->getUser($channel, $nickname)->admin
         );
     }
     
@@ -1530,8 +1526,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
         
         return ($this->isJoined($channel, $nickname)
-            && $this->_channels[strtolower($channel)]
-                ->users[strtolower($nickname)]->op
+            && $this->getUser($channel, $nickname)->op
         );
     }
     
@@ -1559,8 +1554,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
         
         return ($this->isJoined($channel, $nickname)
-            && $this->_channels[strtolower($channel)]
-                ->users[strtolower($nickname)]->hop
+            && $this->getUser($channel, $nickname)->hop
         );
     }
     
@@ -1588,8 +1582,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
         
         return ($this->isJoined($channel, $nickname)
-            && $this->_channels[strtolower($channel)]
-                ->users[strtolower($nickname)]->voice
+            && $this->getUser($channel, $nickname)->voice
         );
     }
     
@@ -1613,8 +1606,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
         
         return ($this->isJoined($channel)
-            && array_search($hostmask,
-                $this->_channels[strtolower($channel)]->bans
+                && array_search($hostmask, $this->getChannel($channel)->bans
             ) !== false
         );
     }
