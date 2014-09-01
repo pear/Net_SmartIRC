@@ -47,6 +47,8 @@
  */
 // ------- PHP code ----------
 require_once 'Net/SmartIRC/defines.php';
+require_once 'Net/SmartIRC/irccommands.php';
+require_once 'Net/SmartIRC/messagehandler.php';
 define('SMARTIRC_VERSION', '1.1.0-dev ($Revision$)');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
@@ -64,7 +66,7 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
  * @author Mirco 'meebey' Bauer <mail@meebey.net>
  * @access public
  */
-class Net_SmartIRC_base
+class Net_SmartIRC extends Net_SmartIRC_messagehandler
 {
     /**
      * This is to prevent an E_NOTICE for example in getChannel() if null needs
@@ -2748,15 +2750,6 @@ class Net_SmartIRC_base
     }
 }
 
-// includes must be after the base class definition, required for PHP5
-require_once 'Net/SmartIRC/irccommands.php';
-require_once 'Net/SmartIRC/messagehandler.php';
-
-class Net_SmartIRC extends Net_SmartIRC_messagehandler
-{
-    // empty
-}
-
 /**
  * Struct for parsed incoming messages
  */
@@ -3050,7 +3043,7 @@ class Net_SmartIRC_ircuser extends Net_SmartIRC_user
 }
 
 /**
- * Built-in bot used by Net_SmartIRC_base::listenFor()
+ * Built-in bot used by Net_SmartIRC::listenFor()
  */
 class Net_SmartIRC_listenfor
 {

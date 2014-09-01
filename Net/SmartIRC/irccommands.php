@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-class Net_SmartIRC_irccommands extends Net_SmartIRC_base
+abstract class Net_SmartIRC_irccommands
 {
     /**
      * sends a new message

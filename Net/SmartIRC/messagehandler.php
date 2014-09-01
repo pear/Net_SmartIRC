@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
+abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
 {
     /* misc */
     function _event_ping(&$ircdata)
