@@ -28,42 +28,49 @@
 // this code shows how a mini php bot could be written
 include_once('Net/SmartIRC.php');
 
-class mybot
+class MyBot
 {
-    function saytime_once(&$irc)
+    private $actionid;
+    private $timeids;
+    
+    public function __construct(&$irc)
     {
-        global $saytime_once_id;
-        $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', '(once) the time is: '.date('H:i:s'));
-        $irc->unregisterTimeid($saytime_once_id);
+        $this->timeids = array(
+            // register saytime() to be called every 30 sec. (30,000 milliseconds)
+            $irc->registerTimeHandler(30000, $this, 'saytime'),
+        
+            // register saytime_once() to be called in 10 sec. (10,000 milliseconds) and save the assigned id
+            // which is needed for unregistering the timehandler.
+            $irc->registerTimeHandler(10000, $this, 'saytime_once'),
+        );
+        
+        $this->actionid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!quit', $this, 'quit');
     }
     
-    function saytime(&$irc)
+    public function saytime_once(&$irc)
+    {
+        $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', '(once) the time is: '.date('H:i:s'));
+        $irc->unregisterTimeId($this->timeids[1]);
+    }
+    
+    public function saytime(&$irc)
     {
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', 'the time is: '.date('H:i:s'));
     }
     
-    function quit(&$irc, &$ircdata)
+    public function quit(&$irc, &$ircdata)
     {
         $irc->quit("time to say goodbye...");
     }
 }
 
-$bot = new mybot();
-$irc = new Net_SmartIRC();
-$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(true);
-
-// register saytime() to be called every 30 sec. (30,000 milliseconds)
-$irc->registerTimeHandler(30000, $bot, 'saytime');
-
-// register saytime_once() to be called in 10 sec. (10,000 milliseconds) and save the assigned id
-// which is needed for unregistering the timehandler.
-$saytime_once_id = $irc->registerTimeHandler(10000, $bot, 'saytime_once');
-
-$irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!quit', $bot, 'quit');
+$irc = new Net_SmartIRC(array(
+    'DebugLevel' => SMARTIRC_DEBUG_ALL,
+    'UseSockets' => true,
+));
+$bot = new MyBot($irc);
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example7.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));
 $irc->listen();
 $irc->disconnect();
-?>

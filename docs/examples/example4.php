@@ -27,9 +27,16 @@
 // this code shows how a mini php bot could be written
 include_once('Net/SmartIRC.php');
 
-class mybot
+class MyBot
 {
-    function realname_check(&$irc, &$data)
+    private $handlerid;
+    
+    public function __construct(&$irc)
+    {
+        $this->handlerids = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!realnamecheck', $this, 'realname_check');
+    }
+    
+    public function realname_check(&$irc, &$data)
     {
         // lets loop through all user that are on the #test channel
         // result is send to #smartirc-test (we don't want to spam #test)
@@ -48,16 +55,15 @@ class mybot
     }
 }
 
-$bot = new mybot();
-$irc = new Net_SmartIRC();
-$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(true);
-// activating the channel synching is important, or we won't have $irc->channel[] available
-$irc->setChannelSyncing(true);
-$irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!realnamecheck', $bot, 'realname_check');
+// activating the channel syncing is important, or we won't have $irc->channel[] available
+$irc = new Net_SmartIRC(array(
+    'DebugLevel' => SMARTIRC_DEBUG_ALL,
+    'UseSockets' => true,
+    'ChannelSyncing' => true,
+));
+$bot = new MyBot($irc);
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example4.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));
 $irc->listen();
 $irc->disconnect();
-?>

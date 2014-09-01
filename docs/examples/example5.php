@@ -27,9 +27,16 @@
 // this code shows how a mini php bot could be written
 include_once('Net/SmartIRC.php');
 
-class mybot
+class MyBot
 {
-    function kick(&$irc, &$data)
+    private $handlerid;
+    
+    public function __construct(&$irc)
+    {
+        $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!kick', $this, 'kick');
+    }
+    
+    public function kick(&$irc, &$data)
     {
         // we need the nickname parameter
         if(isset($data->messageex[1])) {
@@ -43,14 +50,13 @@ class mybot
     }
 }
 
-$bot = new mybot();
-$irc = new Net_SmartIRC();
-$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(true);
-$irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!kick', $bot, 'kick');
+$irc = new Net_SmartIRC(array(
+    'DebugLevel' => SMARTIRC_DEBUG_ALL,
+    'UseSockets' => true,
+));
+$bot = new MyBot($irc);
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example5.php)', 8, 'Net_SmartIRC');
 $irc->join('#test');
 $irc->listen();
 $irc->disconnect();
-?>

@@ -425,7 +425,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
         
         // you'll want to pass an array that includes keys like:
-        // Modulepath, Debug, UseSockets, ChannelSyncing, AutoRetry, RunAsDaemon
+        // ModulePath, Debug, UseSockets, ChannelSyncing, AutoRetry, RunAsDaemon
         // so we can call their setters here
         foreach ($params as $varname => $val) {
             $funcname = 'set' . $varname;

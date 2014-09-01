@@ -27,9 +27,16 @@
 // this code shows how a mini php bot could be written
 include_once('Net/SmartIRC.php');
 
-class mybot
+class MyBot
 {
-    function op_list(&$irc, &$data)
+    private $handlerid;
+    
+    public function __construct(&$irc)
+    {
+        $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!ops', $this, 'op_list');
+    }
+    
+    public function op_list(&$irc, &$data)
     {
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', 'ops on this channel are:');
         
@@ -46,17 +53,15 @@ class mybot
     }
 }
 
-$bot = new mybot();
-$irc = new Net_SmartIRC();
-$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(true);
 // Using Channel Syncing we will track all users on all channels we are joined
-// (Note. Use setChannelSyncing instead of setChannelSynching)
-$irc->setChannelSyncing(true);
-$irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!ops', $bot, 'op_list');
+$irc = new Net_SmartIRC(array(
+    'DebugLevel' => SMARTIRC_DEBUG_ALL,
+    'UseSockets' => true,
+    'ChannelSyncing' => true,
+));
+$bot = new MyBot($irc);
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example3.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));
 $irc->listen();
 $irc->disconnect();
-?>

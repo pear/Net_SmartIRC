@@ -27,9 +27,16 @@
 // this code shows how a mini php bot could be written
 include_once('Net/SmartIRC.php');
 
-class mybot
+class MyBot
 {
-    function onjoin_greeting(&$irc, &$data)
+    private $handlerid;
+    
+    public function __construct(&$irc)
+    {
+        $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_JOIN, '.*', $this, 'onjoin_greeting');
+    }
+    
+    public function onjoin_greeting(&$irc, &$data)
     {
         // if _we_ join, don't greet ourself
         // then check if this is the right channel
@@ -40,14 +47,13 @@ class mybot
     }
 }
 
-$bot = new mybot();
-$irc = new Net_SmartIRC();
-$irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(true);
-$irc->registerActionHandler(SMARTIRC_TYPE_JOIN, '.*', $bot, 'onjoin_greeting');
+$irc = new Net_SmartIRC(array(
+    'DebugLevel' => SMARTIRC_DEBUG_ALL,
+    'UseSockets' => true,
+));
+$bot = new MyBot($irc);
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example6.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));
 $irc->listen();
 $irc->disconnect();
-?>
