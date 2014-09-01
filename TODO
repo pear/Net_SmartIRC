@@ -25,9 +25,6 @@ like concatenating classes or something. crazy. fix it.
 	named whatever. But they'll need to implement an interface which we need to make.
 
 
-actionhandler is already a separate class, but not enough. see registerActionhandler()
-also registerTimehandler()
-
 * some of the commands that send messages trigger server responses.
 * those commands need to start listeners for those responses that confirm state.
 * and then do something on failure.
