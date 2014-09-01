@@ -32,7 +32,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: Ping? Pong!',
             __FILE__, __LINE__
         );
-        $this->send('PONG '.substr($ircdata->rawmessage, 5), SMARTIRC_CRITICAL);
+        $this->send('PONG :' . $ircdata->message, SMARTIRC_CRITICAL);
     }
     
     function _event_error(&$ircdata)
@@ -76,7 +76,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 .$ircdata->nick.' joins channel: '.$ircdata->channel,
                 __FILE__, __LINE__
             );
-            $channel = &$this->_channels[strtolower($ircdata->channel)];
+            $channel = &$this->getChannel($ircdata->channel);
             $user = new Net_SmartIRC_channeluser();
             $user->nick = $ircdata->nick;
             $user->ident = $ircdata->ident;
@@ -117,7 +117,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             $channelkeys = array_keys($this->_channels);
             foreach ($channelkeys as $channelkey) {
                 // loop through all channels
-                $channel = &$this->_channels[$channelkey];
+                $channel = &$this->getChannel($channelkey);
                 foreach ($channel->users as $uservalue) {
                     // loop through all user in this channel
                     
@@ -154,23 +154,23 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_mode(&$ircdata)
     {
         // check if its own usermode
-        if ($ircdata->rawmessageex[2] == $this->_nick) {
-            $this->_usermode = substr($ircdata->rawmessageex[3], 1);
+        if ($ircdata->params[0] == $this->_nick) {
+            $this->_usermode = $ircdata->message;
         } else if ($this->_channelsyncing) {
             // it's not, and we do channel syching
-            $channel = &$this->_channels[strtolower($ircdata->channel)];
+            $channel = &$this->getChannel($ircdata->channel);
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
                 'DEBUG_CHANNELSYNCING: updating channel mode for: '
                 .$channel->name, __FILE__, __LINE__
             );
-            $mode = $ircdata->rawmessageex[3];
-            $parameters = array_slice($ircdata->rawmessageex, 4);
+            $mode = $ircdata->params[1];
+            $parameters = array_slice($ircdata->params, 2);
             
             $add = false;
             $remove = false;
             $modelength = strlen($mode);
             for ($i = 0; $i < $modelength; $i++) {
-                switch($mode[$i]) {
+                switch($mode{$i}) {
                     case '-':
                         $remove = true;
                         $add = false;
@@ -335,7 +335,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     
                     default:
                         // channel modes
-                        if ($mode[$i] == 'b') {
+                        if ($mode{$i} == 'b') {
                             $hostmask = array_shift($parameters);
                             if ($add) {
                                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
@@ -360,10 +360,10 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                                 .$channel->name, __FILE__, __LINE__
                             );
                             if ($add) {
-                                $channel->mode .= $mode[$i];
+                                $channel->mode .= $mode{$i};
                             }
                             if ($remove) {
-                                $channel->mode = str_replace($mode[$i], '',
+                                $channel->mode = str_replace($mode{$i}, '',
                                     $channel->mode
                                 );
                             }
@@ -376,7 +376,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_topic(&$ircdata)
     {
         if ($this->_channelsyncing) {
-            $channel = &$this->_channels[strtolower($ircdata->rawmessageex[2])];
+            $channel = &$this->getChannel($ircdata->channel);
             $channel->topic = $ircdata->message;
         }
     }
@@ -387,7 +387,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             // substr must be 1,4 because of \001 in CTCP messages
             if (substr($ircdata->message, 1, 4) == 'PING') {
                 $this->message(SMARTIRC_TYPE_CTCP_REPLY, $ircdata->nick,
-                    'PING '.substr($ircdata->message, 5, -1)
+                    'PING'.substr($ircdata->message, 5, -1)
                 );
             } elseif (substr($ircdata->message, 1, 7) == 'VERSION') {
                 if (!empty($this->_ctcpversion)) {
@@ -413,7 +413,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         $this->_loggedin = true;
         
         // updating our nickname, that we got (maybe cutted...)
-        $this->_nick = $ircdata->rawmessageex[2];
+        $this->_nick = $ircdata->params[0];
         
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: logged in as '
             . $this->_nick, __FILE__, __LINE__
@@ -443,17 +443,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     
     function _event_rpl_channelmodeis(&$ircdata) {
         if ($this->_channelsyncing && $this->isJoined($ircdata->channel)) {
-            $mode = $ircdata->rawmessageex[4];
-            $parameters = array_slice($ircdata->rawmessageex, 5);
-            
-            $ircdata->rawmessageex = array( 0 => '',
-                                            1 => '',
-                                            2 => '',
-                                            3 => $mode);
-            
-            foreach ($parameters as $value) {
-                $ircdata->rawmessageex[] = $value;
-            }
+            $ircdata->params[0] = '';
             
             // let _mode() handle the received mode
             $this->_event_mode($ircdata);
@@ -478,7 +468,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     return;
                 }
                 
-                $channel = &$this->_channels[strtolower($ircdata->channel)];
+                $channel = &$this->getChannel($ircdata->channel);
                 
                 $user = new Net_SmartIRC_channeluser();
                 $user->ident = $ircdata->rawmessageex[4];
@@ -544,15 +534,14 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_rpl_namreply(&$ircdata)
     {
         if ($this->_channelsyncing == true) {
-            $channel = &$this->_channels[strtolower($ircdata->channel)];
+            $channel = &$this->getChannel($ircdata->channel);
             
             $userarray = explode(' ', rtrim($ircdata->message));
             $userarraycount = count($userarray);
             for ($i = 0; $i < $userarraycount; $i++) {
                 $user = new Net_SmartIRC_channeluser();
                 
-                $usermode = substr($userarray[$i], 0, 1);
-                switch ($usermode) {
+                switch ($userarray[$i]{0}) {
                     case '~':
                         $user->founder = true;
                         $user->nick = substr($userarray[$i], 1);
@@ -581,8 +570,6 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     default:
                         $user->nick = $userarray[$i];
                 }
-                $user->modes .= $usermode[$i];
-                
                 $this->_adduser($channel, $user);
             }
         }
@@ -591,7 +578,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_rpl_banlist(&$ircdata)
     {
         if ($this->_channelsyncing && $this->isJoined($ircdata->channel)) {
-            $channel = &$this->_channels[strtolower($ircdata->channel)];
+            $channel = &$this->getChannel($ircdata->channel);
             $hostmask = $ircdata->rawmessageex[4];
             $channel->bans[$hostmask] = true;
         }
@@ -624,9 +611,8 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_rpl_topic(&$ircdata)
     {
         if ($this->_channelsyncing) {
-            $channel = &$this->_channels[strtolower($ircdata->channel)];
-            $topic = substr(implode(array_slice($ircdata->rawmessageex, 4), ' '), 1);
-            $channel->topic = $topic;
+            $channel = &$this->getChannel($ircdata->channel);
+            $channel->topic = $ircdata->message;
         }
     }
     
@@ -636,4 +622,3 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         $this->_nicknameinuse();
     }
 }
-?>

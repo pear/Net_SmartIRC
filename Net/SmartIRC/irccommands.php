@@ -91,24 +91,6 @@ abstract class Net_SmartIRC_irccommands
         return true;
     }
     
-    /**
-     * returns an object reference to the specified channel
-     *
-     * If the channel does not exist (because not joint) false will be returned.
-     *
-     * @param string $channelname
-     * @return object reference to the channel object
-     * @access public
-     */
-    public function &channel($channelname)
-    {
-        if (isset($this->_channels[strtolower($channelname)])) {
-            return $this->_channels[strtolower($channelname)];
-        } else {
-            return false;
-        }
-    }
-    
     // <IRC methods>
     /**
      * Joins one or more IRC channels with an optional key.
@@ -548,4 +530,3 @@ abstract class Net_SmartIRC_irccommands
         $this->disconnect(true);
     }
 }
-?>

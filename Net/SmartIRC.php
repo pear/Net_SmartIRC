@@ -2667,7 +2667,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 $channelkeys = array_keys($this->_channels);
                 foreach ($channelkeys as $channelkey) {
                     // loop through all channels
-                    $channel = &$this->_channels[$channelkey];
+                    $channel = &$this->getChannel($channelkey);
                     foreach ($channel->users as $uservalue) {
                         // loop through all user in this channel
                         if ($nick == $uservalue->nick) {
@@ -2697,7 +2697,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     'DEBUG_CHANNELSYNCING: removing user: '.$nick
                     .' from channel: '.$ircdata->channel, __FILE__, __LINE__
                 );
-                $channel = &$this->_channels[strtolower($ircdata->channel)];
+                $channel = &$this->getChannel($ircdata->channel);
                 unset($channel->users[$lowerednick]);
                 
                 foreach ($lists as $list) {

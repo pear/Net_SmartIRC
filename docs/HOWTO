@@ -51,7 +51,7 @@ After your class, you must make a object out of it, so Net_SmartIRC can call lat
 defined methods.
 
 Example:
-class mybot
+class MyBot
 {
     function test_command(&$irc, &$data)
     {
@@ -59,7 +59,7 @@ class mybot
     }
 }
 
-$mybot = &new mybot();
+$mybot = new mybot();
 
 this will send a channel message to the #bots channel and will tell the guy who said !test, that the bot
 doesn't like tests..
@@ -70,7 +70,7 @@ If you want to use Net_SmartIRC for your program/script you first have to create
 before you can use the methods or the class itself.
 Here is an example:
 include('SmartIRC.php');
-$irc = &new Net_SmartIRC();
+$irc = new Net_SmartIRC();
 
 now you can call the methods of the class, with $irc->METHODNAME....
 
