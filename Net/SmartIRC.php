@@ -1934,14 +1934,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                                 break;
                             }
                             if ($ircdata->message{0} == chr(1)) {
-                                if (preg_match('/^'.chr(1).'ACTION .*'.chr(1).'$/',
+                                if (preg_match("/^\1ACTION .*\1\$/",
                                                $ircdata->message
                                 )) {
                                     $ircdata->type = SMARTIRC_TYPE_ACTION;
                                     $ircdata->channel = $params[0];
                                     break;
                                 }
-                                if (preg_match('/^'.chr(1).'.*'.chr(1).'$/',
+                                if (preg_match("/^\1.*\1\$/",
                                                $ircdata->message
                                 )) {
                                     $ircdata->type = (SMARTIRC_TYPE_CTCP_REQUEST
@@ -1954,7 +1954,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                             break;
                         
                         case 'NOTICE':
-                            if (preg_match('/^'.chr(1).'.*'.chr(1).'$/',
+                            if (preg_match("/^\1.*\1\$/",
                                            $ircdata->message
                             )) {
                                 $ircdata->type = (SMARTIRC_TYPE_CTCP_REPLY
