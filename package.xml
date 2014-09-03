@@ -235,26 +235,25 @@
     </dir> <!-- /docs/HTML -->
     <file baseinstalldir="Net" name="DOCUMENTATION" role="doc" />
     <file baseinstalldir="Net" name="HOWTO" role="doc" />
+    <dir name="examples">
+     <file baseinstalldir="Net" name="example.php" role="doc" />
+     <file baseinstalldir="Net" name="example2.php" role="doc" />
+     <file baseinstalldir="Net" name="example3.php" role="doc" />
+     <file baseinstalldir="Net" name="example4.php" role="doc" />
+     <file baseinstalldir="Net" name="example5.php" role="doc" />
+     <file baseinstalldir="Net" name="example6.php" role="doc" />
+     <file baseinstalldir="Net" name="example7.php" role="doc" />
+    </dir> <!-- /examples -->
    </dir> <!-- /docs -->
-   <dir name="examples">
-    <file baseinstalldir="Net" name="example.php" role="doc" />
-    <file baseinstalldir="Net" name="example2.php" role="doc" />
-    <file baseinstalldir="Net" name="example3.php" role="doc" />
-    <file baseinstalldir="Net" name="example4.php" role="doc" />
-    <file baseinstalldir="Net" name="example5.php" role="doc" />
-    <file baseinstalldir="Net" name="example6.php" role="doc" />
-    <file baseinstalldir="Net" name="example7.php" role="doc" />
-   </dir> <!-- /examples -->
    <dir name="SmartIRC">
     <file baseinstalldir="Net" name="defines.php" role="php" />
     <file baseinstalldir="Net" name="irccommands.php" role="php" />
     <file baseinstalldir="Net" name="messagehandler.php" role="php" />
    </dir> <!-- /SmartIRC -->
-   <file baseinstalldir="Net" name="CHANGELOG" role="doc" />
    <file baseinstalldir="Net" name="CREDITS" role="doc" />
    <file baseinstalldir="Net" name="FEATURES" role="doc" />
    <file baseinstalldir="Net" name="LICENSE" role="doc" />
-   <file baseinstalldir="Net" name="README" role="doc" />
+   <file baseinstalldir="Net" name="README.md" role="doc" />
    <file baseinstalldir="Net" name="SmartIRC.php" role="php" />
   </dir> <!-- / -->
  </contents>

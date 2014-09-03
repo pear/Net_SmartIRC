@@ -69,7 +69,7 @@ Creating an object of Net_SmartIRC:
 If you want to use Net_SmartIRC for your program/script you first have to create a object of the class
 before you can use the methods or the class itself.
 Here is an example:
-include('SmartIRC.php');
+include('Net/SmartIRC.php');
 $irc = new Net_SmartIRC();
 
 now you can call the methods of the class, with $irc->METHODNAME....
