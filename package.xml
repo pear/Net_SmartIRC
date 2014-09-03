@@ -2,11 +2,8 @@
 <package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Net_SmartIRC</name>
  <channel>pear.php.net</channel>
- <summary>Net_SmartIRC is a PHP class for communication with IRC networks</summary>
- <description>Net_SmartIRC is a PHP class for communication with IRC networks conforming to RFC 2812 -- an API that handles all IRC protocol messages.
-This class is designed for creating IRC bots, chatting, and showing IRC-related info on web pages.
-
-Full featurelist of Net_SmartIRC
+ <summary>Net_SmartIRC is a PHP package that helps you communicate with IRC networks in whatever way you might need, whether in a CLI program or as part of a web page. It&apos;s also well suited for bot development.</summary>
+ <description>Full feature list of Net_SmartIRC
 -------------------------------------
 - full object-oriented programmed
 - every received IRC message is parsed into an object
@@ -64,7 +61,7 @@ Full featurelist of Net_SmartIRC
   <name>Mirco Bauer</name>
   <user>meebey</user>
   <email>meebey@php.net</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
  <lead>
   <name>Garrett Whitehorn</name>
@@ -76,16 +73,16 @@ Full featurelist of Net_SmartIRC
   <name>Amir Mohammad Saied</name>
   <user>amir</user>
   <email>amirsaied@gmail.com</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
  <contributor>
   <name>CHAILLAN Nicolas</name>
   <user>nicos</user>
   <email>nicos@php.net</email>
-  <active>yes</active>
+  <active>no</active>
  </contributor>
- <date>2014-02-06</date>
- <time>05:04:30</time>
+ <date>2014-09-03</date>
+ <time>15:35:42</time>
  <version>
   <release>1.1.0</release>
   <api>1.0.0</api>
@@ -96,19 +93,19 @@ Full featurelist of Net_SmartIRC
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
-Bug #12539 patch: created a stock module as a stopgap fix
-Bug #13079 patch: Added full support for non-standard channel usermodes founder/admin/half-op
-Bug #16531 patch: removed erroneous substr() call which chopped off the first char
-Bug #16755 patch: added foreach loops to fix/enable joining multiple channels at once
-Bug #17729 patch: Removed define_syslog_variables and avoided warning for socket blocking
-Bug #17769 patch: updated include paths
-Req #18025 implemented: binding the socket to an IP
-Req #18403 implemented: formatting, spelling, and added support for __construct/__destruct on modules
-Bug #18774 patch: finished changing all '&amp;new' to 'new'
-Silenced PHP warnings when socket_select() receives a signal
-Added ability to dynamically reload client if user code supports it
-Added ability to pass arguments from user code to modules
-Added ability to send custom raw commands immediately after login() info
+* Fix Bug #12539: Flaw in timeout detection. [garrettw]
+ * Fix Bug #13079: Does not support founder/admin/half-op modes [garrettw]
+ * Fix Bug #14924: delayed timer with real socket [garrettw]
+ * Fix Bug #16531: Nickname changes wrong [garrettw]
+ * Fix Bug #17729: patch: Removed define_syslog_variables and avoided warning for socket
+   blocking [garrettw]
+ * Fix Bug #17769: file included with relative path [doconnor]
+ * Fix Bug #18586: Register Action Handle only accepts one class [garrettw]
+ * Fix Bug #18774: not compatible in strict mode [doconnor]
+ * Implement Feature #16755: Not possible to join more than one chanel even if &quot;$channelarray&quot; is
+   correctly [garrettw]
+ * Implement Feature #18025: Bind IP for Net_SmartIRC_base::connect()? [doconnor]
+ * Implement Feature #18403: Bug fixes, code formatting, added features [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -244,9 +241,6 @@ Added ability to send custom raw commands immediately after login() info
     <file baseinstalldir="Net" name="example6.php" role="doc" />
     <file baseinstalldir="Net" name="example7.php" role="doc" />
    </dir> <!-- /examples -->
-   <dir name="modules">
-    <file baseinstalldir="Net" name="PingFix.php" role="php" />
-   </dir> <!-- /modules -->
    <dir name="SmartIRC">
     <file baseinstalldir="Net" name="defines.php" role="php" />
     <file baseinstalldir="Net" name="irccommands.php" role="php" />
@@ -690,7 +684,7 @@ Request #13056		Allow multiple actionhandlers to execute	amir
   </release>
   <release>
    <version>
-    <release>1.0.2</release>
+    <release>1.1.0</release>
     <api>1.0.0</api>
    </version>
    <stability>
@@ -702,33 +696,6 @@ Request #13056		Allow multiple actionhandlers to execute	amir
    <notes>
 Automatically built QA release
 Req #16526 Colour and bold codes are not supported - giggsey
-   </notes>
-  </release>
-  <release>
-   <version>
-    <release>1.1.0</release>
-    <api>1.0.0</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <date>2010-10-25</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>
-Bug #12539 patch: created a stock module as a stopgap fix
-Bug #13079 patch: Added full support for non-standard channel usermodes founder/admin/half-op
-Bug #16531 patch: removed erroneous substr() call which chopped off the first char
-Bug #16755 patch: added foreach loops to fix/enable joining multiple channels at once
-Bug #17729 patch: Removed define_syslog_variables and avoided warning for socket blocking
-Bug #17769 patch: updated include paths
-Req #18025 implemented: binding the socket to an IP
-Req #18403 implemented: formatting, spelling, and added support for __construct/__destruct on modules
-Bug #18774 patch: finished changing all '&amp;new' to 'new'
-Silenced PHP warnings when socket_select() receives a signal
-Added ability to dynamically reload client if user code supports it
-Added ability to pass arguments from user code to modules
-Added ability to send custom raw commands immediately after login() info 
    </notes>
   </release>
  </changelog>
