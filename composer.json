@@ -18,7 +18,7 @@
     ],
     "autoload": {
         "psr-0": {
-            "Net_SmartIRC": "./"
+            "Net": "./"
         }
     },
     "description": "More info available on: http://pear.php.net/package/Net_SmartIRC",
@@ -28,7 +28,7 @@
     "license": "LGPL",
     "name": "pear/net_smartirc",
     "support": {
-        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Net_SmartIRC",
+        "issues": "http://pear.php.net/package/Net_SmartIRC/bugs",
         "source": "https://github.com/pear/Net_SmartIRC"
     },
     "type": "library",

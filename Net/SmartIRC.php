@@ -1,10 +1,5 @@
 <?php
 /**
- * $Id$
- * $Revision$
- * $Author$
- * $Date$
- *
  * Net_SmartIRC
  * This is a PHP class for communication with IRC networks,
  * which conforms to the RFC 2812 (IRC protocol).
@@ -18,9 +13,8 @@
  * <http://cvs.meebey.net/atbs> and <http://cvs.meebey.net/phpbitch>
  * Latest versions of Net_SmartIRC you will find on the project homepage
  * or get it through PEAR since SmartIRC is an official PEAR package.
- * See <http://pear.php.net/Net_SmartIRC>.
  *
- * Official Project Homepage: <http://sf.net/projects/phpsmartirc>
+ * Official Project Homepage: <http://pear.php.net/package/Net_SmartIRC/>
  *
  * Net_SmartIRC conforms to RFC 2812 (Internet Relay Chat: Client Protocol)
  * 
@@ -49,7 +43,7 @@
 require_once 'Net/SmartIRC/defines.php';
 require_once 'Net/SmartIRC/irccommands.php';
 require_once 'Net/SmartIRC/messagehandler.php';
-define('SMARTIRC_VERSION', '1.1.0-dev ($Revision$)');
+define('SMARTIRC_VERSION', '1.1.0-dev');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
@@ -61,9 +55,13 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 /**
  * main SmartIRC class
  *
+ * @category Net
  * @package Net_SmartIRC
- * @version 0.6.0-dev
- * @author Mirco 'meebey' Bauer <mail@meebey.net>
+ * @version 1.1.0-dev
+ * @author clockwerx
+ * @author Mirco 'meebey' Bauer <meebey@meebey.net>
+ * @license http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ * @link http://pear.php.net/package/Net_SmartIRC
  * @access public
  */
 class Net_SmartIRC extends Net_SmartIRC_messagehandler
@@ -765,8 +763,10 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     /**
      * Sets the delay for sending data to the IRC server.
      *
-     * Sets the delaytime between messages that are sent, because IRC servers doesn't like floods.
-     * This will avoid sending your messages too fast to the IRC server.
+     * Sets the delay time between sending messages, to avoid flooding
+     * IRC servers. If your bot has special flooding permissions on the
+     * network you're connected to, you can set this quite low to send
+     * messages faster.
      * Default: 250
      *
      * @param integer $milliseconds
@@ -1839,6 +1839,10 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 $ircdata->nick = $matches[1];
                 $ircdata->ident = $matches[2];
                 $ircdata->host = $matches[3];
+            } else {
+                $ircdata->nick = '';
+                $ircdata->ident = '';
+                $ircdata->host = $prefix;
             }
             
             // figure out what SMARTIRC_TYPE this message is
@@ -2002,7 +2006,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 
                 default:
                     $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
-                        ."command UNKNOWN ($code): \"$line\"",
+                        ."command UNKNOWN ($command): \"$rawline\"",
                         __FILE__, __LINE__
                     );
                     $ircdata->type = SMARTIRC_TYPE_UNKNOWN;
