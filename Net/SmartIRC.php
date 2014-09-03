@@ -772,7 +772,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @param integer $milliseconds
      * @return integer
      */
-    public function setSendDelay($milliseconds) {
+    public function setSendDelay($milliseconds)
+    {
         if (is_integer($milliseconds)) {
             $this->_senddelay = $milliseconds;
         } else {
@@ -1156,7 +1157,6 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             if ($this->_autoretry
                 && $this->_autoretrycount < $this->_autoretrymax
             ) {
-                 $this->_delayReconnect();
                  $this->_autoretrycount++;
                  return $this->reconnect();
             }
@@ -1258,6 +1258,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function reconnect()
     {
+        if ($this->_reconnectdelay > 0) {
+            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying '
+                .'reconnect for '.$this->_reconnectdelay.' ms',
+                __FILE__, __LINE__
+            );
+            usleep($this->_reconnectdelay * 1000);
+        }
+        
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: reconnecting...',
             __FILE__, __LINE__
         );
@@ -1649,8 +1657,29 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return false;
         }
         
-        // before we listen, let's send what's queued
+        // before we listen...
         if ($this->_loggedin) {
+            // see if any timehandler needs to be called
+            foreach ($this->_timehandler as &$handlerobject) {
+                $microtimestamp = microtime(true);
+                if ($microtimestamp >= $handlerobject->lastmicrotimestamp
+                    + ($handlerobject->interval / 1000)
+                ) {
+                    $methodobject = &$handlerobject->object;
+                    $method = $handlerobject->method;
+                    $handlerobject->lastmicrotimestamp = $microtimestamp;
+                    
+                    if (method_exists($methodobject, $method)) {
+                        $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
+                            .'calling method "'.get_class($methodobject).'->'
+                            .$method.'"', __FILE__, __LINE__
+                        );
+                        $methodobject->$method($this);
+                    }
+                }
+            }
+            
+            // also let's send any queued messages
             static $highsent = 0;
             static $lastmicrotimestamp = 0;
             
@@ -1684,7 +1713,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             }
         }
         
-        // get data from the real socket or fsock
+        // try to get data from the real socket or fsock
         if ($this->_usesockets) {
             // calculate selecttimeout
             $compare = array($this->_maxtimer, $this->_rxtimeout*1000);
@@ -1702,12 +1731,12 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             // this will trigger a warning when catching a signal - silence it
             $sockarr = array($this->_socket);
             $result = @socket_select($sockarr, $w = null, $e = null, 0,
-                $selecttimeout * 1000
+                $selecttimeout
             );
             
             $rawdata = null;
             
-            if ($result) {
+            if (!empty($result)) {
                 // the socket got data to read
                 $rawdata = socket_read($this->_socket, 1024);
             } else if ($result === false) {
@@ -1737,388 +1766,354 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         // if reading from the socket failed, the connection is broken
         if ($rawdata === false) {
             $this->_connectionerror = true;
-        }
-        
-        // see if any timehandler needs to be called
-        if ($this->_loggedin) {
-            foreach ($this->_timehandler as &$handlerobject) {
-                $microtimestamp = microtime(true);
-                if ($microtimestamp >= $handlerobject->lastmicrotimestamp
-                    + ($handlerobject->interval / 1000)
-                ) {
-                    $methodobject = &$handlerobject->object;
-                    $method = $handlerobject->method;
-                    $handlerobject->lastmicrotimestamp = $microtimestamp;
-                    
-                    if (method_exists($methodobject, $method)) {
-                        $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
-                            .'calling method "'.get_class($methodobject).'->'
-                            .$method.'"', __FILE__, __LINE__
-                        );
-                        $methodobject->$method($this);
-                    }
+        } else {
+            $timestamp = time();
+            if (empty($rawdata)) {
+                if ($this->_lastrx < ($timestamp - $this->_rxtimeout)) {
+                    $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
+                        .'receive timeout detected, doing reconnect...',
+                        __FILE__, __LINE__
+                    );
+                    $this->_connectionerror = true;
+                } else if ($this->_lasttx < ($timestamp - $this->_txtimeout)) {
+                    $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
+                        .'transmit timeout detected, doing reconnect...',
+                        __FILE__, __LINE__
+                    );
+                    $this->_connectionerror = true;
                 }
-            }
-        }
-        
-        // make sure we haven't timed out in any sort of way {
-        $timestamp = time();
-        if ($this->_lastrx < ($timestamp - $this->_rxtimeout)) {
-            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
-                .'receive timeout detected, doing reconnect...',
-                __FILE__, __LINE__
-            );
-            $this->_delayReconnect();
-            $this->reconnect();
-        } else if ($this->_lasttx < ($timestamp - $this->_txtimeout)) {
-            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: '
-                .'transmit timeout detected, doing reconnect...',
-                __FILE__, __LINE__
-            );
-            $this->_delayReconnect();
-            $this->reconnect();
-        }
-        // }
-        
-        $rawdataar = array();
-        
-        // if we have data, split it up by message
-        if (!empty($rawdata)) {
-            $this->_lastrx = $timestamp;
-            $rawdata = str_replace("\r", '', $rawdata);
-            
-            // not sure what the point of this line was..
-            // $lastpart = substr($rawdata, strrpos($rawdata ,"\n")+1);
-            $rawdata = substr($rawdata, 0, strrpos($rawdata ,"\n"));
-            $rawdataar = explode("\n", $rawdata);
-        }
-        
-        // loop through our received messages
-        foreach ($rawdataar as $rawline) {
-            $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
-                ."received: \"$rawline\"", __FILE__, __LINE__
-            );
-            
-            // building our data packet
-            $ircdata = new Net_SmartIRC_data();
-            $ircdata->rawmessage = $rawline;
-            $ircdata->rawmessageex = explode(' ', $rawline); // kept for BC
-            
-            // parsing the message {
-            $prefix = $trailing = '';
-            $prefixEnd = -1;
-            
-            // parse out the prefix
-            if ($rawline{0} == ':') {
-                $prefixEnd = strpos($rawline, ' ');
-                $prefix = substr($rawline, 1, $prefixEnd - 1);
-            }
-            
-            // parse out the trailing
-            if ($trailingStart = strpos($rawline, ' :')) { // this is not ==
-                $trailing = substr($rawline, $trailingStart + 2);
             } else {
-                $trailingStart = strlen($rawline);
-            }
-            
-            // parse out command and params
-            $params = explode(' ', substr($rawline,
-                                          $prefixEnd + 1,
-                                          $trailingStart - $prefixEnd - 1
-            ));
-            $command = array_shift($params);
-            // }
-            
-            $ircdata->from = $prefix;
-            $ircdata->params = $params;
-            $ircdata->message = $trailing;
-            $ircdata->messageex = explode(' ', $trailing); // kept for BC
-            
-            // parse ident thingy
-            if (preg_match('/^(\S+)!(\S+)@(\S+)$/', $prefix, $matches)) {
-                $ircdata->nick = $matches[1];
-                $ircdata->ident = $matches[2];
-                $ircdata->host = $matches[3];
-            } else {
-                $ircdata->nick = '';
-                $ircdata->ident = '';
-                $ircdata->host = $prefix;
-            }
-            
-            // figure out what SMARTIRC_TYPE this message is
-            switch ($command) {
-                case SMARTIRC_RPL_WELCOME:
-                case SMARTIRC_RPL_YOURHOST:
-                case SMARTIRC_RPL_CREATED:
-                case SMARTIRC_RPL_MYINFO:
-                case SMARTIRC_RPL_BOUNCE:
-                    $ircdata->type = SMARTIRC_TYPE_LOGIN;
-                    break;
+                $this->_lastrx = $timestamp;
                 
-                case SMARTIRC_RPL_LUSERCLIENT:
-                case SMARTIRC_RPL_LUSEROP:
-                case SMARTIRC_RPL_LUSERUNKNOWN:
-                case SMARTIRC_RPL_LUSERME:
-                case SMARTIRC_RPL_LUSERCHANNELS:
-                    $ircdata->type = SMARTIRC_TYPE_INFO;
-                    break;
+                // split up incoming lines, remove any empty ones and
+                // trim whitespace off the rest
+                $rawdataar = array_map('trim',
+                                       array_filter(explode("\r\n", $rawdata))
+                );
                 
-                case SMARTIRC_RPL_MOTDSTART:
-                case SMARTIRC_RPL_MOTD:
-                case SMARTIRC_RPL_ENDOFMOTD:
-                    $ircdata->type = SMARTIRC_TYPE_MOTD;
-                    break;
-                
-                case SMARTIRC_RPL_NAMREPLY:
-                case SMARTIRC_RPL_ENDOFNAMES:
-                    $ircdata->type = SMARTIRC_TYPE_NAME;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case SMARTIRC_RPL_WHOREPLY:
-                case SMARTIRC_RPL_ENDOFWHO:
-                    $ircdata->type = SMARTIRC_TYPE_WHO;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case SMARTIRC_RPL_LISTSTART:
-                    $ircdata->type = SMARTIRC_TYPE_NONRELEVANT;
-                    break;
-                
-                case SMARTIRC_RPL_LIST:
-                case SMARTIRC_RPL_LISTEND:
-                    $ircdata->type = SMARTIRC_TYPE_LIST;
-                    break;
-                
-                case SMARTIRC_RPL_BANLIST:
-                case SMARTIRC_RPL_ENDOFBANLIST:
-                    $ircdata->type = SMARTIRC_TYPE_BANLIST;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case SMARTIRC_RPL_TOPIC:
-                    $ircdata->type = SMARTIRC_TYPE_TOPIC;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case SMARTIRC_RPL_WHOISUSER:
-                case SMARTIRC_RPL_WHOISSERVER:
-                case SMARTIRC_RPL_WHOISOPERATOR:
-                case SMARTIRC_RPL_WHOISIDLE:
-                case SMARTIRC_RPL_ENDOFWHOIS:
-                case SMARTIRC_RPL_WHOISCHANNELS:
-                    $ircdata->type = SMARTIRC_TYPE_WHOIS;
-                    break;
-                
-                case SMARTIRC_RPL_WHOWASUSER:
-                case SMARTIRC_RPL_ENDOFWHOWAS:
-                    $ircdata->type = SMARTIRC_TYPE_WHOWAS;
-                    break;
-                
-                case SMARTIRC_RPL_UMODEIS:
-                    $ircdata->type = SMARTIRC_TYPE_USERMODE;
-                    break;
-                
-                case SMARTIRC_RPL_CHANNELMODEIS:
-                    $ircdata->type = SMARTIRC_TYPE_CHANNELMODE;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case SMARTIRC_ERR_NICKNAMEINUSE:
-                case SMARTIRC_ERR_NOTREGISTERED:
-                    $ircdata->type = SMARTIRC_TYPE_ERROR;
-                    break;
-                
-                case 'PRIVMSG':
-                    if (strspn($ircdata->params[0], '&#+!')) {
-                        $ircdata->type = SMARTIRC_TYPE_CHANNEL;
-                        $ircdata->channel = $params[0];
-                        break;
+                // parse and handle them
+                foreach ($rawdataar as $rawline) {
+                    $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
+                        ."received: \"$rawline\"", __FILE__, __LINE__
+                    );
+                    
+                    // building our data packet
+                    $ircdata = new Net_SmartIRC_data();
+                    $ircdata->rawmessage = $rawline;
+                    $ircdata->rawmessageex = explode(' ', $rawline); // kept for BC
+                    
+                    // parsing the message {
+                    $prefix = $trailing = '';
+                    $prefixEnd = -1;
+                    
+                    // parse out the prefix
+                    if ($rawline{0} == ':') {
+                        $prefixEnd = strpos($rawline, ' ');
+                        $prefix = substr($rawline, 1, $prefixEnd - 1);
                     }
-                    if ($ircdata->message{0} == chr(1)) {
-                        if (preg_match('/^'.chr(1).'ACTION .*'.chr(1).'$/',
-                                       $ircdata->message
-                        )) {
-                            $ircdata->type = SMARTIRC_TYPE_ACTION;
+                    
+                    // parse out the trailing
+                    if ($trailingStart = strpos($rawline, ' :')) { // this is not ==
+                        $trailing = substr($rawline, $trailingStart + 2);
+                    } else {
+                        $trailingStart = strlen($rawline);
+                    }
+                    
+                    // parse out command and params
+                    $params = explode(' ', substr($rawline,
+                                                  $prefixEnd + 1,
+                                                  $trailingStart - $prefixEnd - 1
+                    ));
+                    $command = array_shift($params);
+                    // }
+                    
+                    $ircdata->from = $prefix;
+                    $ircdata->params = $params;
+                    $ircdata->message = $trailing;
+                    $ircdata->messageex = explode(' ', $trailing); // kept for BC
+                    
+                    // parse ident thingy
+                    if (preg_match('/^(\S+)!(\S+)@(\S+)$/', $prefix, $matches)) {
+                        $ircdata->nick = $matches[1];
+                        $ircdata->ident = $matches[2];
+                        $ircdata->host = $matches[3];
+                    } else {
+                        $ircdata->nick = '';
+                        $ircdata->ident = '';
+                        $ircdata->host = $prefix;
+                    }
+                    
+                    // figure out what SMARTIRC_TYPE this message is
+                    switch ($command) {
+                        case SMARTIRC_RPL_WELCOME:
+                        case SMARTIRC_RPL_YOURHOST:
+                        case SMARTIRC_RPL_CREATED:
+                        case SMARTIRC_RPL_MYINFO:
+                        case SMARTIRC_RPL_BOUNCE:
+                            $ircdata->type = SMARTIRC_TYPE_LOGIN;
+                            break;
+                        
+                        case SMARTIRC_RPL_LUSERCLIENT:
+                        case SMARTIRC_RPL_LUSEROP:
+                        case SMARTIRC_RPL_LUSERUNKNOWN:
+                        case SMARTIRC_RPL_LUSERME:
+                        case SMARTIRC_RPL_LUSERCHANNELS:
+                            $ircdata->type = SMARTIRC_TYPE_INFO;
+                            break;
+                        
+                        case SMARTIRC_RPL_MOTDSTART:
+                        case SMARTIRC_RPL_MOTD:
+                        case SMARTIRC_RPL_ENDOFMOTD:
+                            $ircdata->type = SMARTIRC_TYPE_MOTD;
+                            break;
+                        
+                        case SMARTIRC_RPL_NAMREPLY:
+                        case SMARTIRC_RPL_ENDOFNAMES:
+                            $ircdata->type = SMARTIRC_TYPE_NAME;
                             $ircdata->channel = $params[0];
                             break;
-                        }
-                        if (preg_match('/^'.chr(1).'.*'.chr(1).'$/',
-                                       $ircdata->message
-                        )) {
-                            $ircdata->type = (SMARTIRC_TYPE_CTCP_REQUEST
-                                            | SMARTIRC_TYPE_CTCP
-                            );
+                        
+                        case SMARTIRC_RPL_WHOREPLY:
+                        case SMARTIRC_RPL_ENDOFWHO:
+                            $ircdata->type = SMARTIRC_TYPE_WHO;
+                            $ircdata->channel = $params[0];
                             break;
-                        }
+                        
+                        case SMARTIRC_RPL_LISTSTART:
+                            $ircdata->type = SMARTIRC_TYPE_NONRELEVANT;
+                            break;
+                        
+                        case SMARTIRC_RPL_LIST:
+                        case SMARTIRC_RPL_LISTEND:
+                            $ircdata->type = SMARTIRC_TYPE_LIST;
+                            break;
+                        
+                        case SMARTIRC_RPL_BANLIST:
+                        case SMARTIRC_RPL_ENDOFBANLIST:
+                            $ircdata->type = SMARTIRC_TYPE_BANLIST;
+                            $ircdata->channel = $params[0];
+                            break;
+                        
+                        case SMARTIRC_RPL_TOPIC:
+                            $ircdata->type = SMARTIRC_TYPE_TOPIC;
+                            $ircdata->channel = $params[0];
+                            break;
+                        
+                        case SMARTIRC_RPL_WHOISUSER:
+                        case SMARTIRC_RPL_WHOISSERVER:
+                        case SMARTIRC_RPL_WHOISOPERATOR:
+                        case SMARTIRC_RPL_WHOISIDLE:
+                        case SMARTIRC_RPL_ENDOFWHOIS:
+                        case SMARTIRC_RPL_WHOISCHANNELS:
+                            $ircdata->type = SMARTIRC_TYPE_WHOIS;
+                            break;
+                        
+                        case SMARTIRC_RPL_WHOWASUSER:
+                        case SMARTIRC_RPL_ENDOFWHOWAS:
+                            $ircdata->type = SMARTIRC_TYPE_WHOWAS;
+                            break;
+                        
+                        case SMARTIRC_RPL_UMODEIS:
+                            $ircdata->type = SMARTIRC_TYPE_USERMODE;
+                            break;
+                        
+                        case SMARTIRC_RPL_CHANNELMODEIS:
+                            $ircdata->type = SMARTIRC_TYPE_CHANNELMODE;
+                            $ircdata->channel = $params[0];
+                            break;
+                        
+                        case SMARTIRC_ERR_NICKNAMEINUSE:
+                        case SMARTIRC_ERR_NOTREGISTERED:
+                            $ircdata->type = SMARTIRC_TYPE_ERROR;
+                            break;
+                        
+                        case 'PRIVMSG':
+                            if (strspn($ircdata->params[0], '&#+!')) {
+                                $ircdata->type = SMARTIRC_TYPE_CHANNEL;
+                                $ircdata->channel = $params[0];
+                                break;
+                            }
+                            if ($ircdata->message{0} == chr(1)) {
+                                if (preg_match('/^'.chr(1).'ACTION .*'.chr(1).'$/',
+                                               $ircdata->message
+                                )) {
+                                    $ircdata->type = SMARTIRC_TYPE_ACTION;
+                                    $ircdata->channel = $params[0];
+                                    break;
+                                }
+                                if (preg_match('/^'.chr(1).'.*'.chr(1).'$/',
+                                               $ircdata->message
+                                )) {
+                                    $ircdata->type = (SMARTIRC_TYPE_CTCP_REQUEST
+                                                    | SMARTIRC_TYPE_CTCP
+                                    );
+                                    break;
+                                }
+                            }
+                            $ircdata->type = SMARTIRC_TYPE_QUERY;
+                            break;
+                        
+                        case 'NOTICE':
+                            if (preg_match('/^'.chr(1).'.*'.chr(1).'$/',
+                                           $ircdata->message
+                            )) {
+                                $ircdata->type = (SMARTIRC_TYPE_CTCP_REPLY
+                                                | SMARTIRC_TYPE_CTCP
+                                );
+                                break;
+                            }
+                            $ircdata->type = SMARTIRC_TYPE_NOTICE;
+                            break;
+                        
+                        case 'INVITE':
+                            $ircdata->type = SMARTIRC_TYPE_INVITE;
+                            break;
+                        
+                        case 'JOIN':
+                            $ircdata->type = SMARTIRC_TYPE_JOIN;
+                            $ircdata->channel = $params[0];
+                            break;
+                        
+                        case 'TOPIC':
+                            $ircdata->type = SMARTIRC_TYPE_TOPICCHANGE;
+                            $ircdata->channel = $params[0];
+                            break;
+                        
+                        case 'NICK':
+                            $ircdata->type = SMARTIRC_TYPE_NICKCHANGE;
+                            break;
+                        
+                        case 'KICK':
+                            $ircdata->type = SMARTIRC_TYPE_KICK;
+                            $ircdata->channel = $params[0];
+                            break;
+                        
+                        case 'PART':
+                            $ircdata->type = SMARTIRC_TYPE_PART;
+                            $ircdata->channel = $params[0];
+                            break;
+                        
+                        case 'MODE':
+                            $ircdata->type = SMARTIRC_TYPE_MODECHANGE;
+                            $ircdata->channel = $params[0];
+                            break;
+                        
+                        case 'QUIT':
+                            $ircdata->type = SMARTIRC_TYPE_QUIT;
+                            break;
+                        
+                        default:
+                            $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
+                                ."command UNKNOWN ($command): \"$rawline\"",
+                                __FILE__, __LINE__
+                            );
+                            $ircdata->type = SMARTIRC_TYPE_UNKNOWN;
+                            break;
                     }
-                    $ircdata->type = SMARTIRC_TYPE_QUERY;
-                    break;
-                
-                case 'NOTICE':
-                    if (preg_match('/^'.chr(1).'.*'.chr(1).'$/',
-                                   $ircdata->message
-                    )) {
-                        $ircdata->type = (SMARTIRC_TYPE_CTCP_REPLY
-                                        | SMARTIRC_TYPE_CTCP
-                        );
-                        break;
-                    }
-                    $ircdata->type = SMARTIRC_TYPE_NOTICE;
-                    break;
-                
-                case 'INVITE':
-                    $ircdata->type = SMARTIRC_TYPE_INVITE;
-                    break;
-                
-                case 'JOIN':
-                    $ircdata->type = SMARTIRC_TYPE_JOIN;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case 'TOPIC':
-                    $ircdata->type = SMARTIRC_TYPE_TOPICCHANGE;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case 'NICK':
-                    $ircdata->type = SMARTIRC_TYPE_NICKCHANGE;
-                    break;
-                
-                case 'KICK':
-                    $ircdata->type = SMARTIRC_TYPE_KICK;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case 'PART':
-                    $ircdata->type = SMARTIRC_TYPE_PART;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case 'MODE':
-                    $ircdata->type = SMARTIRC_TYPE_MODECHANGE;
-                    $ircdata->channel = $params[0];
-                    break;
-                
-                case 'QUIT':
-                    $ircdata->type = SMARTIRC_TYPE_QUIT;
-                    break;
-                
-                default:
-                    $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
-                        ."command UNKNOWN ($command): \"$rawline\"",
-                        __FILE__, __LINE__
-                    );
-                    $ircdata->type = SMARTIRC_TYPE_UNKNOWN;
-                    break;
-            }
-            
-            $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: '
-                .'ircdata nick: "'.$ircdata->nick
-                .'" ident: "'.$ircdata->ident
-                .'" host: "'.$ircdata->host
-                .'" type: "'.$ircdata->type
-                .'" from: "'.$ircdata->from
-                .'" channel: "'.$ircdata->channel
-                .'" message: "'.$ircdata->message.'"', __FILE__, __LINE__
-            );
-            
-            // lets see if we have a messagehandler for it
-            if (is_numeric($command)) {
-                if (!array_key_exists($command, $this->nreplycodes)) {
-                    $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER,
-                        'DEBUG_MESSAGEHANDLER: ignoring unrecognized messagecode "'
-                        .$command.'"', __FILE__, __LINE__
-                    );
-                    $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER,
-                        'DEBUG_MESSAGEHANDLER: this IRC server ('.$this->_address
-                        .") doesn't conform to RFC 2812!",
-                        __FILE__, __LINE__
-                    );
-                    // maybe not what we like, but we did listen successfully
-                    return true;
-                }
-                
-                $methodname = 'event_'.strtolower($this->nreplycodes[$command]);
-                $_methodname = '_'.$methodname;
-                $_codetype = 'by numeric';
-            } else {
-                $methodname = 'event_'.strtolower($command);
-                $_methodname = '_'.$methodname;
-                $_codetype = 'by string';
-            }
-            
-            $found = false;
-            
-            // if exists call internal method for the handling
-            if (method_exists($this, $_methodname)) {
-                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: '
-                    .'calling internal method "'.get_class($this).'->'
-                    .$_methodname.'" ('.$_codetype.')', __FILE__, __LINE__
-                );
-                $this->$_methodname($ircdata);
-                $found = true;
-            }
-            
-            // if exists call user defined method for the handling
-            if (method_exists($this, $methodname)) {
-                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: '
-                    .'calling user defined method "'.get_class($this).'->'
-                    .$methodname.'" ('.$_codetype.')', __FILE__, __LINE__
-                );
-                $this->$methodname($ircdata);
-                $found = true;
-            }
-            
-            if (!$found) {
-                $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: no'
-                    .' method found for "'.$command.'" ('.$methodname.')',
-                    __FILE__, __LINE__
-                );
-            }
-            
-            // now the actionhandlers are coming
-            foreach ($this->_actionhandler as $i => &$handlerobject) {
                     
-                $regex = 
-                    ($handlerobject->message{0}
-                        == $handlerobject->message{
-                            strlen($handlerobject->message) - 1
+                    $this->log(SMARTIRC_DEBUG_MESSAGEPARSER, 'DEBUG_MESSAGEPARSER: '
+                        .'ircdata nick: "'.$ircdata->nick
+                        .'" ident: "'.$ircdata->ident
+                        .'" host: "'.$ircdata->host
+                        .'" type: "'.$ircdata->type
+                        .'" from: "'.$ircdata->from
+                        .'" channel: "'.$ircdata->channel
+                        .'" message: "'.$ircdata->message.'"', __FILE__, __LINE__
+                    );
+                    
+                    // lets see if we have a messagehandler for it
+                    if (is_numeric($command)) {
+                        if (!array_key_exists($command, $this->nreplycodes)) {
+                            $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER,
+                                'DEBUG_MESSAGEHANDLER: ignoring unrecognized messagecode "'
+                                .$command.'"', __FILE__, __LINE__
+                            );
+                            // maybe not what we like, but we did listen successfully
+                            return true;
                         }
-                    ) ? $handlerobject->message
-                    : '/'.$handlerobject->message . '/'
-                ;
-                
-                if (($handlerobject->type & $ircdata->type)
-                    && preg_match($regex, $ircdata->message)
-                ) {
-                    $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
-                        ."actionhandler match found for id: $i type: "
-                        .$ircdata->type.' message: "'.$ircdata->message
-                        ."\" regex: \"$regex\"", __FILE__, __LINE__
-                    );
-                    
-                    $methodobject = &$handlerobject->object;
-                    $method = $handlerobject->method;
-                    
-                    if (method_exists($methodobject, $method)) {
-                        $this->log(SMARTIRC_DEBUG_ACTIONHANDLER,
-                            'DEBUG_ACTIONHANDLER: calling method "'
-                            .get_class($methodobject).'->'.$method.'"',
-                            __FILE__, __LINE__
-                        );
-                        $methodobject->$method($this, $ircdata);
+                        
+                        $methodname = 'event_'.strtolower($this->nreplycodes[$command]);
+                        $_methodname = '_'.$methodname;
+                        $_codetype = 'by numeric';
                     } else {
-                        $this->log(SMARTIRC_DEBUG_ACTIONHANDLER,
-                            'DEBUG_ACTIONHANDLER: method doesn\'t exist! "'
-                            .get_class($methodobject).'->'.$method.'"',
+                        $methodname = 'event_'.strtolower($command);
+                        $_methodname = '_'.$methodname;
+                        $_codetype = 'by string';
+                    }
+                    
+                    $found = false;
+                    
+                    // if exists call internal method for the handling
+                    if (method_exists($this, $_methodname)) {
+                        $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: '
+                            .'calling internal method "'.get_class($this).'->'
+                            .$_methodname.'" ('.$_codetype.')', __FILE__, __LINE__
+                        );
+                        $this->$_methodname($ircdata);
+                        $found = true;
+                    }
+                    
+                    // if exists call user defined method for the handling
+                    if (method_exists($this, $methodname)) {
+                        $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: '
+                            .'calling user defined method "'.get_class($this).'->'
+                            .$methodname.'" ('.$_codetype.')', __FILE__, __LINE__
+                        );
+                        $this->$methodname($ircdata);
+                        $found = true;
+                    }
+                    
+                    if (!$found) {
+                        $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER, 'DEBUG_MESSAGEHANDLER: no'
+                            .' method found for "'.$command.'" ('.$methodname.')',
                             __FILE__, __LINE__
                         );
                     }
+                    
+                    // now the actionhandlers are coming
+                    foreach ($this->_actionhandler as $i => &$handlerobject) {
+                            
+                        $regex = 
+                            ($handlerobject->message{0}
+                                == $handlerobject->message{
+                                    strlen($handlerobject->message) - 1
+                                }
+                            ) ? $handlerobject->message
+                            : '/'.$handlerobject->message . '/'
+                        ;
+                        
+                        if (($handlerobject->type & $ircdata->type)
+                            && preg_match($regex, $ircdata->message)
+                        ) {
+                            $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
+                                ."actionhandler match found for id: $i type: "
+                                .$ircdata->type.' message: "'.$ircdata->message
+                                ."\" regex: \"$regex\"", __FILE__, __LINE__
+                            );
+                            
+                            $methodobject = &$handlerobject->object;
+                            $method = $handlerobject->method;
+                            
+                            if (method_exists($methodobject, $method)) {
+                                $this->log(SMARTIRC_DEBUG_ACTIONHANDLER,
+                                    'DEBUG_ACTIONHANDLER: calling method "'
+                                    .get_class($methodobject).'->'.$method.'"',
+                                    __FILE__, __LINE__
+                                );
+                                $methodobject->$method($this, $ircdata);
+                            } else {
+                                $this->log(SMARTIRC_DEBUG_ACTIONHANDLER,
+                                    'DEBUG_ACTIONHANDLER: method doesn\'t exist! "'
+                                    .get_class($methodobject).'->'.$method.'"',
+                                    __FILE__, __LINE__
+                                );
+                            }
+                        }
+                    }
+                    
+                    unset($ircdata);
                 }
             }
-            
-            unset($ircdata);
         }
         
         // if we've done anything that didn't work and the connection is broken,
@@ -2299,7 +2294,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             .$id.') registered', __FILE__, __LINE__
         );
         
-        if (($interval < $this->_mintimer) || ($this->_mintimer == false)) {
+        if (($this->_mintimer == false) || ($interval < $this->_mintimer)) {
             $this->_mintimer = $interval;
         }
             
@@ -2546,22 +2541,6 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     }
     
     /**
-     * Delay reconnect
-     *
-     * @return void
-     */
-    protected function _delayReconnect()
-    {
-        if ($this->_reconnectdelay > 0) {
-            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying '
-                .'reconnect for '.$this->_reconnectdelay.' ms',
-                __FILE__, __LINE__
-            );
-            usleep($this->_reconnectdelay * 1000);
-        }
-    }
-    
-    /**
      * changes an already used nickname to a new nickname plus 3 random digits
      *
      * @return void
@@ -2577,7 +2556,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * 
      * @return void
      */
-    protected function _pingcheck () {
+    protected function _pingcheck ()
+    {
         $time = time();
         if ($time - $this->_lastrx > $this->_rxtimeout) {
             $this->reconnect();
