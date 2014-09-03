@@ -93,7 +93,7 @@
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
-* Fix Bug #12539: Flaw in timeout detection. [garrettw]
+ * Fix Bug #12539: Flaw in timeout detection. [garrettw]
  * Fix Bug #13079: Does not support founder/admin/half-op modes [garrettw]
  * Fix Bug #14924: delayed timer with real socket [garrettw]
  * Fix Bug #16531: Nickname changes wrong [garrettw]
@@ -104,8 +104,12 @@
  * Fix Bug #18774: not compatible in strict mode [doconnor]
  * Implement Feature #16755: Not possible to join more than one chanel even if &quot;$channelarray&quot; is
    correctly [garrettw]
- * Implement Feature #18025: Bind IP for Net_SmartIRC_base::connect()? [doconnor]
+ * Implement Feature #18025: Bind IP for Net_SmartIRC_base::connect()? [garrettw]
  * Implement Feature #18403: Bug fixes, code formatting, added features [garrettw]
+ * Silenced PHP warnings when socket_select() receives a signal [garrettw]
+ * Added ability to dynamically reload client if user code supports it [garrettw]
+ * Added ability to pass arguments from user code to modules [garrettw]
+ * Added ability to send custom raw commands immediately after login() info [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -684,7 +688,7 @@ Request #13056		Allow multiple actionhandlers to execute	amir
   </release>
   <release>
    <version>
-    <release>1.1.0</release>
+    <release>1.0.2</release>
     <api>1.0.0</api>
    </version>
    <stability>
@@ -696,6 +700,37 @@ Request #13056		Allow multiple actionhandlers to execute	amir
    <notes>
 Automatically built QA release
 Req #16526 Colour and bold codes are not supported - giggsey
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2014-09-03</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix Bug #12539: Flaw in timeout detection. [garrettw]
+ * Fix Bug #13079: Does not support founder/admin/half-op modes [garrettw]
+ * Fix Bug #14924: delayed timer with real socket [garrettw]
+ * Fix Bug #16531: Nickname changes wrong [garrettw]
+ * Fix Bug #17729: patch: Removed define_syslog_variables and avoided warning for socket
+   blocking [garrettw]
+ * Fix Bug #17769: file included with relative path [doconnor]
+ * Fix Bug #18586: Register Action Handle only accepts one class [garrettw]
+ * Fix Bug #18774: not compatible in strict mode [doconnor]
+ * Implement Feature #16755: Not possible to join more than one chanel even if &quot;$channelarray&quot; is
+   correctly [garrettw]
+ * Implement Feature #18025: Bind IP for Net_SmartIRC_base::connect()? [garrettw]
+ * Implement Feature #18403: Bug fixes, code formatting, added features [garrettw]
+ * Silenced PHP warnings when socket_select() receives a signal [garrettw]
+ * Added ability to dynamically reload client if user code supports it [garrettw]
+ * Added ability to pass arguments from user code to modules [garrettw]
+ * Added ability to send custom raw commands immediately after login() info [garrettw]
    </notes>
   </release>
  </changelog>
