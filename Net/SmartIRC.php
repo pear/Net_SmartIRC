@@ -43,7 +43,7 @@
 require_once 'Net/SmartIRC/defines.php';
 require_once 'Net/SmartIRC/irccommands.php';
 require_once 'Net/SmartIRC/messagehandler.php';
-define('SMARTIRC_VERSION', '1.1.0-dev');
+define('SMARTIRC_VERSION', '1.1.0');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
@@ -57,7 +57,7 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
  *
  * @category Net
  * @package Net_SmartIRC
- * @version 1.1.0-dev
+ * @version 1.1.0
  * @author clockwerx
  * @author Mirco 'meebey' Bauer <meebey@meebey.net>
  * @license http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
@@ -417,9 +417,6 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function __construct($params = array())
     {
-        ob_implicit_flush(true);
-        @set_time_limit(0);
-        
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
         
         // you'll want to pass an array that includes keys like:
@@ -1102,6 +1099,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function connect($address, $port)
     {
+        ob_implicit_flush();
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connecting',
             __FILE__, __LINE__
         );
@@ -2556,7 +2554,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * 
      * @return void
      */
-    protected function _pingcheck ()
+    protected function _pingcheck()
     {
         $time = time();
         if ($time - $this->_lastrx > $this->_rxtimeout) {
