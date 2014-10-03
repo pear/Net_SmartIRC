@@ -89,9 +89,9 @@
             <ul class="side-nav nav nav-list">
                 <li class="nav-header">Navigation</li>
                                                                         <li><a href="#SmartIRC/defines.php"><i class="icon-file"></i> SmartIRC/defines.php</a></li>
-                                                                                                <li><a href="#SmartIRC/messagehandler.php"><i class="icon-file"></i> SmartIRC/messagehandler.php</a></li>
                                                                                                 <li><a href="#SmartIRC/irccommands.php"><i class="icon-file"></i> SmartIRC/irccommands.php</a></li>
                                                                                                 <li><a href="#SmartIRC.php"><i class="icon-file"></i> SmartIRC.php</a></li>
+                                                                                                <li><a href="#SmartIRC/messagehandler.php"><i class="icon-file"></i> SmartIRC/messagehandler.php</a></li>
                                                                     </ul>
         </div>
 
@@ -137,118 +137,6 @@
                                             <td></td>
                                             <td>87</td>
                                             <td>define(&#039;SMARTIRC_TYPE_DCC&#039;,            536870912);</td>
-                                        </tr>
-                                                                    </table>
-                            </div>
-                        </div>
-                                                                                <div class="package-contents">
-                            <a name="SmartIRC/messagehandler.php" id="SmartIRC/messagehandler.php"></a>
-                            <h3>
-                            <i class="icon-file"></i>
-                                SmartIRC/messagehandler.php
-                                <small style="float: right;padding-right: 10px;">19</small>
-                            </h3>
-                            <div>
-                                <table class="table markers table-bordered">
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Line</th>
-                                        <th>Description</th>
-                                    </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>8</td>
-                                            <td>www.meebey.net&gt;</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>10</td>
-                                            <td>www.gnu.org/licenses/lgpl.txt&gt;</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>66</td>
-                                            <td>the class will get his own who data from the whole who channel list</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>71</td>
-                                            <td>the class didn&#039;t join but someone else, lets get his who data</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>119</td>
-                                            <td>loop through all channels</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>122</td>
-                                            <td>loop through all user in this channel</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>125</td>
-                                            <td>found him</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>126</td>
-                                            <td>time for updating the object and his nickname</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>136</td>
-                                            <td>he was maybe op or voice, update coming</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>156</td>
-                                            <td>check if its own usermode</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>160</td>
-                                            <td>it&#039;s not, and we do channel syching</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>184</td>
-                                            <td>user modes</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>337</td>
-                                            <td>channel modes</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>387</td>
-                                            <td>substr must be 1,4 because of \001 in CTCP messages</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>415</td>
-                                            <td>updating our nickname, that we got (maybe cutted...)</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>448</td>
-                                            <td>let _mode() handle the received mode</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>458</td>
-                                            <td>we got who info without channel info, so search the user</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>459</td>
-                                            <td>on all channels and update him</td>
-                                        </tr>
-                                                                            <tr>
-                                            <td></td>
-                                            <td>592</td>
-                                            <td>we received end of banlist and the stop timestamp is not set yet</td>
                                         </tr>
                                                                     </table>
                             </div>
@@ -421,293 +309,405 @@
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1685</td>
+                                            <td>1686</td>
                                             <td>if we&#039;re not connected, we can&#039;t listen, so return</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1690</td>
+                                            <td>1691</td>
                                             <td>before we listen...</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1692</td>
+                                            <td>1693</td>
                                             <td>see if any timehandler needs to be called</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1712</td>
+                                            <td>1713</td>
                                             <td>also let&#039;s send any queued messages</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1724</td>
+                                            <td>1725</td>
                                             <td>don&#039;t send them too fast</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1743</td>
+                                            <td>1744</td>
                                             <td>try to get data from the real socket or fsock</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1745</td>
+                                            <td>1746</td>
                                             <td>calculate selecttimeout</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1757</td>
+                                            <td>1758</td>
                                             <td>check the socket to see if data is waiting for us</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1758</td>
+                                            <td>1759</td>
                                             <td>this will trigger a warning when catching a signal - silence it</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1767</td>
+                                            <td>1768</td>
                                             <td>the socket got data to read</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1771</td>
+                                            <td>1772</td>
                                             <td>we got hit with a SIGHUP signal, try to reload modules</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1778</td>
+                                            <td>1779</td>
                                             <td>panic! panic! something went wrong!</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1787</td>
+                                            <td>1788</td>
                                             <td>no data on the socket</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1793</td>
+                                            <td>1794</td>
                                             <td>if reading from the socket failed, the connection is broken</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1815</td>
+                                            <td>1816</td>
                                             <td>split up incoming lines, remove any empty ones and</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1816</td>
+                                            <td>1817</td>
                                             <td>trim whitespace off the rest</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1821</td>
+                                            <td>1822</td>
                                             <td>parse and handle them</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1827</td>
+                                            <td>1828</td>
                                             <td>building our data packet</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1830</td>
+                                            <td>1831</td>
                                             <td>kept for BC</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1832</td>
+                                            <td>1833</td>
                                             <td>parsing the message {</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1836</td>
+                                            <td>1837</td>
                                             <td>parse out the prefix</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1842</td>
+                                            <td>1843</td>
                                             <td>parse out the trailing</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1843</td>
+                                            <td>1844</td>
                                             <td>this is not ==</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1849</td>
+                                            <td>1850</td>
                                             <td>parse out command and params</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1855</td>
+                                            <td>1856</td>
                                             <td>}</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1860</td>
+                                            <td>1861</td>
                                             <td>kept for BC</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1862</td>
+                                            <td>1863</td>
                                             <td>parse ident thingy</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>1873</td>
+                                            <td>1874</td>
                                             <td>figure out what SMARTIRC_TYPE this message is</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2051</td>
+                                            <td>2052</td>
                                             <td>lets see if we have a messagehandler for it</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2058</td>
+                                            <td>2059</td>
                                             <td>maybe not what we like, but we did listen successfully</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2073</td>
+                                            <td>2074</td>
                                             <td>if exists call internal method for the handling</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2083</td>
+                                            <td>2084</td>
                                             <td>if exists call user defined method for the handling</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2100</td>
+                                            <td>2101</td>
                                             <td>now the actionhandlers are coming</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2146</td>
+                                            <td>2147</td>
                                             <td>if we&#039;ve done anything that didn&#039;t work and the connection is broken,</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2147</td>
+                                            <td>2148</td>
                                             <td>log it and fix it</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2193</td>
+                                            <td>2194</td>
                                             <td>precheck</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2230</td>
+                                            <td>2231</td>
                                             <td>precheck</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2392</td>
+                                            <td>2393</td>
                                             <td>is the module already loaded?</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2411</td>
+                                            <td>2412</td>
                                             <td>pray that there is no parse error, it will kill us!</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2458</td>
+                                            <td>2459</td>
                                             <td>looks like the module satisfies us, so instantiate it</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2460</td>
+                                            <td>2461</td>
                                             <td>we&#039;re using an old module_init style module</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2467</td>
+                                            <td>2468</td>
                                             <td>we&#039;re using a new __construct style module, which maintains its</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2468</td>
+                                            <td>2469</td>
                                             <td>own reference to the $irc client object it&#039;s being used on</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2471</td>
+                                            <td>2472</td>
                                             <td>we&#039;re using new style AND we have args to pass to the constructor</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2473</td>
+                                            <td>2474</td>
                                             <td>only one arg, so pass it as is</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2476</td>
+                                            <td>2477</td>
                                             <td>multiple args, so pass them in an array</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2511</td>
+                                            <td>2512</td>
                                             <td>should call __destruct() on it</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2525</td>
+                                            <td>2526</td>
                                             <td>&lt;protected methods&gt;</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2543</td>
+                                            <td>2544</td>
                                             <td>lets update the existing user</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2560</td>
+                                            <td>2561</td>
                                             <td>he is new just add the reference to him</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2635</td>
+                                            <td>2636</td>
                                             <td>writing to the socket failed, means the connection is broken</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2682</td>
+                                            <td>2683</td>
                                             <td>remove the user from all channels</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2685</td>
+                                            <td>2686</td>
                                             <td>loop through all channels</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2688</td>
+                                            <td>2689</td>
                                             <td>loop through all user in this channel</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2690</td>
+                                            <td>2691</td>
                                             <td>found him, kill him</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2700</td>
+                                            <td>2701</td>
                                             <td>die!</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2755</td>
+                                            <td>2756</td>
                                             <td>&lt;/protected methods&gt;</td>
                                         </tr>
                                                                             <tr>
                                             <td></td>
-                                            <td>2757</td>
+                                            <td>2758</td>
                                             <td>is this even needed/used?</td>
+                                        </tr>
+                                                                    </table>
+                            </div>
+                        </div>
+                                                                                <div class="package-contents">
+                            <a name="SmartIRC/messagehandler.php" id="SmartIRC/messagehandler.php"></a>
+                            <h3>
+                            <i class="icon-file"></i>
+                                SmartIRC/messagehandler.php
+                                <small style="float: right;padding-right: 10px;">19</small>
+                            </h3>
+                            <div>
+                                <table class="table markers table-bordered">
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Line</th>
+                                        <th>Description</th>
+                                    </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>8</td>
+                                            <td>www.meebey.net&gt;</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>10</td>
+                                            <td>www.gnu.org/licenses/lgpl.txt&gt;</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>66</td>
+                                            <td>the class will get his own who data from the whole who channel list</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>71</td>
+                                            <td>the class didn&#039;t join but someone else, lets get his who data</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>119</td>
+                                            <td>loop through all channels</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>122</td>
+                                            <td>loop through all user in this channel</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>125</td>
+                                            <td>found him</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>126</td>
+                                            <td>time for updating the object and his nickname</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>136</td>
+                                            <td>he was maybe op or voice, update coming</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>156</td>
+                                            <td>check if its own usermode</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>160</td>
+                                            <td>it&#039;s not, and we do channel syching</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>184</td>
+                                            <td>user modes</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>337</td>
+                                            <td>channel modes</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>387</td>
+                                            <td>substr must be 1,4 because of \001 in CTCP messages</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>415</td>
+                                            <td>updating our nickname, that we got (maybe cutted...)</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>448</td>
+                                            <td>let _mode() handle the received mode</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>458</td>
+                                            <td>we got who info without channel info, so search the user</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>459</td>
+                                            <td>on all channels and update him</td>
+                                        </tr>
+                                                                            <tr>
+                                            <td></td>
+                                            <td>592</td>
+                                            <td>we received end of banlist and the stop timestamp is not set yet</td>
                                         </tr>
                                                                     </table>
                             </div>
@@ -752,7 +752,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 3rd, 2014 at 00:43.
+                    on October 3rd, 2014 at 01:02.
                 </section>
             </section>
         </section>

@@ -43,7 +43,7 @@
 require_once 'Net/SmartIRC/defines.php';
 require_once 'Net/SmartIRC/irccommands.php';
 require_once 'Net/SmartIRC/messagehandler.php';
-define('SMARTIRC_VERSION', '1.1.0');
+define('SMARTIRC_VERSION', '1.1.1');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
@@ -51,7 +51,7 @@ define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
  *
  * @category Net
  * @package Net_SmartIRC
- * @version 1.1.0
+ * @version 1.1.1
  * @author clockwerx
  * @author Mirco 'meebey' Bauer <meebey@meebey.net>
  * @license http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
@@ -1668,6 +1668,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function listen()
     {
+        set_time_limit(0);
         while ($this->listenOnce() && !$this->_interrupt) {}
     }
 
