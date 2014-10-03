@@ -32,10 +32,7 @@
         "source": "https://github.com/pear/Net_SmartIRC"
     },
     "type": "library",
-    "require": {
-        "pear/pear_exception": "*"
-    },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpdocumentor/phpdocumentor": "2.7.*"
     }
 }
