@@ -83,7 +83,7 @@
  </contributor>
  <date>2014-10-03</date>
  <version>
-  <release>1.1.1</release>
+  <release>1.1.2</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -92,11 +92,7 @@
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Fix Bug #20419: Need a getter for the current bot nick [garrettw]
- * Tweaked a few execution modifiers [garrettw]
- * Removed limit on number of high-priority messages that can be sent before other priorities [garrettw]
- * Tweaked logger output [garrettw]
- * Updated HTML documentation [garrettw]
+ * Corrected package structure [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -231,14 +227,12 @@
      <file baseinstalldir="Net" name="example7.php" role="doc" />
     </dir> <!-- /examples -->
    </dir> <!-- /docs -->
-   <dir name="Net">
-    <dir name="SmartIRC">
-     <file baseinstalldir="Net" name="defines.php" role="php" />
-     <file baseinstalldir="Net" name="irccommands.php" role="php" />
-     <file baseinstalldir="Net" name="messagehandler.php" role="php" />
-    </dir> <!-- /Net/SmartIRC -->
-    <file baseinstalldir="Net" name="SmartIRC.php" role="php" />
-   </dir> <!-- /Net -->
+   <dir name="SmartIRC">
+    <file baseinstalldir="Net" name="defines.php" role="php" />
+    <file baseinstalldir="Net" name="irccommands.php" role="php" />
+    <file baseinstalldir="Net" name="messagehandler.php" role="php" />
+   </dir> <!-- /SmartIRC -->
+   <file baseinstalldir="Net" name="SmartIRC.php" role="php" />
    <file baseinstalldir="Net" name="CREDITS" role="doc" />
    <file baseinstalldir="Net" name="FEATURES" role="doc" />
    <file baseinstalldir="Net" name="LICENSE" role="doc" />
@@ -737,6 +731,21 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Removed limit on number of high-priority messages that can be sent before other priorities [garrettw]
  * Tweaked logger output [garrettw]
  * Updated HTML documentation [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.2</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2014-10-03</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Corrected package structure [garrettw]
    </notes>
   </release>
  </changelog>
