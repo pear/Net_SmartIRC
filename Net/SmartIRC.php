@@ -1668,6 +1668,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function listen()
     {
+        set_time_limit(0);
         while ($this->listenOnce() && !$this->_interrupt) {}
     }
 
