@@ -260,7 +260,7 @@
  <dependencies>
   <required>
    <php>
-    <min>4.4.4</min>
+    <min>5.3.0</min>
    </php>
    <pearinstaller>
     <min>1.7.0</min>
@@ -454,7 +454,7 @@ v0.4.0
    If you don&apos;t change those, your IRC scripts will _not_ work anymore!
  - changed internal methodnames to _methodname
  - changed sendbuffer
-   Now it uses configurable senddelay, instead of static 2 messages  
+   Now it uses configurable senddelay, instead of static 2 messages
    per second (send flood protection).
  - changed TYPEs
    All TYPE_* are now bitwise constants, register_actionhandler() can now
@@ -474,7 +474,7 @@ v0.4.0
  - added $data-&gt;channel to actionhandler callback.
 
 * defines.inc.php:
- - initial import. 
+ - initial import.
  - now all IRC related defines are now in this file instead of
    phpSmartIRCclass.inc.php.
 
@@ -556,7 +556,7 @@ fixes:
    Also warnings are now suppressed with @ in front of dl().
  - fixed a typo in reconnect().
  - missing SMARTIRC_DEBUG_CHANNELSYNCHING constant added.
- 
+
 changes:
  - new design for HTML documentation used (PEAR template).
  - moved all examples to their own directory (examples/).
@@ -564,7 +564,7 @@ changes:
  - added new file descriptions to README.
  - removed not needed parts of DOCUMENTATION (most is now in the HTML version).
  - updated the HTML documentation.
- 
+
 new:
  - example5/6/7.php added.
  - setAutoRetry() method added.
