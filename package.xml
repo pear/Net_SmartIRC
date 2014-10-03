@@ -81,10 +81,9 @@
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2014-09-03</date>
- <time>15:35:42</time>
+ <date>2014-10-03</date>
  <version>
-  <release>1.1.0</release>
+  <release>1.1.1</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -93,23 +92,11 @@
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Fix Bug #12539: Flaw in timeout detection. [garrettw]
- * Fix Bug #13079: Does not support founder/admin/half-op modes [garrettw]
- * Fix Bug #14924: delayed timer with real socket [garrettw]
- * Fix Bug #16531: Nickname changes wrong [garrettw]
- * Fix Bug #17729: patch: Removed define_syslog_variables and avoided warning for socket
-   blocking [garrettw]
- * Fix Bug #17769: file included with relative path [doconnor]
- * Fix Bug #18586: Register Action Handle only accepts one class [garrettw]
- * Fix Bug #18774: not compatible in strict mode [doconnor]
- * Implement Feature #16755: Not possible to join more than one chanel even if &quot;$channelarray&quot; is
-   correctly [garrettw]
- * Implement Feature #18025: Bind IP for Net_SmartIRC_base::connect()? [garrettw]
- * Implement Feature #18403: Bug fixes, code formatting, added features [garrettw]
- * Silenced PHP warnings when socket_select() receives a signal [garrettw]
- * Added ability to dynamically reload client if user code supports it [garrettw]
- * Added ability to pass arguments from user code to modules [garrettw]
- * Added ability to send custom raw commands immediately after login() info [garrettw]
+ * Fix Bug #20419: Need a getter for the current bot nick [garrettw]
+ * Tweaked a few execution modifiers [garrettw]
+ * Removed limit on number of high-priority messages that can be sent before other priorities [garrettw]
+ * Tweaked logger output [garrettw]
+ * Updated HTML documentation [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -179,7 +166,6 @@
        <file baseinstalldir="Net" name="spacer.gif" role="doc" />
        <file baseinstalldir="Net" name="spacer2.gif" role="doc" />
        <file baseinstalldir="Net" name="T.png" role="doc" />
-       <file baseinstalldir="Net" name="Thumbs.db" role="doc" />
        <file baseinstalldir="Net" name="Tminus.png" role="doc" />
        <file baseinstalldir="Net" name="Tplus.png" role="doc" />
        <file baseinstalldir="Net" name="Types.gif" role="doc" />
@@ -245,16 +231,18 @@
      <file baseinstalldir="Net" name="example7.php" role="doc" />
     </dir> <!-- /examples -->
    </dir> <!-- /docs -->
-   <dir name="SmartIRC">
-    <file baseinstalldir="Net" name="defines.php" role="php" />
-    <file baseinstalldir="Net" name="irccommands.php" role="php" />
-    <file baseinstalldir="Net" name="messagehandler.php" role="php" />
-   </dir> <!-- /SmartIRC -->
+   <dir name="Net">
+    <dir name="SmartIRC">
+     <file baseinstalldir="Net" name="defines.php" role="php" />
+     <file baseinstalldir="Net" name="irccommands.php" role="php" />
+     <file baseinstalldir="Net" name="messagehandler.php" role="php" />
+    </dir> <!-- /Net/SmartIRC -->
+    <file baseinstalldir="Net" name="SmartIRC.php" role="php" />
+   </dir> <!-- /Net -->
    <file baseinstalldir="Net" name="CREDITS" role="doc" />
    <file baseinstalldir="Net" name="FEATURES" role="doc" />
    <file baseinstalldir="Net" name="LICENSE" role="doc" />
    <file baseinstalldir="Net" name="README.md" role="doc" />
-   <file baseinstalldir="Net" name="SmartIRC.php" role="php" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -730,6 +718,25 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Added ability to dynamically reload client if user code supports it [garrettw]
  * Added ability to pass arguments from user code to modules [garrettw]
  * Added ability to send custom raw commands immediately after login() info [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2014-10-02</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix Bug #20419: Need a getter for the current bot nick [garrettw]
+ * Tweaked a few execution modifiers [garrettw]
+ * Removed limit on number of high-priority messages that can be sent before other priorities [garrettw]
+ * Tweaked logger output [garrettw]
+ * Updated HTML documentation [garrettw]
    </notes>
   </release>
  </changelog>
