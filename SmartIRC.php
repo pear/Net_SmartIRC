@@ -543,8 +543,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 $addr = substr($addr, 0, $cpos);
                 $port = substr($addr, $cpos + 1);
             }
-            $this->bindaddress = $addr;
-            $this->bindport = $port;
+            $this->_bindaddress = $addr;
+            $this->_bindport = $port;
         }
         return $this->_usesockets;
     }
@@ -2391,7 +2391,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     public function loadModule($name)
     {
         // is the module already loaded?
-        if (in_array($name, $this->_modules)) {
+        if (isset($this->_modules[$name])) {
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING! module with the name "'
                 .$name.'" already loaded!', __FILE__, __LINE__
             );
@@ -2414,8 +2414,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         $classname = "Net_SmartIRC_module_$name";
 
         if (!class_exists($classname)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: class '
-                ."$classname not found in $filename", __FILE__, __LINE__
+            $this->log(SMARTIRC_DEBUG_MODULES, "DEBUG_MODULES: class $classname"
+                ." not found in $filename, aborting...", __FILE__, __LINE__
             );
             return false;
         }
@@ -2426,7 +2426,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             || in_array('module_init', $methods)
         )) {
             $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method '
-                .$classname.'::__construct not found, aborting...',
+                .$classname.'::__construct() not found, aborting...',
                 __FILE__, __LINE__
             );
             return false;
@@ -2436,7 +2436,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             || in_array('module_exit', $methods)
         )) {
             $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method '
-                .$classname.'::__destruct not found, aborting...',
+                .$classname.'::__destruct() not found, aborting...',
                 __FILE__, __LINE__
             );
             return false;
@@ -2448,7 +2448,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         foreach ($required as $varname) {
             if (!in_array($varname, $vars)) {
                 $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required'
-                    .'variable '.$classname.'::'.$varname
+                    .'variable '.$classname.'::$'.$varname
                     .' not found, aborting...',
                     __FILE__, __LINE__
                 );
@@ -2499,28 +2499,34 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             ."$name...", __FILE__, __LINE__
         );
 
-        $modules_keys = array_keys($this->_modules);
-        $modulecount = count($modules_keys);
-        for ($i = 0; $i < $modulecount; $i++) {
-            $module = &$this->_modules[$modules_keys[$i]];
-            $modulename = get_class($module);
-
-            if (strtolower($modulename) == "net_smartirc_module_$name") {
-                if (in_array('module_exit', get_class_methods($modulename))) {
-                    $module->module_exit($this);
-                }
-                unset($this->_modules[$i]); // should call __destruct() on it
-                $this->_modules = array_values($this->_modules);
-                $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully'
-                    ." unloaded module: $name", __FILE__, __LINE__);
-                return true;
+        if (isset($this->_modules[$name])) {
+            if (in_array('module_exit',
+                    get_class_methods(get_class($this->_modules[$name]))
+            )) {
+                $module->module_exit($this);
             }
+
+            unset($this->_modules[$name]);
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully'
+                ." unloaded module: $name", __FILE__, __LINE__);
+            return true;
         }
 
         $this->log(SMARTIRC_DEBUG_MODULES, "DEBUG_MODULES: couldn't unload"
             ." module: $name (it's not loaded!)", __FILE__, __LINE__
         );
         return false;
+    }
+
+    /**
+     * Returns an array of the module names that are currently loaded
+     *
+     * @api
+     * @return array
+     */
+    public function loadedModules()
+    {
+        return array_keys($this->_modules);
     }
 
     // <protected methods>
