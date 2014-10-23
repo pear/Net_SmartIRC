@@ -8,6 +8,7 @@
     <target>docs/HTML</target>
   </transformer>
   <files>
-    <directory>Net</directory>
+    <file>SmartIRC.php</file>
+    <directory>SmartIRC</directory>
   </files>
 </phpdoc>

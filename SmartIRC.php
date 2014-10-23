@@ -399,6 +399,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * global into properties. Also some PHP runtime settings are configured.
      *
      * @api
+     * @param array $params Properties to set during instantiation
      * @return object
      */
     public function __construct($params = array())
@@ -428,6 +429,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     /**
      * Keeps BC since private properties were once publicly accessible.
      *
+     * @param string $name The property name asked for
      * @return mixed the property's value
      */
     public function __get($name)
@@ -534,6 +536,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      *
      * @api
      * @param string $addr
+     * @param int $port
      * @return bool
      */
     public function setBindAddress($addr = null, $port = 0)
@@ -962,6 +965,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @see SMARTIRC_DEBUG_NOTICE
      * @param integer $level bit constants (SMARTIRC_DEBUG_*)
      * @param string $entry the new log entry
+     * @param string|null $file The source file originating the log() call
+     * @param int|null $line The line of code that called log()
      * @return boolean
      */
     public function log($level, $entry, $file = null, $line = null)
@@ -1650,6 +1655,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * Provides a mechanism to interrupt a listen() loop by a bot or something
      *
      * @api
+     * @param bool $ival Whether to interrupt the next listen iteration
      * @return boolean
      */
     public function interrupt($ival = true)
