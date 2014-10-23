@@ -81,10 +81,10 @@
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2014-10-03</date>
+ <date>2014-10-23</date>
  <version>
-  <release>1.1.2</release>
-  <api>1.0.0</api>
+  <release>1.1.3</release>
+  <api>1.1.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -92,7 +92,10 @@
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Corrected package structure [garrettw]
+ * Fix Bug #20428: setBindAddress sets wrong variable [garrettw]
+ * Fix untracked bug: loadModule() and unloadModule() don't work right [garrettw]
+ * Added loadedModules() method which returns an array of the loaded module names, since $_modules isn't accessible publicly [garrettw]
+ * Updated HTML documentation [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -686,7 +689,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
   <release>
    <version>
     <release>1.1.0</release>
-    <api>1.0.0</api>
+    <api>1.1.0</api>
    </version>
    <stability>
     <release>stable</release>
@@ -717,7 +720,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
   <release>
    <version>
     <release>1.1.1</release>
-    <api>1.0.0</api>
+    <api>1.1.0</api>
    </version>
    <stability>
     <release>stable</release>
@@ -736,7 +739,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
   <release>
    <version>
     <release>1.1.2</release>
-    <api>1.0.0</api>
+    <api>1.1.0</api>
    </version>
    <stability>
     <release>stable</release>
@@ -746,6 +749,24 @@ Req #16526 Colour and bold codes are not supported - giggsey
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
  * Corrected package structure [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.3</release>
+    <api>1.1.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2014-10-23</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix Bug #20428: setBindAddress sets wrong variable [garrettw]
+ * Fix untracked bug: loadModule() and unloadModule() don't work right [garrettw]
+ * Added loadedModules() method which returns an array of the loaded module names, since $_modules isn't accessible publicly [garrettw]
+ * Updated HTML documentation [garrettw]
    </notes>
   </release>
  </changelog>
