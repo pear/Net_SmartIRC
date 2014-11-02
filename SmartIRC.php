@@ -1672,7 +1672,11 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
         if (!empty($result)) {
             // the socket got data to read
-            $rawdata = fgets($this->_socket);
+            $rawdata = '';
+            do {
+                $rawdata .= ($thisread = fgets($this->_socket));
+            } while ($thisread{strlen($thisread) - 1} != "\n");
+
         } else if ($result === false) {
             // panic! panic! something went wrong! maybe received a signal.
             $this->log(SMARTIRC_DEBUG_NOTICE, 'WARNING: stream_select()'
