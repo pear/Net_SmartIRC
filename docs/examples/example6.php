@@ -6,9 +6,9 @@
  * $Date$
  *
  * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
- * 
+ *
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -29,18 +29,25 @@ include_once('Net/SmartIRC.php');
 
 class MyBot
 {
+    private $irc;
     private $handlerid;
-    
-    public function __construct(&$irc)
+
+    public function __construct($irc)
     {
+        $this->irc = $irc;
         $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_JOIN, '.*', $this, 'onjoin_greeting');
     }
-    
-    public function onjoin_greeting(&$irc, &$data)
+
+    public function __destruct()
+    {
+        $this->irc->unregisterActionId($this->handlerid);
+    }
+
+    public function onjoin_greeting($irc, $data)
     {
         // if _we_ join, don't greet ourself
         // then check if this is the right channel
-        if ($data->nick != $irc->_nick && $data->channel == '#test') {
+        if (!$irc->isMe($data->nick) && $data->channel == '#test') {
             // it is, lets greet the joint user
             $irc->message(SMARTIRC_TYPE_CHANNEL, '#test', 'hi '.$data->nick);
         }
@@ -49,7 +56,6 @@ class MyBot
 
 $irc = new Net_SmartIRC(array(
     'DebugLevel' => SMARTIRC_DEBUG_ALL,
-    'UseSockets' => true,
 ));
 $bot = new MyBot($irc);
 $irc->connect('irc.freenet.de', 6667);

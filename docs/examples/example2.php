@@ -6,9 +6,9 @@
  * $Date$
  *
  * Copyright (c) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
- * 
+ *
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -30,17 +30,16 @@ include_once('Net/SmartIRC.php');
 $irc = new Net_SmartIRC();
 $irc->startBenchmark();
 $irc->setDebugLevel(SMARTIRC_DEBUG_ALL);
-$irc->setUseSockets(true);
-$irc->setBenchmark(true);
 $irc->connect('irc.freenet.de', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example2.php)', 0, 'Net_SmartIRC');
 $irc->getList('#php');
-$resultar = $irc->listenFor(SMARTIRC_TYPE_LIST);
+$resultarr = $irc->listenFor(SMARTIRC_TYPE_LIST);
 $irc->disconnect();
+$irc->setBenchmark(true);
 $irc->stopBenchmark();
 
-if (is_array($resultar)) {
-    $ircdata = $resultar[0];
+if (is_array($resultarr)) {
+    $ircdata = $resultarr[0];
     $count = $ircdata->rawmessageex[4];
     ?>
         <B>On the IRC Channel #php are <? echo $count; ?> Users</B>

@@ -6,9 +6,9 @@
  * $Date$
  *
  * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
- * 
+ *
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -29,28 +29,35 @@ include_once('Net/SmartIRC.php');
 
 class MyBot
 {
+    private $irc;
     private $handlerid;
-    
-    public function __construct(&$irc)
+
+    public function __construct($irc)
     {
-        $this->handlerids = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!realnamecheck', $this, 'realname_check');
+        $this->irc = $irc;
+        $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!realnamecheck', $this, 'realname_check');
     }
-    
-    public function realname_check(&$irc, &$data)
+
+    public function __destruct()
+    {
+        $this->irc->unregisterActionId($this->handlerid);
+    }
+
+    public function realname_check($irc, $data)
     {
         // lets loop through all user that are on the #test channel
         // result is send to #smartirc-test (we don't want to spam #test)
         foreach ($irc->channel['#test']->users as $value) {
             $nickname = $value->nick;
             $realname = $value->realname;
-            
+
             // lets match against this realname regex, which wants (capital-letter) *(small-letter) (space) (capital-letter) *(small-letter)
             if(preg_match('/^[A-Z][a-z]+ ([A-Z][a-z]+(\-[A-Z][a-z]+)?)+/', $realname) == 0)
                 $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $nickname.' has not valid realname! ('.$realname.')');
-            else 
+            else
                 $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $nickname.' approved ('.$realname.')');
         }
-        
+
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', '<end of realnamecheck>');
     }
 }
@@ -58,7 +65,6 @@ class MyBot
 // activating the channel syncing is important, or we won't have $irc->channel[] available
 $irc = new Net_SmartIRC(array(
     'DebugLevel' => SMARTIRC_DEBUG_ALL,
-    'UseSockets' => true,
     'ChannelSyncing' => true,
 ));
 $bot = new MyBot($irc);

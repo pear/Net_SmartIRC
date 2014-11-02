@@ -102,7 +102,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     /**
      * @var string
      */
-    const IP_PATTERN = '/(?:\[[0-9A-Fa-f:]+\]:[0-9]{1,5})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}:[0-9]{1,5})/';
+    const IP_PATTERN = '/(?:(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3})|(?:\[[0-9A-Fa-f:]+\])|(?:[a-zA-Z0-9-_.]+)):[0-9]{1,5}/';
 
     /**
      * @var resource
@@ -2147,11 +2147,18 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * unregisters an existing actionhandler via the id
      *
      * @api
-     * @param integer $id
-     * @return boolean
+     * @param integer|array $id
+     * @return boolean|void
      */
     public function unregisterActionId($id)
     {
+        if (is_array($id)) {
+            foreach ($id as $each) {
+                $this->unregisterActionId($each);
+            }
+            return;
+        }
+
         $handler = &$this->_actionhandler;
         $handlercount = count($handler);
 
@@ -2222,6 +2229,13 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function unregisterTimeId($id)
     {
+        if (is_array($id)) {
+            foreach ($id as $each) {
+                $this->unregisterTimeId($each);
+            }
+            return;
+        }
+
         $handler = &$this->_timehandler;
         $handlercount = count($handler);
 

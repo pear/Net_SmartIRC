@@ -6,9 +6,9 @@
  * $Date$
  *
  * Copyright (c) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
- * 
+ *
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -29,22 +29,29 @@ include_once('Net/SmartIRC.php');
 
 class MyBot
 {
+    private $irc;
     private $handlerids;
-    
-    public function __construct(&$irc)
+
+    public function __construct($irc)
     {
+        $this->irc = $irc;
         $this->handlerids = array(
             $irc->registerActionHandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^test', $this, 'query_test'),
             $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^test', $this, 'channel_test'),
         );
     }
-    
-    public function channel_test(&$irc, &$data)
+
+    public function __destruct()
+    {
+        $this->irc->unregisterActionId($this->handlerids);
+    }
+
+    public function channel_test($irc, $data)
     {
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $data->nick.': I dont like tests!');
     }
 
-    public function query_test(&$irc, &$data)
+    public function query_test($irc, $data)
     {
         // result is send to #smartirc-test (we don't want to spam #test)
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $data->nick.' said "'.$data->message.'" to me!');
@@ -54,7 +61,6 @@ class MyBot
 
 $irc = new Net_SmartIRC(array(
     'DebugLevel' => SMARTIRC_DEBUG_ALL,
-    'UseSockets' => true,
 ));
 $bot = new MyBot($irc);
 $irc->connect('irc.freenet.de', 6667);

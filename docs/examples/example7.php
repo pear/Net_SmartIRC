@@ -6,9 +6,9 @@
  * $Date$
  *
  * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
- * 
+ *
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -30,35 +30,43 @@ include_once('Net/SmartIRC.php');
 
 class MyBot
 {
+    private $irc;
     private $actionid;
     private $timeids;
-    
-    public function __construct(&$irc)
+
+    public function __construct($irc)
     {
+        $this->irc = $irc;
         $this->timeids = array(
             // register saytime() to be called every 30 sec. (30,000 milliseconds)
             $irc->registerTimeHandler(30000, $this, 'saytime'),
-        
+
             // register saytime_once() to be called in 10 sec. (10,000 milliseconds) and save the assigned id
             // which is needed for unregistering the timehandler.
             $irc->registerTimeHandler(10000, $this, 'saytime_once'),
         );
-        
         $this->actionid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!quit', $this, 'quit');
     }
-    
-    public function saytime_once(&$irc)
+
+    public function __destruct()
+    {
+        $this->irc->unregisterActionId($this->actionid);
+        $this->irc->unregisterTimeId($this->timeids);
+    }
+
+    public function saytime_once($irc)
     {
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', '(once) the time is: '.date('H:i:s'));
         $irc->unregisterTimeId($this->timeids[1]);
+        unset($this->timeids[1]);
     }
-    
-    public function saytime(&$irc)
+
+    public function saytime($irc)
     {
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', 'the time is: '.date('H:i:s'));
     }
-    
-    public function quit(&$irc, &$ircdata)
+
+    public function quit($irc)
     {
         $irc->quit("time to say goodbye...");
     }
@@ -66,7 +74,6 @@ class MyBot
 
 $irc = new Net_SmartIRC(array(
     'DebugLevel' => SMARTIRC_DEBUG_ALL,
-    'UseSockets' => true,
 ));
 $bot = new MyBot($irc);
 $irc->connect('irc.freenet.de', 6667);

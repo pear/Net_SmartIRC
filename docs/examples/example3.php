@@ -6,9 +6,9 @@
  * $Date$
  *
  * Copyright (C) 2002-2003 Mirco "MEEBEY" Bauer <mail@meebey.net> <http://www.meebey.net>
- * 
+ *
  * Full LGPL License: <http://www.meebey.net/lgpl.txt>
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -29,17 +29,24 @@ include_once('Net/SmartIRC.php');
 
 class MyBot
 {
+    private $irc;
     private $handlerid;
-    
-    public function __construct(&$irc)
+
+    public function __construct($irc)
     {
+        $this->irc = $irc;
         $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!ops', $this, 'op_list');
     }
-    
-    public function op_list(&$irc, &$data)
+
+    public function __destruct()
+    {
+        $this->irc->unregisterActionId($this->handlerid);
+    }
+
+    public function op_list($irc, $data)
     {
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', 'ops on this channel are:');
-        
+
         $oplist = '';
         // Here we're going to get the Channel Operators, the voices and users
         // Method is available too, e.g. $irc->channel['#test']->users will
@@ -47,7 +54,7 @@ class MyBot
         foreach ($irc->channel['#test']->ops as $key => $value) {
             $oplist .= ' '.$key;
         }
-        
+
         // result is send to #smartirc-test (we don't want to spam #test)
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $oplist);
     }
@@ -56,7 +63,6 @@ class MyBot
 // Using Channel Syncing we will track all users on all channels we are joined
 $irc = new Net_SmartIRC(array(
     'DebugLevel' => SMARTIRC_DEBUG_ALL,
-    'UseSockets' => true,
     'ChannelSyncing' => true,
 ));
 $bot = new MyBot($irc);
