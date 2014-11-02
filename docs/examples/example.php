@@ -63,7 +63,7 @@ $irc = new Net_SmartIRC(array(
     'DebugLevel' => SMARTIRC_DEBUG_ALL,
 ));
 $bot = new MyBot($irc);
-$irc->connect('irc.freenet.de', 6667);
+$irc->connect('chat.freenode.net', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example.php)', 0, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));
 $irc->listen();

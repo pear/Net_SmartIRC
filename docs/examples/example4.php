@@ -52,10 +52,11 @@ class MyBot
             $realname = $value->realname;
 
             // lets match against this realname regex, which wants (capital-letter) *(small-letter) (space) (capital-letter) *(small-letter)
-            if(preg_match('/^[A-Z][a-z]+ ([A-Z][a-z]+(\-[A-Z][a-z]+)?)+/', $realname) == 0)
+            if (preg_match('/^[A-Z][a-z]+ ([A-Z][a-z]+(\-[A-Z][a-z]+)?)+/', $realname) == 0) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $nickname.' has not valid realname! ('.$realname.')');
-            else
+            } else {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $nickname.' approved ('.$realname.')');
+            }
         }
 
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', '<end of realnamecheck>');
@@ -68,7 +69,7 @@ $irc = new Net_SmartIRC(array(
     'ChannelSyncing' => true,
 ));
 $bot = new MyBot($irc);
-$irc->connect('irc.freenet.de', 6667);
+$irc->connect('chat.freenode.net', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example4.php)', 8, 'Net_SmartIRC');
 $irc->join(array('#smartirc-test','#test'));
 $irc->listen();
