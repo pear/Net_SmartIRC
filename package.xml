@@ -81,9 +81,9 @@
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2014-11-02</date>
+ <date>2014-12-25</date>
  <version>
-  <release>1.1.4</release>
+  <release>1.1.5</release>
   <api>1.1.2</api>
  </version>
  <stability>
