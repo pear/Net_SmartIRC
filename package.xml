@@ -92,13 +92,7 @@
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Fix Bug #2309: Channel list message parsing error [garrettw]
- * Implement Feature #7321: Please Add SSL support [garrettw]
- * Implement Feature #20429: IPv6 socket support [garrettw]
- * Eschewed socket_*() functions in favor of stream_*() functions, thereby deprecating setUseSockets() [garrettw]
- * Fix untracked bug: unloadModule() still didn't work right [garrettw]
- * unregisterActionId() and unregisterTimeId() now accept arrays of IDs [garrettw]
- * Updated HTML documentation [garrettw]
+ * Fix Bug #20469: array syntax mismatch [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -791,6 +785,21 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Fix untracked bug: unloadModule() still didn't work right [garrettw]
  * unregisterActionId() and unregisterTimeId() now accept arrays of IDs [garrettw]
  * Updated HTML documentation [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.5</release>
+    <api>1.1.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2014-12-25</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix Bug #20469: array syntax mismatch [garrettw]
    </notes>
   </release>
  </changelog>
