@@ -1073,7 +1073,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
 
         $timeout = ini_get("default_socket_timeout");
-        $context = stream_context_create(['socket' => ['bindto' => $this->_bindto]]);
+        $context = stream_context_create(array('socket' => array('bindto' => $this->_bindto)));
         $this->log(SMARTIRC_DEBUG_SOCKET, 'DEBUG_SOCKET: binding to '.$this->_bindto,
             __FILE__, __LINE__);
 
@@ -1674,7 +1674,9 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             // the socket got data to read
             $rawdata = '';
             do {
-                $rawdata .= fgets($this->_socket);
+                if ($get = fgets($this->_socket)):
+                    $rawdata .= $get;
+                endif;
             } while ($rawdata{strlen($rawdata) - 1} != "\n");
 
         } else if ($result === false) {
