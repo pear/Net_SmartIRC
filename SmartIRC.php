@@ -1885,7 +1885,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
                         case 'JOIN':
                             $ircdata->type = SMARTIRC_TYPE_JOIN;
-                            $ircdata->channel = $params[0];
+                            $ircdata->channel = $params[0] ?: $ircdata->message;
                             break;
 
                         case 'TOPIC':
