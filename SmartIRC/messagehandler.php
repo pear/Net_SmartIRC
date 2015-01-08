@@ -533,8 +533,6 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     function _event_rpl_namreply(&$ircdata)
     {
         if ($this->_channelsyncing == true) {
-            $channel = &$this->getChannel($ircdata->channel);
-
             $userarray = explode(' ', rtrim($ircdata->message));
             $userarraycount = count($userarray);
             for ($i = 0; $i < $userarraycount; $i++) {
@@ -569,6 +567,8 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                     default:
                         $user->nick = $userarray[$i];
                 }
+
+                $channel = &$this->getChannel($ircdata->channel);
                 $this->_adduser($channel, $user);
             }
         }
@@ -578,7 +578,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     {
         if ($this->_channelsyncing && $this->isJoined($ircdata->channel)) {
             $channel = &$this->getChannel($ircdata->channel);
-            $hostmask = $ircdata->rawmessageex[4];
+            $hostmask = $ircdata->params[1];
             $channel->bans[$hostmask] = true;
         }
     }

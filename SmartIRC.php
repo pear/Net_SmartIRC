@@ -254,6 +254,13 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     protected $_motd = array();
 
     /**
+     * Stores all channels in this array where we are joined, works only if channelsyncing is activated.
+     * Eg. for accessing a user, use it like this: (in this example the SmartIRC object is stored in $irc)
+     * $irc->getUser('#test', 'meebey')->nick;
+     *
+     * @see setChannelSyncing()
+     * @see Net_SmartIRC_channel
+     * @see Net_SmartIRC_channeluser
      * @var array
      */
     protected $_channels = array();
@@ -264,6 +271,12 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     protected $_channelsyncing = false;
 
     /**
+     * Stores all users that had/have contact with us (channel/query/notice etc.), works only if usersyncing is activated.
+     * Eg. for accessing a user, use it like this: (in this example the SmartIRC object is stored in $irc)
+     * $irc->user['meebey']->host;
+     *
+     * @see setUserSyncing()
+     * @see Net_SmartIRC_ircuser
      * @var array
      */
     protected $_users = array();
@@ -372,29 +385,6 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     public $nreplycodes;
 
     /**
-     * Stores all channels in this array where we are joined, works only if channelsyncing is activated.
-     * Eg. for accessing a user, use it like this: (in this example the SmartIRC object is stored in $irc)
-     * $irc->channel['#test']->users['meebey']->nick;
-     *
-     * @see setChannelSyncing()
-     * @see Net_SmartIRC_channel
-     * @see Net_SmartIRC_channeluser
-     * @var array
-     */
-    public $channel;
-
-    /**
-     * Stores all users that had/have contact with us (channel/query/notice etc.), works only if usersyncing is activated.
-     * Eg. for accessing a user, use it like this: (in this example the SmartIRC object is stored in $irc)
-     * $irc->user['meebey']->host;
-     *
-     * @see setUserSyncing()
-     * @see Net_SmartIRC_ircuser
-     * @var array
-     */
-    public $user;
-
-    /**
      * Constructor. Initiates the messagebuffer and "links" the replycodes from
      * global into properties. Also some PHP runtime settings are configured.
      *
@@ -419,11 +409,6 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             $funcname = 'set' . $varname;
             $this->$funcname($val);
         }
-
-        // PHP allows $this->getChannel($param)->memberofobject,
-        // but we need to not break BC.
-        $this->channel = &$this->_channels;
-        $this->user = &$this->_users;
     }
 
     /**
@@ -434,6 +419,11 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function __get($name)
     {
+        // PHP allows $this->getChannel($param)->memberofobject,
+        // but we need to not break BC.
+        if ($name == 'channel' || $name == 'user'):
+            $name = '_' . $name . 's';
+        endif;
         return $this->$name;
     }
 
