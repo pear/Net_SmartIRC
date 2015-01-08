@@ -2630,7 +2630,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 unset($channel->users[$lowerednick]);
 
                 foreach ($lists as $list) {
-                    if (isset($channel->$list[$nick])) {
+                    if (isset($channel->{$list}[$nick])) {
                         $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
                             'DEBUG_CHANNELSYNCING: removing him '
                             ."from $list list", __FILE__, __LINE__
