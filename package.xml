@@ -94,6 +94,7 @@
  <notes>
  * Fix Bug #20475: NAMREPLY/WHOREPLY being parsed incorrectly [garrettw]
  * Fix untracked bug: channel's users not added to array of their channelmode [garrettw]
+ * loadModule() can now load classes that already exist; no longer forces use of external files [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -817,6 +818,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
    <notes>
  * Fix Bug #20475: NAMREPLY/WHOREPLY being parsed incorrectly [garrettw]
  * Fix untracked bug: channel's users not added to array of their channelmode [garrettw]
+ * loadModule() can now load classes that already exist; no longer forces use of external files [garrettw]
    </notes>
   </release>
  </changelog>

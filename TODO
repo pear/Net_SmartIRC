@@ -1,20 +1,12 @@
 todo:
 
-**API** replycodes are in defines.php and public vars in base class??
-**API** move logger out to its own class and pass in as a dependency w/ class consts
+Move logger out to its own class and bring it in with inheritance, like the rest.
+  It's not the best way but it won't break BC.
 	log()
 	setLogDestination()
 	setLogFile()
-**API** change most defines to class constants
-**API** why would we need connect() and login() to be called separately?
-**API** loadModule() should be able to take any class name
-	- also it needs to be pulling in module classes that have the proper iface
-**API** registerTimeHandler should probably convert times from s to ms internally
 **API** then we have several structs, basically. is that the best way to do it?
 	(data, actionhandler, timehandler, channel, user, channeluser<-user, ircuser<-user)
-**API** connect and login need to be one method. and return success or failure.
-**API** Net_SmartIRC_data is kind of a pointless class. could be an array,
-	but changing it would break BC.
-**API** Instead of loadModule() loading files and stuff, make it just load classes
-	and let the user determine how to bring them into PHP. Then classes can be
-	named whatever. But they'll need to implement an interface which we need to make.
+	Privately used only: action/time,
+
+Usersyncing not fully implemented! *_ircuser class is never used. Neither is $_users.

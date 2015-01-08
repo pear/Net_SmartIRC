@@ -1595,7 +1595,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             foreach ($this->_timehandler as &$handlerobject) {
                 $microtimestamp = microtime(true);
                 if ($microtimestamp >= $handlerobject->lastmicrotimestamp
-                    + ($handlerobject->interval / 1000)
+                    + ($handlerobject->interval / 1000.0)
                 ) {
                     $methodobject = &$handlerobject->object;
                     $method = $handlerobject->method;
@@ -2302,26 +2302,32 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return false;
         }
 
-        $filename = $this->_modulepath."/$name.php";
-        if (!file_exists($filename)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, "DEBUG_MODULES: couldn't load "
-                ."module; file \"$filename\" doesn't exist", __FILE__, __LINE__
-            );
-            return false;
-        }
-
-        $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: loading module: '
-            ."\"$name\"...", __FILE__, __LINE__
-        );
-        // pray that there is no parse error, it will kill us!
-        include_once($filename);
         $classname = "Net_SmartIRC_module_$name";
-
-        if (!class_exists($classname)) {
-            $this->log(SMARTIRC_DEBUG_MODULES, "DEBUG_MODULES: class $classname"
-                ." not found in $filename, aborting...", __FILE__, __LINE__
+        if (class_exists($classname)) {
+            $this->log(SMARTIRC_DEBUG_MODULES, "DEBUG_MODULES: \"$name\" module class"
+                .' exists, initializing...', __FILE__, __LINE__
             );
-            return false;
+        } else {
+            $filename = $this->_modulepath."/$name.php";
+            if (!file_exists($filename)) {
+                $this->log(SMARTIRC_DEBUG_MODULES, "DEBUG_MODULES: couldn't load "
+                    ."module; file \"$filename\" doesn't exist", __FILE__, __LINE__
+                );
+                return false;
+            }
+            // pray that there is no parse error, it will kill us!
+            include_once($filename);
+
+            if (!class_exists($classname)) {
+                $this->log(SMARTIRC_DEBUG_MODULES, "DEBUG_MODULES: class $classname"
+                    ." not found in $filename, aborting...", __FILE__, __LINE__
+                );
+                return false;
+            }
+
+            $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: loading module '
+                ."\"$name\" from file...", __FILE__, __LINE__
+            );
         }
 
         $methods = get_class_methods($classname);
@@ -2351,11 +2357,10 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
         foreach ($required as $varname) {
             if (!in_array($varname, $vars)) {
-                $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required'
-                    ."variable {$classname}::\${$varname} not found, aborting...",
+                $this->log(SMARTIRC_DEBUG_NOTICE, 'NOTICE: required module'
+                    ."property {$classname}::\${$varname} not found.",
                     __FILE__, __LINE__
                 );
-                return false;
             }
         }
 
