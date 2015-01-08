@@ -81,9 +81,9 @@
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2014-12-25</date>
+ <date>2015-01-07</date>
  <version>
-  <release>1.1.5</release>
+  <release>1.1.6</release>
   <api>1.1.2</api>
  </version>
  <stability>
@@ -92,7 +92,8 @@
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Fix Bug #20469: array syntax mismatch [garrettw]
+ * Fix Bug #20475: NAMREPLY/WHOREPLY being parsed incorrectly [garrettw]
+ * Fix untracked bug: channel's users not added to array of their channelmode [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -800,6 +801,22 @@ Req #16526 Colour and bold codes are not supported - giggsey
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
  * Fix Bug #20469: array syntax mismatch [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.6</release>
+    <api>1.1.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2015-01-07</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix Bug #20475: NAMREPLY/WHOREPLY being parsed incorrectly [garrettw]
+ * Fix untracked bug: channel's users not added to array of their channelmode [garrettw]
    </notes>
   </release>
  </changelog>

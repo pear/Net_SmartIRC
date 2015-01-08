@@ -1,5 +1,7 @@
 todo:
 
+Add messagecodes: 250, 265, 266, 329, 470=fwd
+
 **API** replycodes are in defines.php and public vars in base class??
 **API** public $channel, $user? make private + getters/setters... + __get/__set for BC?
 **API** move logger out to its own class and pass in as a dependency w/ class consts

@@ -47,15 +47,12 @@ class MyBot
     {
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', 'ops on this channel are:');
 
-        $oplist = '';
         // Here we're going to get the Channel Operators, the voices and users
-        // Method is available too, e.g. $irc->channel['#test']->users will
-        // Return the channel's users.
-        foreach ($irc->channel['#test']->ops as $key => $value) {
-            $oplist .= ' '.$key;
-        }
+        // method is available too, e.g. $irc->getChannel('#test')->users will
+        // return all of the channel's users.
+        $oplist = implode(' ', array_keys($irc->getChannel('##fix_your_mind')->ops));
 
-        // result is send to #smartirc-test (we don't want to spam #test)
+        // result is sent to the channel
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $oplist);
     }
 }

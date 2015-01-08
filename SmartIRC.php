@@ -43,7 +43,7 @@
 require_once 'Net/SmartIRC/defines.php';
 require_once 'Net/SmartIRC/irccommands.php';
 require_once 'Net/SmartIRC/messagehandler.php';
-define('SMARTIRC_VERSION', '1.1.5');
+define('SMARTIRC_VERSION', '1.1.6');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
@@ -51,7 +51,7 @@ define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
  *
  * @category Net
  * @package Net_SmartIRC
- * @version 1.1.5
+ * @version 1.1.6
  * @author clockwerx
  * @author Mirco 'meebey' Bauer <meebey@meebey.net>
  * @license http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
@@ -1754,7 +1754,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     $ircdata->from = $prefix;
                     $ircdata->params = $params;
                     $ircdata->message = $trailing;
-                    $ircdata->messageex = explode(' ', $trailing); // kept for BC
+                    $ircdata->messageex = explode(' ', $trailing);
 
                     // parse ident thingy
                     if (preg_match('/^(\S+)!(\S+)@(\S+)$/', $prefix, $matches)) {
@@ -1792,15 +1792,31 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                             break;
 
                         case SMARTIRC_RPL_NAMREPLY:
+                            $ircdata->type = SMARTIRC_TYPE_NAME;
+                            if ($params[0] == $this->_nick):
+                                $ircdata->channel = $params[2];
+                            else:
+                                $ircdata->channel = $params[1];
+                            endif;
+                            break;
+
                         case SMARTIRC_RPL_ENDOFNAMES:
                             $ircdata->type = SMARTIRC_TYPE_NAME;
-                            $ircdata->channel = $params[0];
+                            if ($params[0] == $this->_nick):
+                                $ircdata->channel = $params[1];
+                            else:
+                                $ircdata->channel = $params[0];
+                            endif;
                             break;
 
                         case SMARTIRC_RPL_WHOREPLY:
                         case SMARTIRC_RPL_ENDOFWHO:
                             $ircdata->type = SMARTIRC_TYPE_WHO;
-                            $ircdata->channel = $params[0];
+                            if ($params[0] == $this->_nick):
+                                $ircdata->channel = $params[1];
+                            else:
+                                $ircdata->channel = $params[0];
+                            endif;
                             break;
 
                         case SMARTIRC_RPL_LISTSTART:
@@ -2473,7 +2489,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     .' to channel: '.$channel->name, __FILE__, __LINE__
                 );
                 $ms = $mode.'s';
-                $channel->$ms[$user->nick] = true;
+                $channel->{$ms}[$user->nick] = true;
             }
         }
     }
@@ -2550,7 +2566,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         if ($ircdata->type & (SMARTIRC_TYPE_PART | SMARTIRC_TYPE_QUIT)) {
             $nick = $ircdata->nick;
         } else if ($ircdata->type & SMARTIRC_TYPE_KICK) {
-            $nick = $ircdata->rawmessageex[3];
+            $nick = $ircdata->params[1];
         } else {
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING, 'DEBUG_CHANNELSYNCING: '
                 .'unknown TYPE ('.$ircdata->type
