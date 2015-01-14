@@ -1660,14 +1660,15 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
         $rawdata = null;
 
-        if (!empty($result)) {
+        if ($result) {
             // the socket got data to read
             $rawdata = '';
             do {
                 if ($get = fgets($this->_socket)):
                     $rawdata .= $get;
                 endif;
-            } while ($rawdata{strlen($rawdata) - 1} != "\n");
+                $rawlen = strlen($rawdata);
+            } while ($rawlen && $rawdata{$rawlen - 1} != "\n");
 
         } else if ($result === false) {
             // panic! panic! something went wrong! maybe received a signal.

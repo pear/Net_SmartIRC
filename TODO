@@ -7,6 +7,6 @@ Move logger out to its own class and bring it in with inheritance, like the rest
 	setLogFile()
 **API** then we have several structs, basically. is that the best way to do it?
 	(data, actionhandler, timehandler, channel, user, channeluser<-user, ircuser<-user)
-	Privately used only: action/time,
+	Privately used only: action/time
 
 Usersyncing not fully implemented! *_ircuser class is never used. Neither is $_users.
