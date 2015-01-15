@@ -54,6 +54,7 @@ define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
  * @version 1.1.6
  * @author clockwerx
  * @author Mirco 'meebey' Bauer <meebey@meebey.net>
+ * @author garrettw
  * @license http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  * @link http://pear.php.net/package/Net_SmartIRC
  */
