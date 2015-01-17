@@ -1043,7 +1043,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * Creates the sockets and connects to the IRC server on the given port.
      *
      * @api
-     * @param string $address
+     * @param string $addr
      * @param integer $port
      * @return boolean
      */
