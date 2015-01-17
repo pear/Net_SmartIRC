@@ -99,6 +99,7 @@
  * Fix untracked bug: channel's users not added to array of their channelmode [garrettw]
  * loadModule() can now load classes that already exist; no longer forces use of external files [garrettw]
  * listenFor() can now take an additional parameter: the regex to match on [garrettw]
+ * Improved code for action/time handlers [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -827,6 +828,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Fix untracked bug: channel's users not added to array of their channelmode [garrettw]
  * loadModule() can now load classes that already exist; no longer forces use of external files [garrettw]
  * listenFor() can now take an additional parameter: the regex to match on [garrettw]
+ * Improved code for action/time handlers [garrettw]
    </notes>
   </release>
  </changelog>

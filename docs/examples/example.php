@@ -53,7 +53,7 @@ class MyBot
 
     public function query_test($irc, $data)
     {
-        // result is send to #smartirc-test (we don't want to spam #test)
+        // result is sent to #smartirc-test
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', $data->nick.' said "'.$data->message.'" to me!');
         $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'I told everyone on #smartirc-test what you said!');
     }
@@ -65,6 +65,6 @@ $irc = new Net_SmartIRC(array(
 $bot = new MyBot($irc);
 $irc->connect('chat.freenode.net', 6667);
 $irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example.php)', 0, 'Net_SmartIRC');
-$irc->join(array('#smartirc-test','#test'));
+$irc->join(array('#smartirc-test'));
 $irc->listen();
 $irc->disconnect();
