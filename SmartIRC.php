@@ -2126,19 +2126,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return false;
         }
 
-        $handler = &$this->_actionhandler;
-        $handlercount = count($handler);
-
-        for ($i = 0; $i < $handlercount; $i++) {
-            $handlerinfo = &$handler[$i];
-
+        foreach ($this->_actionhandler as $i => &$handlerinfo) {
             if ($handlerinfo['type'] == $handlertype
                 && $handlerinfo['message'] == $regexhandler
                 && $handlerinfo['method'] == $methodname
             ) {
+                $id = $handlerinfo['id'];
                 unset($this->_actionhandler[$i]);
 
-                $id = $handlerinfo['id'];
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
                     .'actionhandler('.$id.') unregistered', __FILE__, __LINE__
                 );
@@ -2171,10 +2166,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return;
         }
 
-        $handlercount = count($this->_actionhandler);
-
-        for ($i = 0; $i < $handlercount; $i++) {
-            if ($this->_actionhandler[$i]['id'] == $id) {
+        foreach ($this->_actionhandler as $i => &$handlerinfo) {
+            if ($handlerinfo['id'] == $id) {
                 unset($this->_actionhandler[$i]);
 
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
@@ -2244,10 +2237,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return;
         }
 
-        $handlercount = count($this->_timehandler);
-
-        for ($i = 0; $i < $handlercount; $i++) {
-            if ($this->_timehandler[$i]['id'] == $id) {
+        foreach ($this->_timehandler as $i => &$handlerinfo) {
+            if ($handlerinfo['id'] == $id) {
                 unset($this->_timehandler[$i]);
 
                 $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
