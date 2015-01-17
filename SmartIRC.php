@@ -1594,14 +1594,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         // before we listen...
         if ($this->_loggedin) {
             // see if any timehandler needs to be called
-            foreach ($this->_timehandler as &$handlerobject) {
+            foreach ($this->_timehandler as &$handlerinfo) {
                 $microtimestamp = microtime(true);
-                if ($microtimestamp >= $handlerobject->lastmicrotimestamp
-                    + ($handlerobject->interval / 1000.0)
+                if ($microtimestamp >= $handlerinfo['lastmicrotimestamp']
+                    + ($handlerinfo['interval'] / 1000.0)
                 ) {
-                    $methodobject = &$handlerobject->object;
-                    $method = $handlerobject->method;
-                    $handlerobject->lastmicrotimestamp = $microtimestamp;
+                    $methodobject = &$handlerinfo['object'];
+                    $method = $handlerinfo['method'];
+                    $handlerinfo['lastmicrotimestamp'] = $microtimestamp;
 
                     if (method_exists($methodobject, $method)) {
                         $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
@@ -1994,16 +1994,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     }
 
                     // now the actionhandlers are coming
-                    foreach ($this->_actionhandler as $i => &$handlerobject) {
+                    foreach ($this->_actionhandler as $i => &$handlerinfo) {
 
-                        $regex =
-                            ($handlerobject->message{0}
-                                == $handlerobject->message{strlen($handlerobject->message) - 1}
-                            ) ? $handlerobject->message
-                            : '/' . $handlerobject->message . '/'
-                        ;
+                        $hmsg = $handlerinfo['message'];
+                        $regex = ($hmsg{0} == $hmsg{strlen($hmsg) - 1})
+                            ? $hmsg
+                            : '/' . $hmsg . '/';
 
-                        if (($handlerobject->type & $ircdata->type)
+                        if (($handlerinfo['type'] & $ircdata->type)
                             && preg_match($regex, $ircdata->message)
                         ) {
                             $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
@@ -2012,8 +2010,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                                 ."\" regex: \"$regex\"", __FILE__, __LINE__
                             );
 
-                            $methodobject = &$handlerobject->object;
-                            $method = $handlerobject->method;
+                            $methodobject = &$handlerinfo['object'];
+                            $method = $handlerinfo['method'];
 
                             if (method_exists($methodobject, $method)) {
                                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER,
@@ -2094,15 +2092,13 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
 
         $id = $this->_actionhandlerid++;
-        $newactionhandler = new Net_SmartIRC_actionhandler();
-
-        $newactionhandler->id = $id;
-        $newactionhandler->type = $handlertype;
-        $newactionhandler->message = $regexhandler;
-        $newactionhandler->object = &$object;
-        $newactionhandler->method = $methodname;
-
-        $this->_actionhandler[] = &$newactionhandler;
+        $this->_actionhandler[] = array(
+            'id' => $id,
+            'type' => $handlertype,
+            'message' => $regexhandler,
+            'object' => &$object,
+            'method' => $methodname,
+        );
         $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
             .'actionhandler('.$id.') registered', __FILE__, __LINE__
         );
@@ -2134,15 +2130,15 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         $handlercount = count($handler);
 
         for ($i = 0; $i < $handlercount; $i++) {
-            $handlerobject = &$handler[$i];
+            $handlerinfo = &$handler[$i];
 
-            if ($handlerobject->type == $handlertype
-                && $handlerobject->message == $regexhandler
-                && $handlerobject->method == $methodname
+            if ($handlerinfo['type'] == $handlertype
+                && $handlerinfo['message'] == $regexhandler
+                && $handlerinfo['method'] == $methodname
             ) {
                 unset($this->_actionhandler[$i]);
 
-                $id = $handlerobject->id;
+                $id = $handlerinfo['id'];
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
                     .'actionhandler('.$id.') unregistered', __FILE__, __LINE__
                 );
@@ -2175,13 +2171,10 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return;
         }
 
-        $handler = &$this->_actionhandler;
-        $handlercount = count($handler);
+        $handlercount = count($this->_actionhandler);
 
         for ($i = 0; $i < $handlercount; $i++) {
-            $handlerobject = &$handler[$i];
-
-            if ($handlerobject->id == $id) {
+            if ($this->_actionhandler[$i]['id'] == $id) {
                 unset($this->_actionhandler[$i]);
 
                 $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
@@ -2215,15 +2208,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     public function registerTimeHandler($interval, &$object, $methodname)
     {
         $id = $this->_timehandlerid++;
-        $newtimehandler = new Net_SmartIRC_timehandler();
 
-        $newtimehandler->id = $id;
-        $newtimehandler->interval = $interval;
-        $newtimehandler->object = &$object;
-        $newtimehandler->method = $methodname;
-        $newtimehandler->lastmicrotimestamp = microtime(true);
-
-        $this->_timehandler[] = &$newtimehandler;
+        $this->_timehandler[] = array(
+            'id' => $id,
+            'interval' => $interval,
+            'object' => &$object,
+            'method' => $methodname,
+            'lastmicrotimestamp' => microtime(true),
+        );
         $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: timehandler('
             .$id.') registered', __FILE__, __LINE__
         );
@@ -2252,13 +2244,10 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return;
         }
 
-        $handler = &$this->_timehandler;
-        $handlercount = count($handler);
+        $handlercount = count($this->_timehandler);
 
         for ($i = 0; $i < $handlercount; $i++) {
-            $handlerobject = &$handler[$i];
-
-            if ($handlerobject->id == $id) {
+            if ($this->_timehandler[$i]['id'] == $id) {
                 unset($this->_timehandler[$i]);
 
                 $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
@@ -2275,8 +2264,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     array_multisort($timerarray, SORT_NUMERIC, SORT_ASC)
                     && isset($timerarray[0])
                 ) ? $timerarray[0]
-                    : false
-                ;
+                    : false;
 
                 return true;
             }
@@ -2724,68 +2712,6 @@ class Net_SmartIRC_data
      * @var array
      */
     public $rawmessageex = array();
-}
-
-/**
- * Struct for individual action handlers
- */
-class Net_SmartIRC_actionhandler
-{
-    /**
-     * @var integer
-     */
-    public $id;
-
-    /**
-     * @var integer
-     */
-    public $type;
-
-    /**
-     * @var string
-     */
-    public $message;
-
-    /**
-     * @var object
-     */
-    public $object;
-
-    /**
-     * @var string
-     */
-    public $method;
-}
-
-/**
- * Struct for individual time handlers
- */
-class Net_SmartIRC_timehandler
-{
-    /**
-     * @var integer
-     */
-    public $id;
-
-    /**
-     * @var integer
-     */
-    public $interval;
-
-    /**
-     * @var integer
-     */
-    public $lastmicrotimestamp;
-
-    /**
-     * @var object
-     */
-    public $object;
-
-    /**
-     * @var string
-     */
-    public $method;
 }
 
 /**
