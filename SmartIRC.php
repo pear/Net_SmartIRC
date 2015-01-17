@@ -441,6 +441,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             'setChannelSynching'      => 'setChannelSyncing',
             'setDebug'                => 'setDebugLevel',
             'channel'                 => 'getChannel',
+            '_nicknameinuse'          => '_event_err_nicknameinuse',
             'setAutoReconnect'        => '',
             'setUseSockets'           => '',
         );
@@ -2492,18 +2493,6 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     }
 
     /**
-     * changes an already used nickname to a new nickname plus 3 random digits
-     *
-     * @internal
-     * @return void
-     */
-    protected function _nicknameinuse()
-    {
-        $newnickname = substr($this->_nick, 0, 5) . rand(0, 999);
-        $this->changeNick($newnickname, SMARTIRC_CRITICAL);
-    }
-
-    /**
      * An active-pinging system to keep the bot from dropping the connection
      *
      * @internal
@@ -2558,7 +2547,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @param object $ircdata
      * @return void
      */
-    protected function _removeuser(&$ircdata)
+    protected function _removeuser($ircdata)
     {
         if ($ircdata->type & (SMARTIRC_TYPE_PART | SMARTIRC_TYPE_QUIT)) {
             $nick = $ircdata->nick;
@@ -2662,9 +2651,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         return $this->_state;
     }
 
-    // </protected methods>
-
-    function isError($object) // is this even needed/used?
+    public function isError($object) // is this even needed/used?
     {
         return (is_object($object)
             && strtolower(get_class($object)) == 'net_smartirc_error'

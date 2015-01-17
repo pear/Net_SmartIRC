@@ -27,7 +27,7 @@
 abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
 {
     /* misc */
-    function _event_ping(&$ircdata)
+    protected function _event_ping($ircdata)
     {
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: Ping? Pong!',
             __FILE__, __LINE__
@@ -35,7 +35,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         $this->send('PONG :' . $ircdata->message, SMARTIRC_CRITICAL);
     }
 
-    function _event_error(&$ircdata)
+    protected function _event_error($ircdata)
     {
         if ($this->_autoretry) {
             $this->_delayReconnect();
@@ -45,7 +45,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_join(&$ircdata)
+    protected function _event_join($ircdata)
     {
         if ($this->_channelsyncing) {
             if ($this->_nick == $ircdata->nick) {
@@ -86,28 +86,28 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_part(&$ircdata)
+    protected function _event_part($ircdata)
     {
         if ($this->_channelsyncing) {
             $this->_removeuser($ircdata);
         }
     }
 
-    function _event_kick(&$ircdata)
+    protected function _event_kick($ircdata)
     {
         if ($this->_channelsyncing) {
             $this->_removeuser($ircdata);
         }
     }
 
-    function _event_quit(&$ircdata)
+    protected function _event_quit($ircdata)
     {
         if ($this->_channelsyncing) {
             $this->_removeuser($ircdata);
         }
     }
 
-    function _event_nick(&$ircdata)
+    protected function _event_nick($ircdata)
     {
         if ($this->_channelsyncing) {
             $newnick = $ircdata->params[0];
@@ -151,7 +151,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_mode(&$ircdata)
+    protected function _event_mode($ircdata)
     {
         // check if its own usermode
         if ($ircdata->params[0] == $this->_nick) {
@@ -373,7 +373,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_topic(&$ircdata)
+    protected function _event_topic($ircdata)
     {
         if ($this->_channelsyncing) {
             $channel = &$this->getChannel($ircdata->channel);
@@ -381,7 +381,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_privmsg(&$ircdata)
+    protected function _event_privmsg($ircdata)
     {
         if ($ircdata->type & SMARTIRC_TYPE_CTCP_REQUEST) {
             // substr must be 1,4 because of \001 in CTCP messages
@@ -408,7 +408,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     }
 
     /* rpl_ */
-    function _event_rpl_welcome(&$ircdata)
+    protected function _event_rpl_welcome($ircdata)
     {
         $this->_loggedin = true;
 
@@ -421,27 +421,27 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
 
     }
 
-    function _event_rpl_motdstart(&$ircdata)
+    protected function _event_rpl_motdstart($ircdata)
     {
         $this->_motd[] = $ircdata->message;
     }
 
-    function _event_rpl_motd(&$ircdata)
+    protected function _event_rpl_motd($ircdata)
     {
         $this->_motd[] = $ircdata->message;
     }
 
-    function _event_rpl_endofmotd(&$ircdata)
+    protected function _event_rpl_endofmotd($ircdata)
     {
         $this->_motd[] = $ircdata->message;
     }
 
-    function _event_rpl_umodeis(&$ircdata)
+    protected function _event_rpl_umodeis($ircdata)
     {
         $this->_usermode = $ircdata->message;
     }
 
-    function _event_rpl_channelmodeis(&$ircdata) {
+    protected function _event_rpl_channelmodeis(&$ircdata) {
         if ($this->_channelsyncing && $this->isJoined($ircdata->channel)) {
             $ircdata->params[0] = '';
 
@@ -450,10 +450,10 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_rpl_whoreply(&$ircdata)
+    protected function _event_rpl_whoreply($ircdata)
     {
         if ($this->_channelsyncing) {
-            $offset = ($ircdata->params[0] == $this->_nick) ? 1 : 0;
+            $offset = (int) ($ircdata->params[0] == $this->_nick);
             $nick = $ircdata->params[4 + $offset];
 
             if ($ircdata->channel == '*') {
@@ -530,9 +530,9 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_rpl_namreply(&$ircdata)
+    protected function _event_rpl_namreply($ircdata)
     {
-        if ($this->_channelsyncing == true) {
+        if ($this->_channelsyncing) {
             $userarray = explode(' ', rtrim($ircdata->message));
             $userarraycount = count($userarray);
             for ($i = 0; $i < $userarraycount; $i++) {
@@ -574,7 +574,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_rpl_banlist(&$ircdata)
+    protected function _event_rpl_banlist($ircdata)
     {
         if ($this->_channelsyncing && $this->isJoined($ircdata->channel)) {
             $channel = &$this->getChannel($ircdata->channel);
@@ -583,7 +583,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_rpl_endofbanlist(&$ircdata)
+    protected function _event_rpl_endofbanlist($ircdata)
     {
         if ($this->_channelsyncing && $this->isJoined($ircdata->channel)) {
             $channel = &$this->getChannel($ircdata->channel);
@@ -607,7 +607,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         }
     }
 
-    function _event_rpl_topic(&$ircdata)
+    protected function _event_rpl_topic($ircdata)
     {
         if ($this->_channelsyncing) {
             $channel = &$this->getChannel($ircdata->channel);
@@ -616,8 +616,9 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     }
 
     /* err_ */
-    function _event_err_nicknameinuse(&$ircdata)
+    protected function _event_err_nicknameinuse($ircdata)
     {
-        $this->_nicknameinuse();
+        $newnick = substr($this->_nick, 0, 5) . rand(0, 999);
+        $this->changeNick($newnick, SMARTIRC_CRITICAL);
     }
 }
