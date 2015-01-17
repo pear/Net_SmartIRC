@@ -84,7 +84,7 @@
  <date>2015-01-07</date>
  <version>
   <release>1.1.6</release>
-  <api>1.1.2</api>
+  <api>1.1.3</api>
  </version>
  <stability>
   <release>stable</release>
@@ -98,6 +98,7 @@
  * Fix Bug #20487: RPL_OMOTDSTART and RPL_OMOTD occurred twice in defines.php [garrettw]
  * Fix untracked bug: channel's users not added to array of their channelmode [garrettw]
  * loadModule() can now load classes that already exist; no longer forces use of external files [garrettw]
+ * listenFor() can now take an additional parameter: the regex to match on [garrettw]
  </notes>
  <contents>
   <dir baseinstalldir="Net" name="/">
@@ -810,7 +811,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
   <release>
    <version>
     <release>1.1.6</release>
-    <api>1.1.2</api>
+    <api>1.1.3</api>
    </version>
    <stability>
     <release>stable</release>
@@ -825,6 +826,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Fix Bug #20487: RPL_OMOTDSTART and RPL_OMOTD occurred twice in defines.php [garrettw]
  * Fix untracked bug: channel's users not added to array of their channelmode [garrettw]
  * loadModule() can now load classes that already exist; no longer forces use of external files [garrettw]
+ * listenFor() can now take an additional parameter: the regex to match on [garrettw]
    </notes>
   </release>
  </changelog>

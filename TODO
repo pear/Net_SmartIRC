@@ -1,10 +1,5 @@
 todo:
 
-Move logger, messagehandler, and irccommands out and bring them in with encapsulation.
-  Use __call() to redirect old method calls so as to not break BC.
-	log()
-	setLogDestination()
-	setLogFile()
 **API** then we have several structs, basically. is that the best way to do it?
 	(data, actionhandler, timehandler, channel, user, channeluser<-user, ircuser<-user)
 	Privately used only: action/time

@@ -2057,12 +2057,13 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      *
      * @api
      * @param integer $messagetype see in the documentation 'Message Types'
+     * @param string  $regex the pattern to match on
      * @return array answer from the IRC server for this $messagetype
      */
-    public function listenFor($messagetype)
+    public function listenFor($messagetype, $regex = '.*')
     {
         $listenfor = new Net_SmartIRC_listenfor();
-        $this->registerActionHandler($messagetype, '.*', $listenfor, 'handler');
+        $this->registerActionHandler($messagetype, $regex, $listenfor, 'handler');
         $this->listen();
         return $listenfor->result;
     }
