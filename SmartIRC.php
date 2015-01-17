@@ -1927,7 +1927,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
                         default:
                             $this->log(SMARTIRC_DEBUG_IRCMESSAGES, 'DEBUG_IRCMESSAGES: '
-                                ."command UNKNOWN ($command): \"$rawline\"",
+                                ."command type UNKNOWN ($command)",
                                 __FILE__, __LINE__
                             );
                             $ircdata->type = SMARTIRC_TYPE_UNKNOWN;
