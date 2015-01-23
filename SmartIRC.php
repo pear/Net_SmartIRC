@@ -4,7 +4,7 @@
  * This is a PHP class for communication with IRC networks,
  * which conforms to the RFC 2812 (IRC protocol).
  * It's an API that handles all IRC protocol messages.
- * This class is designed for creating IRC bots, chats and showing irc related
+ * This class is designed for creating IRC bots, chats and showing IRC related
  * info on webpages.
  *
  * Documentation, a HOWTO, and examples are included in SmartIRC.
@@ -473,7 +473,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function setAutoRetry($boolean)
     {
-        return ($this->_autoretry = ($boolean) ? true : false);
+        return ($this->_autoretry = (bool) $boolean);
     }
 
     /**
@@ -507,7 +507,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function setBenchmark($boolean)
     {
-        return ($this->_benchmark = ($boolean) ? true : false);
+        return ($this->_benchmark = (bool) $boolean);
     }
 
     /**
@@ -733,12 +733,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function setRunAsDaemon($boolean)
     {
-        if ($boolean) {
-            $this->_runasdaemon = true;
-            ignore_user_abort(true);
-        } else {
-            $this->_runasdaemon = false;
-        }
+        $this->_runasdaemon = (bool) $boolean;
+        ignore_user_abort($this->_runasdaemon);
         return $this->_runasdaemon;
     }
 
@@ -833,19 +829,20 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * Starts the benchmark (sets the counters).
      *
      * @api
-     * @return void
+     * @return Net_SmartIRC
      */
     public function startBenchmark()
     {
         $this->_benchmark_starttime = microtime(true);
         $this->log(SMARTIRC_DEBUG_NOTICE, 'benchmark started', __FILE__, __LINE__);
+        return $this;
     }
 
     /**
      * Stops the benchmark and displays the result.
      *
      * @api
-     * @return void
+     * @return Net_SmartIRC
      */
     public function stopBenchmark()
     {
@@ -855,13 +852,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         if ($this->_benchmark) {
             $this->showBenchmark();
         }
+        return $this;
     }
 
     /**
      * Shows the benchmark result.
      *
      * @api
-     * @return void
+     * @return Net_SmartIRC
      */
     public function showBenchmark()
     {
@@ -869,6 +867,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             .((float)$this->_benchmark_stoptime-(float)$this->_benchmark_starttime),
             __FILE__, __LINE__
         );
+        return $this;
     }
 
     /**
@@ -1042,10 +1041,12 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     /**
      * Creates the sockets and connects to the IRC server on the given port.
      *
+     * Returns this SmartIRC object on success, and false on failure.
+     *
      * @api
      * @param string $addr
      * @param integer $port
-     * @return boolean
+     * @return boolean|Net_SmartIRC
      */
     public function connect($addr, $port = 6667)
     {
@@ -1091,7 +1092,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
             $this->_lasttx = $this->_lastrx = time();
             $this->_updatestate();
-            return true;
+            return $this;
         }
 
         $error_msg = "couldn't connect to \"$addr\" reason: \"$errstr ($errno)\"";
@@ -1119,7 +1120,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      *
      * @api
      * @param boolean $quick default: false
-     * @return boolean
+     * @return boolean|Net_SmartIRC
      */
     function disconnect($quick = false)
     {
@@ -1162,7 +1163,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             closelog();
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -1170,7 +1171,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * it also rejoins the channels
      *
      * @api
-     * @return boolean
+     * @return boolean|Net_SmartIRC
      */
     public function reconnect()
     {
@@ -1215,7 +1216,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             }
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -1229,7 +1230,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @param integer $usermode
      * @param string $username
      * @param string $password
-     * @return void
+     * @return Net_SmartIRC
      */
     public function login($nick, $realname, $usermode = 0, $username = null,
         $password = null
@@ -1273,6 +1274,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             // if we sent "ns auth" commands, we may need to resend our nick
             $this->send('NICK '.$this->_nick, SMARTIRC_HIGH);
         }
+
+        return $this;
     }
 
     // </IRC methods>
@@ -1282,11 +1285,12 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      *
      * @api
      * @param string $cmd the command to add to the perform list
-     * @return void
+     * @return Net_SmartIRC
      */
     public function perform($cmd)
     {
         $this->_performs[] = $cmd;
+        return $this;
     }
 
     /**
@@ -1302,7 +1306,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @api
      * @param string $data
      * @param integer $priority must be one of the priority constants
-     * @return boolean
+     * @return boolean|Net_SmartIRC
      */
     public function send($data, $priority = SMARTIRC_MEDIUM)
     {
@@ -1325,7 +1329,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 return false;
         }
 
-        return true;
+        return $this;
     }
 
     /**
@@ -1567,12 +1571,13 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * No further lines of PHP code will be processed after this call, only the bot methods!
      *
      * @api
-     * @return void
+     * @return Net_SmartIRC
      */
     public function listen()
     {
         set_time_limit(0);
         while ($this->listenOnce() && !$this->_interrupt) {}
+        return $this;
     }
 
     /**
@@ -1582,7 +1587,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * Use this when you want to connect to multiple IRC servers.
      *
      * @api
-     * @return boolean
+     * @return boolean|Net_SmartIRC
      */
     public function listenOnce()
     {
@@ -1944,14 +1949,15 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 if (is_numeric($command)) {
                     if (!array_key_exists($command, $this->nreplycodes)) {
                         $this->log(SMARTIRC_DEBUG_MESSAGEHANDLER,
-                            'DEBUG_MESSAGEHANDLER: ignoring unrecognized messagecode "'
-                            .$command.'"', __FILE__, __LINE__
+                            'DEBUG_MESSAGEHANDLER: cannot translate unrecognized'
+                            ." messagecode $command into a command type",
+                            __FILE__, __LINE__
                         );
-                        // maybe not what we like, but we did listen successfully
-                        return true;
+                        $methodname = 'event_' . $command;
+                    } else {
+                        $methodname = 'event_'.strtolower($this->nreplycodes[$command]);
                     }
 
-                    $methodname = 'event_'.strtolower($this->nreplycodes[$command]);
                     $_methodname = '_'.$methodname;
                     $_codetype = 'by numeric';
                 } else {
@@ -2038,7 +2044,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             );
             $this->reconnect();
         }
-        return true;
+        return $this;
     }
 
     /**
@@ -2133,7 +2139,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     .'actionhandler('.$id.') unregistered', __FILE__, __LINE__
                 );
                 $this->_actionhandler = array_values($this->_actionhandler);
-                return true;
+                return $this;
             }
         }
 
@@ -2158,7 +2164,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             foreach ($id as $each) {
                 $this->unregisterActionId($each);
             }
-            return;
+            return $this;
         }
 
         foreach ($this->_actionhandler as $i => &$handlerinfo) {
@@ -2169,7 +2175,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     .'actionhandler('.$id.') unregistered', __FILE__, __LINE__
                 );
                 $this->_actionhandler = array_values($this->_actionhandler);
-                return true;
+                return $this;
             }
         }
 
@@ -2229,7 +2235,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             foreach ($id as $each) {
                 $this->unregisterTimeId($each);
             }
-            return;
+            return $this;
         }
 
         foreach ($this->_timehandler as $i => &$handlerinfo) {
@@ -2252,7 +2258,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 ) ? $timerarray[0]
                     : false;
 
-                return true;
+                return $this;
             }
         }
 
@@ -2268,7 +2274,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      *
      * @api
      * @param string $name
-     * @return boolean
+     * @return boolean|Net_SmartIRC
      */
     public function loadModule($name)
     {
@@ -2367,7 +2373,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully loaded'
             ." module: $name", __FILE__, __LINE__
         );
-        return true;
+        return $this;
     }
 
     /**
@@ -2375,7 +2381,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      *
      * @api
      * @param string $name
-     * @return boolean
+     * @return boolean|Net_SmartIRC
      */
     public function unloadModule($name)
     {
@@ -2393,7 +2399,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             unset($this->_modules[$name]);
             $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: successfully'
                 ." unloaded module: $name", __FILE__, __LINE__);
-            return true;
+            return $this;
         }
 
         $this->log(SMARTIRC_DEBUG_MODULES, "DEBUG_MODULES: couldn't unload"
@@ -2420,7 +2426,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @internal
      * @param object $channel
      * @param object $newuser
-     * @return void
+     * @return Net_SmartIRC
      */
     protected function _adduser(&$channel, &$newuser)
     {
@@ -2465,6 +2471,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 $channel->{$ms}[$user->nick] = true;
             }
         }
+        return $this;
     }
 
     /**
@@ -2520,7 +2527,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      *
      * @internal
      * @param object $ircdata
-     * @return void
+     * @return Net_SmartIRC
      */
     protected function _removeuser($ircdata)
     {
@@ -2601,6 +2608,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 }
             }
         }
+        return $this;
     }
 
     /**
