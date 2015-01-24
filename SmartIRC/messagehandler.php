@@ -157,7 +157,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
         if ($ircdata->params[0] == $this->_nick) {
             $this->_usermode = $ircdata->message;
         } else if ($this->_channelsyncing) {
-            // it's not, and we do channel syching
+            // it's not, and we do channel syncing
             $channel = &$this->getChannel($ircdata->channel);
             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
                 'DEBUG_CHANNELSYNCING: updating channel mode for: '

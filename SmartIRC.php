@@ -43,7 +43,7 @@
 require_once 'Net/SmartIRC/defines.php';
 require_once 'Net/SmartIRC/irccommands.php';
 require_once 'Net/SmartIRC/messagehandler.php';
-define('SMARTIRC_VERSION', '1.1.6');
+define('SMARTIRC_VERSION', '1.1.7');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
@@ -51,7 +51,7 @@ define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
  *
  * @category Net
  * @package Net_SmartIRC
- * @version 1.1.6
+ * @version 1.1.7
  * @author clockwerx
  * @author Mirco 'meebey' Bauer <meebey@meebey.net>
  * @author garrettw
@@ -2314,11 +2314,9 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             );
         }
 
-        $methods = get_class_methods($classname);
+        $methods = array_flip(get_class_methods($classname));
 
-        if (!(in_array('__construct', $methods)
-            || in_array('module_init', $methods)
-        )) {
+        if (!(isset($methods['__construct']) || isset($methods['module_init']))) {
             $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method '
                 .$classname.'::__construct() not found, aborting...',
                 __FILE__, __LINE__
@@ -2326,9 +2324,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return false;
         }
 
-        if (!(in_array('__destruct', $methods)
-            || in_array('module_exit', $methods)
-        )) {
+        if (!(isset($methods['__destruct']) || isset($methods['module_exit']))) {
             $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: required method '
                 .$classname.'::__destruct() not found, aborting...',
                 __FILE__, __LINE__
@@ -2336,11 +2332,11 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return false;
         }
 
-        $vars = array_keys(get_class_vars($classname));
+        $vars = get_class_vars($classname);
         $required = array('name', 'description', 'author', 'license');
 
         foreach ($required as $varname) {
-            if (!in_array($varname, $vars)) {
+            if (!isset($vars[$varname])) {
                 $this->log(SMARTIRC_DEBUG_NOTICE, 'NOTICE: required module'
                     ."property {$classname}::\${$varname} not found.",
                     __FILE__, __LINE__
@@ -2349,7 +2345,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
 
         // looks like the module satisfies us, so instantiate it
-        if (in_array('module_init', $methods)) {
+        if (isset($methods['module_init'])) {
             // we're using an old module_init style module
             $this->_modules[$name] = new $classname;
             $this->log(SMARTIRC_DEBUG_MODULES, 'DEBUG_MODULES: calling '
