@@ -2,61 +2,25 @@
 <package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Net_SmartIRC</name>
  <channel>pear.php.net</channel>
- <summary>Net_SmartIRC is a PHP package that helps you communicate with IRC networks in whatever way you might need, whether in a CLI program or as part of a web page. It&apos;s also well suited for bot development.</summary>
- <description>Full feature list of Net_SmartIRC
+ <summary>Helps you communicate with IRC networks in whatever way you might need, whether in a CLI program or as part of a web page. Also well-suited for bot development.</summary>
+ <description>SmartIRC is your go-to library for interfacing with IRC networks. All you need is PHP 5.3 or later.
+
+Full feature list:
 -------------------------------------
-- full object-oriented programmed
-- every received IRC message is parsed into an object
-  (containing the following info: from, nick, ident, host, channel, message, type, rawmessage)
-- actionhandler for the API (on different types of messages [channel/notice/query/kick/join..], callbacks can be registered)
-- messagehandler for the API (class-based messagehandling using IRC reply codes)
-- time events (callbacks to methods in intervals)
-- send/receive flood protection
-- detects and changes nickname on nickname collisions
-- auto-reconnect if connection is lost
-- auto-retry for initially connecting to IRC servers
-- debugging/logging system with log levels (destination can be file, stdout, syslog or browserout)
-- supports fsocks and PHP socket extension
-- supports PHP as old as 4.4.4 (but not for much longer)
-- send buffer with a queue that has 3 priority levels (high, medium, low) plus a bypass level (critical)
-- channel syncing (tracking of users/modes/topic etc in objects)
-- user syncing (tracking the user in channels, nick/ident/host/realname/server/hopcount in objects)
-- when channel syncing is activated, the following functions are available:
-  isJoined
-  isFounder
-  isAdmin
-  isOpped
-  isHopped
-  isVoiced
-  isBanned
-- on reconnect all joined channels will be rejoined, even when keys are used
-- own CTCP version reply can be set
-- IRC commands:
-  pass
-  op
-  deop
-  voice
-  devoice
-  ban
-  unban
-  join
-  part
-  action
-  message
-  notice
-  query
-  ctcp
-  mode
-  topic
-  nick
-  invite
-  list
-  names
-  kick
-  who
-  whois
-  whowas
-  quit</description>
+- Fully object-oriented programmed
+- Your bot class can be inline in the same file you call SmartIRC from, or included as an external file
+- Every received IRC message is parsed into an object you can easily get information from
+  (containing the following info: rawmessage, from, nick, ident, host, type, params, message, channel)
+- Make your bots using Action Handlers and Time Handlers, which register custom callbacks when various events happen or on time intervals, respectively – or, extend the Net_SmartIRC class to add (or override) handlers directly using individual server message types
+- Flood protection which uses a send buffer with a queue that has 3 priority levels (high, medium, low) plus a bypass level (critical)
+- Nick collision detection and handling
+- Auto-retry during initial connection attempt
+- Auto-reconnect if connection is lost, which will re-join to the channels it was in before
+- Debugging/logging system with log levels (destination can be file, stdout, syslog or browserout)
+- Supports PHP as old as 5.3.0
+- Channel syncing (tracking of users/modes/topic etc in objects)
+- Customizable CTCP VERSION reply
+ </description>
  <lead>
   <name>Mirco Bauer</name>
   <user>meebey</user>
