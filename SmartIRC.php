@@ -1661,9 +1661,10 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
         // check the socket to see if data is waiting for us
         // this will trigger a warning when a signal is received
-        $result = stream_select($r = array($this->_socket), $w = null, $e = null,
-            0, $selecttimeout
-        );
+        $r = array($this->_socket);
+        $w = null;
+        $e = null;
+        $result = stream_select($r, $w, $e, 0, $selecttimeout);
 
         $rawdata = null;
 
