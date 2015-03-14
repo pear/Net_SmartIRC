@@ -27,8 +27,13 @@
 // this code shows how a mini php bot which could be written
 include_once('Net/SmartIRC.php');
 
-class MyBot
+class Net_SmartIRC_module_MyBot
 {
+    public $name        = 'MyBot';
+    public $description = 'My custom bot with two action handlers';
+    public $author      = 'My Name';
+    public $license     = 'LGPL';
+
     private $irc;
     private $handlerids;
 
@@ -62,9 +67,9 @@ class MyBot
 $irc = new Net_SmartIRC(array(
     'DebugLevel' => SMARTIRC_DEBUG_ALL,
 ));
-$bot = new MyBot($irc);
-$irc->connect('chat.freenode.net', 6667);
-$irc->login('Net_SmartIRC', 'Net_SmartIRC Client '.SMARTIRC_VERSION.' (example.php)', 0, 'Net_SmartIRC');
-$irc->join(array('#smartirc-test'));
-$irc->listen();
-$irc->disconnect();
+$irc->loadModule('MyBot')
+    ->connect('chat.freenode.net', 6667)
+    ->login('Net_SmartIRC', 'example.php', 0, 'Net_SmartIRC')
+    ->join(array('#smartirc-test'))
+    ->listen()
+    ->disconnect();
