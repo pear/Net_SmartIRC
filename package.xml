@@ -59,6 +59,7 @@ Full feature list:
  * Added fluency (some methods now return $this) [garrettw]
  * Unknown message codes can now be handled instead of failing [garrettw]
  * Improved setRunAsDaemon() [garrettw]
+ * Fix strict warning on stream_select [markcarver]
  * Updated HTML documentation [garrettw]
  </notes>
  <contents>
@@ -807,6 +808,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Added fluency (some methods now return $this) [garrettw]
  * Unknown message codes can now be handled instead of failing [garrettw]
  * Improved setRunAsDaemon() [garrettw]
+ * Fix strict warning on stream_select [markcarver]
  * Updated HTML documentation [garrettw]
    </notes>
   </release>
