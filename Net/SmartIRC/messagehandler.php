@@ -138,10 +138,10 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                             'voices'
                         );
                         foreach ($lists as $list) {
-                            if (isset($channel->$list[$ircdata->nick])) {
-                                $channel->$list[$newnick]
-                                    = $channel->$list[$ircdata->nick];
-                                unset($channel->$list[$ircdata->nick]);
+                            if (isset($channel->{$list}[$ircdata->nick])) {
+                                $channel->{$list}[$newnick]
+                                    = $channel->{$list}[$ircdata->nick];
+                                unset($channel->{$list}[$ircdata->nick]);
                             }
                         }
                         break;
@@ -484,9 +484,11 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 $user->voice = false;
 
                 $usermode = $ircdata->params[5 + $offset];
+                $user->modes = $usermode;
+
                 $usermodelength = strlen($usermode);
                 for ($i = 0; $i < $usermodelength; $i++) {
-                    switch ($usermode[$i]) {
+                    switch ($usermode{$i}) {
                         case 'H':
                             $user->away = false;
                             break;
@@ -518,7 +520,6 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         case '+':
                             $user->voice = true;
                     }
-        		    $user->modes .= $usermode[$i];
                 }
 
                 $user->hopcount = $ircdata->messageex[0];
