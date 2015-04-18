@@ -1,5 +1,3 @@
 todo:
 
 Usersyncing not fully implemented! *_ircuser class is never used. Neither is $_users.
-fix dir structure?
-update docs before release of 1.1.7

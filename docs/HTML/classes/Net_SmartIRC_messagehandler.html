@@ -106,12 +106,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">146</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">144</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">104</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">102</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-799294511"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1720936438"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-799294511" class="accordion-body collapse in">
+            <div id="namespace-1720936438" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -328,7 +328,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">message()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">message(integer  <span class="argument">$type</span>, string  <span class="argument">$destination</span>,   <span class="argument">$messagearray</span>,   <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">message(integer  <span class="argument">$type</span>, string  <span class="argument">$destination</span>, mixed  <span class="argument">$messagearray</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : boolean|\Net_SmartIRC</pre>
                 <p><em>sends a new message</em></p>
                 <p>Sends a message to a channel or user.</p>
 
@@ -345,20 +345,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                 <td><p>can be a user or channel</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>mixed</td>
                                 <td>$messagearray </td>
-                                <td></td>
+                                <td><p>the message</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>integer</td>
                                 <td>$priority </td>
-                                <td></td>
+                                <td><p>the priority level of the message</p></td>
                             </tr>
                                             </table>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -390,7 +390,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">join()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">join(mixed  <span class="argument">$channelarray</span>, string  <span class="argument">$key = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">join(mixed  <span class="argument">$channelarray</span>, string  <span class="argument">$key = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>Joins one or more IRC channels with an optional key.</em></p>
                 
 
@@ -414,7 +414,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -443,7 +445,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">part()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">part(mixed  <span class="argument">$channelarray</span>, string  <span class="argument">$reason = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">part(mixed  <span class="argument">$channelarray</span>, string  <span class="argument">$reason = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>parts from one or more IRC channels with an optional reason</em></p>
                 
 
@@ -467,7 +469,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -496,7 +500,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">kick()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">kick(string  <span class="argument">$channel</span>, mixed  <span class="argument">$nicknamearray</span>, string  <span class="argument">$reason = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">kick(string  <span class="argument">$channel</span>, mixed  <span class="argument">$nicknamearray</span>, string  <span class="argument">$reason = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>Kicks one or more user from an IRC channel with an optional reason.</em></p>
                 
 
@@ -525,7 +529,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -554,7 +560,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">getList()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getList(mixed  <span class="argument">$channelarray = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">getList(mixed  <span class="argument">$channelarray = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>gets a list of one ore more channels</em></p>
                 <p>Requests a full channellist if $channelarray is not given.
 (use it with care, usualy its a looooong list)</p>
@@ -574,7 +580,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -603,7 +611,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">names()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">names(mixed  <span class="argument">$channelarray = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">names(mixed  <span class="argument">$channelarray = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>requests all nicknames of one or more channels</em></p>
                 <p>The requested nickname list also includes op and voice state</p>
 
@@ -622,7 +630,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -651,7 +661,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">setTopic()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setTopic(string  <span class="argument">$channel</span>, string  <span class="argument">$newtopic</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">setTopic(string  <span class="argument">$channel</span>, string  <span class="argument">$newtopic</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>sets a new topic of a channel</em></p>
                 
 
@@ -675,7 +685,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -704,7 +716,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">getTopic()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getTopic(string  <span class="argument">$channel</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">getTopic(string  <span class="argument">$channel</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>gets the topic of a channel</em></p>
                 
 
@@ -723,7 +735,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -752,7 +766,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">mode()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">mode(string  <span class="argument">$target</span>, string  <span class="argument">$newmode = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">mode(string  <span class="argument">$target</span>, string  <span class="argument">$newmode = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>sets or gets the mode of an user or channel</em></p>
                 <p>Changes/requests the mode of the given target.</p>
 
@@ -776,7 +790,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -805,7 +821,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">founder()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">founder(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">founder(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>founders an user in the given channel</em></p>
                 
 
@@ -829,7 +845,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -858,7 +876,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">defounder()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">defounder(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">defounder(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>defounders an user in the given channel</em></p>
                 
 
@@ -882,7 +900,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -911,7 +931,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">admin()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">admin(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">admin(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>admins an user in the given channel</em></p>
                 
 
@@ -935,7 +955,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -964,7 +986,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">deadmin()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">deadmin(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">deadmin(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>deadmins an user in the given channel</em></p>
                 
 
@@ -988,7 +1010,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1017,7 +1041,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">op()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">op(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">op(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>ops an user in the given channel</em></p>
                 
 
@@ -1041,7 +1065,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1070,7 +1096,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">deop()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">deop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">deop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>deops an user in the given channel</em></p>
                 
 
@@ -1094,7 +1120,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1123,7 +1151,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">hop()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">hop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">hop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>hops an user in the given channel</em></p>
                 
 
@@ -1147,7 +1175,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1176,7 +1206,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">dehop()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">dehop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">dehop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>dehops an user in the given channel</em></p>
                 
 
@@ -1200,7 +1230,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1229,7 +1261,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">voice()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">voice(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">voice(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>voice a user in the given channel</em></p>
                 
 
@@ -1253,7 +1285,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1282,7 +1316,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">devoice()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">devoice(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">devoice(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>devoice a user in the given channel</em></p>
                 
 
@@ -1306,7 +1340,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1335,7 +1371,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">ban()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">ban(string  <span class="argument">$channel</span>, string  <span class="argument">$hostmask = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">ban(string  <span class="argument">$channel</span>, string  <span class="argument">$hostmask = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>bans a hostmask for the given channel or requests the current banlist</em></p>
                 <p>The banlist will be requested if no hostmask is specified</p>
 
@@ -1359,7 +1395,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1388,7 +1426,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">unban()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">unban(string  <span class="argument">$channel</span>, string  <span class="argument">$hostmask</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">unban(string  <span class="argument">$channel</span>, string  <span class="argument">$hostmask</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>unbans a hostmask on the given channel</em></p>
                 
 
@@ -1412,7 +1450,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1441,7 +1481,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">invite()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">invite(string  <span class="argument">$nickname</span>, string  <span class="argument">$channel</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">invite(string  <span class="argument">$nickname</span>, string  <span class="argument">$channel</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>invites a user to the specified channel</em></p>
                 
 
@@ -1465,7 +1505,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1494,7 +1536,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">changeNick()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">changeNick(string  <span class="argument">$newnick</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">changeNick(string  <span class="argument">$newnick</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>changes the own nickname</em></p>
                 <p>Trys to set a new nickname, nickcollisions are handled.</p>
 
@@ -1513,7 +1555,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1542,7 +1586,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">who()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">who(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">who(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>requests a &#039;WHO&#039; from the specified target</em></p>
                 
 
@@ -1561,7 +1605,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1590,7 +1636,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">whois()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">whois(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">whois(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>requests a &#039;WHOIS&#039; from the specified target</em></p>
                 
 
@@ -1609,7 +1655,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1638,7 +1686,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">whowas()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">whowas(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">whowas(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>requests a &#039;WHOWAS&#039; from the specified target
 (if he left the IRC network)</em></p>
                 
@@ -1658,7 +1706,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -1687,7 +1737,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
             <article class="method">
                 <h3 class="public ">quit()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">quit(string  <span class="argument">$quitmessage = null</span>, integer  <span class="argument">$priority = SMARTIRC_CRITICAL</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">quit(string  <span class="argument">$quitmessage = null</span>, integer  <span class="argument">$priority = SMARTIRC_CRITICAL</span>) : \Net_SmartIRC</pre>
                 <p><em>sends QUIT to IRC server and disconnects</em></p>
                 
 
@@ -1706,7 +1756,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2526,7 +2578,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on January 17th, 2015 at 11:41.
+                    on April 17th, 2015 at 17:54.
                 </section>
             </section>
         </section>

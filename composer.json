@@ -18,12 +18,12 @@
     ],
     "autoload": {
         "psr-0": {
-            "Net": "./"
+            "Net": "Net/"
         }
     },
     "description": "More info available on: http://pear.php.net/package/Net_SmartIRC",
     "include-path": [
-        "./"
+        "Net/"
     ],
     "license": "LGPL",
     "name": "pear/net_smartirc",

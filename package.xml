@@ -45,7 +45,7 @@ Full feature list:
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2015-01-23</date>
+ <date>2015-04-18</date>
  <version>
   <release>1.1.7</release>
   <api>1.1.4</api>
@@ -60,151 +60,154 @@ Full feature list:
  * Unknown message codes can now be handled instead of failing [garrettw]
  * Improved setRunAsDaemon() [garrettw]
  * Fix strict warning on stream_select [markcarver]
+ * Tweaked package structure
  * Updated HTML documentation [garrettw]
  </notes>
  <contents>
-  <dir baseinstalldir="Net" name="/">
+  <dir name="/">
    <dir name="docs">
     <dir name="HTML">
      <dir name="media">
       <dir name="images">
        <dir name="TreeMenuJS">
-        <file baseinstalldir="Net" name="branch.gif" role="doc" />
-        <file baseinstalldir="Net" name="branchbottom.gif" role="doc" />
-        <file baseinstalldir="Net" name="branchtop.gif" role="doc" />
-        <file baseinstalldir="Net" name="Class.gif" role="doc" />
-        <file baseinstalldir="Net" name="classFolder.gif" role="doc" />
-        <file baseinstalldir="Net" name="Disk.gif" role="doc" />
-        <file baseinstalldir="Net" name="file.png" role="doc" />
-        <file baseinstalldir="Net" name="folder.gif" role="doc" />
-        <file baseinstalldir="Net" name="FolderOpened.gif" role="doc" />
-        <file baseinstalldir="Net" name="Functions.gif" role="doc" />
-        <file baseinstalldir="Net" name="line.gif" role="doc" />
-        <file baseinstalldir="Net" name="linebottom.gif" role="doc" />
-        <file baseinstalldir="Net" name="minus.gif" role="doc" />
-        <file baseinstalldir="Net" name="minusbottom.gif" role="doc" />
-        <file baseinstalldir="Net" name="minustop.gif" role="doc" />
-        <file baseinstalldir="Net" name="plus.gif" role="doc" />
-        <file baseinstalldir="Net" name="plusbottom.gif" role="doc" />
-        <file baseinstalldir="Net" name="plustop.gif" role="doc" />
+        <file name="branch.gif" role="doc" />
+        <file name="branchbottom.gif" role="doc" />
+        <file name="branchtop.gif" role="doc" />
+        <file name="Class.gif" role="doc" />
+        <file name="classFolder.gif" role="doc" />
+        <file name="Disk.gif" role="doc" />
+        <file name="file.png" role="doc" />
+        <file name="folder.gif" role="doc" />
+        <file name="FolderOpened.gif" role="doc" />
+        <file name="Functions.gif" role="doc" />
+        <file name="line.gif" role="doc" />
+        <file name="linebottom.gif" role="doc" />
+        <file name="minus.gif" role="doc" />
+        <file name="minusbottom.gif" role="doc" />
+        <file name="minustop.gif" role="doc" />
+        <file name="plus.gif" role="doc" />
+        <file name="plusbottom.gif" role="doc" />
+        <file name="plustop.gif" role="doc" />
        </dir> <!-- /docs/HTML/media/images/TreeMenuJS -->
-       <file baseinstalldir="Net" name="blank.png" role="doc" />
-       <file baseinstalldir="Net" name="checkerboard.gif" role="doc" />
-       <file baseinstalldir="Net" name="Class.gif" role="doc" />
-       <file baseinstalldir="Net" name="classFolder.gif" role="doc" />
-       <file baseinstalldir="Net" name="Constant.gif" role="doc" />
-       <file baseinstalldir="Net" name="Constants.gif" role="doc" />
-       <file baseinstalldir="Net" name="Constructor.gif" role="doc" />
-       <file baseinstalldir="Net" name="Destructor.gif" role="doc" />
-       <file baseinstalldir="Net" name="Disk.gif" role="doc" />
-       <file baseinstalldir="Net" name="error.gif" role="doc" />
-       <file baseinstalldir="Net" name="file.png" role="doc" />
-       <file baseinstalldir="Net" name="FolderClosed.gif" role="doc" />
-       <file baseinstalldir="Net" name="foldericon.png" role="doc" />
-       <file baseinstalldir="Net" name="FolderOpened.gif" role="doc" />
-       <file baseinstalldir="Net" name="Functions.gif" role="doc" />
-       <file baseinstalldir="Net" name="GhostClass.gif" role="doc" />
-       <file baseinstalldir="Net" name="I.png" role="doc" />
-       <file baseinstalldir="Net" name="L.png" role="doc" />
-       <file baseinstalldir="Net" name="leftbg.gif" role="doc" />
-       <file baseinstalldir="Net" name="Lminus.png" role="doc" />
-       <file baseinstalldir="Net" name="Lplus.png" role="doc" />
-       <file baseinstalldir="Net" name="minus.gif" role="doc" />
-       <file baseinstalldir="Net" name="msgError.gif" role="doc" />
-       <file baseinstalldir="Net" name="msgFatalError.gif" role="doc" />
-       <file baseinstalldir="Net" name="msgHint.gif" role="doc" />
-       <file baseinstalldir="Net" name="msgInformation.gif" role="doc" />
-       <file baseinstalldir="Net" name="msgWarning.gif" role="doc" />
-       <file baseinstalldir="Net" name="openfoldericon.png" role="doc" />
-       <file baseinstalldir="Net" name="pearlogo.gif" role="doc" />
-       <file baseinstalldir="Net" name="plus.gif" role="doc" />
-       <file baseinstalldir="Net" name="PrivateDataMember.gif" role="doc" />
-       <file baseinstalldir="Net" name="PrivateMethod.gif" role="doc" />
-       <file baseinstalldir="Net" name="PrivateProperty.gif" role="doc" />
-       <file baseinstalldir="Net" name="ProtectedDataMember.gif" role="doc" />
-       <file baseinstalldir="Net" name="ProtectedMethod.gif" role="doc" />
-       <file baseinstalldir="Net" name="ProtectedProperty.gif" role="doc" />
-       <file baseinstalldir="Net" name="PublicDataMember.gif" role="doc" />
-       <file baseinstalldir="Net" name="PublicMethod.gif" role="doc" />
-       <file baseinstalldir="Net" name="PublicProperty.gif" role="doc" />
-       <file baseinstalldir="Net" name="spacer.gif" role="doc" />
-       <file baseinstalldir="Net" name="spacer2.gif" role="doc" />
-       <file baseinstalldir="Net" name="T.png" role="doc" />
-       <file baseinstalldir="Net" name="Tminus.png" role="doc" />
-       <file baseinstalldir="Net" name="Tplus.png" role="doc" />
-       <file baseinstalldir="Net" name="Types.gif" role="doc" />
-       <file baseinstalldir="Net" name="Variable.gif" role="doc" />
-       <file baseinstalldir="Net" name="Vars.gif" role="doc" />
+       <file name="blank.png" role="doc" />
+       <file name="checkerboard.gif" role="doc" />
+       <file name="Class.gif" role="doc" />
+       <file name="classFolder.gif" role="doc" />
+       <file name="Constant.gif" role="doc" />
+       <file name="Constants.gif" role="doc" />
+       <file name="Constructor.gif" role="doc" />
+       <file name="Destructor.gif" role="doc" />
+       <file name="Disk.gif" role="doc" />
+       <file name="error.gif" role="doc" />
+       <file name="file.png" role="doc" />
+       <file name="FolderClosed.gif" role="doc" />
+       <file name="foldericon.png" role="doc" />
+       <file name="FolderOpened.gif" role="doc" />
+       <file name="Functions.gif" role="doc" />
+       <file name="GhostClass.gif" role="doc" />
+       <file name="I.png" role="doc" />
+       <file name="L.png" role="doc" />
+       <file name="leftbg.gif" role="doc" />
+       <file name="Lminus.png" role="doc" />
+       <file name="Lplus.png" role="doc" />
+       <file name="minus.gif" role="doc" />
+       <file name="msgError.gif" role="doc" />
+       <file name="msgFatalError.gif" role="doc" />
+       <file name="msgHint.gif" role="doc" />
+       <file name="msgInformation.gif" role="doc" />
+       <file name="msgWarning.gif" role="doc" />
+       <file name="openfoldericon.png" role="doc" />
+       <file name="pearlogo.gif" role="doc" />
+       <file name="plus.gif" role="doc" />
+       <file name="PrivateDataMember.gif" role="doc" />
+       <file name="PrivateMethod.gif" role="doc" />
+       <file name="PrivateProperty.gif" role="doc" />
+       <file name="ProtectedDataMember.gif" role="doc" />
+       <file name="ProtectedMethod.gif" role="doc" />
+       <file name="ProtectedProperty.gif" role="doc" />
+       <file name="PublicDataMember.gif" role="doc" />
+       <file name="PublicMethod.gif" role="doc" />
+       <file name="PublicProperty.gif" role="doc" />
+       <file name="spacer.gif" role="doc" />
+       <file name="spacer2.gif" role="doc" />
+       <file name="T.png" role="doc" />
+       <file name="Tminus.png" role="doc" />
+       <file name="Tplus.png" role="doc" />
+       <file name="Types.gif" role="doc" />
+       <file name="Variable.gif" role="doc" />
+       <file name="Vars.gif" role="doc" />
       </dir> <!-- /docs/HTML/media/images -->
       <dir name="lib">
-       <file baseinstalldir="Net" name="classTree.js" role="doc" />
-       <file baseinstalldir="Net" name="tab.webfx.css" role="doc" />
-       <file baseinstalldir="Net" name="tabpane.js" role="doc" />
-       <file baseinstalldir="Net" name="ua.js" role="doc" />
+       <file name="classTree.js" role="doc" />
+       <file name="tab.webfx.css" role="doc" />
+       <file name="tabpane.js" role="doc" />
+       <file name="ua.js" role="doc" />
       </dir> <!-- /docs/HTML/media/lib -->
-      <file baseinstalldir="Net" name="background.png" role="doc" />
-      <file baseinstalldir="Net" name="empty.png" role="doc" />
-      <file baseinstalldir="Net" name="style.css" role="doc" />
-      <file baseinstalldir="Net" name="TreeMenu.js" role="doc" />
+      <file name="background.png" role="doc" />
+      <file name="empty.png" role="doc" />
+      <file name="style.css" role="doc" />
+      <file name="TreeMenu.js" role="doc" />
      </dir> <!-- /docs/HTML/media -->
      <dir name="Net_SmartIRC">
-      <file baseinstalldir="Net" name="mybot.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_actionhandler.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_base.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_channel.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_channeluser.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_data.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_Error.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_irccommands.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_ircuser.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_listenfor.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_messagehandler.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_timehandler.html" role="doc" />
-      <file baseinstalldir="Net" name="Net_SmartIRC_user.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example2_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example3_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example4_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example5_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example6_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example7_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_examples_example_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_SmartIRC_defines_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_SmartIRC_irccommands_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_SmartIRC_messagehandler_php.html" role="doc" />
-      <file baseinstalldir="Net" name="_SmartIRC-0.5.5_SmartIRC_php.html" role="doc" />
+      <file name="mybot.html" role="doc" />
+      <file name="Net_SmartIRC.html" role="doc" />
+      <file name="Net_SmartIRC_actionhandler.html" role="doc" />
+      <file name="Net_SmartIRC_base.html" role="doc" />
+      <file name="Net_SmartIRC_channel.html" role="doc" />
+      <file name="Net_SmartIRC_channeluser.html" role="doc" />
+      <file name="Net_SmartIRC_data.html" role="doc" />
+      <file name="Net_SmartIRC_Error.html" role="doc" />
+      <file name="Net_SmartIRC_irccommands.html" role="doc" />
+      <file name="Net_SmartIRC_ircuser.html" role="doc" />
+      <file name="Net_SmartIRC_listenfor.html" role="doc" />
+      <file name="Net_SmartIRC_messagehandler.html" role="doc" />
+      <file name="Net_SmartIRC_timehandler.html" role="doc" />
+      <file name="Net_SmartIRC_user.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_examples_example2_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_examples_example3_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_examples_example4_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_examples_example5_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_examples_example6_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_examples_example7_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_examples_example_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_SmartIRC_defines_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_SmartIRC_irccommands_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_SmartIRC_messagehandler_php.html" role="doc" />
+      <file name="_SmartIRC-0.5.5_SmartIRC_php.html" role="doc" />
      </dir> <!-- /docs/HTML/Net_SmartIRC -->
-     <file baseinstalldir="Net" name="classtrees_Net_SmartIRC.html" role="doc" />
-     <file baseinstalldir="Net" name="elementindex.html" role="doc" />
-     <file baseinstalldir="Net" name="elementindex_Net_SmartIRC.html" role="doc" />
-     <file baseinstalldir="Net" name="errors.html" role="doc" />
-     <file baseinstalldir="Net" name="index.html" role="doc" />
-     <file baseinstalldir="Net" name="li_Net_SmartIRC.html" role="doc" />
-     <file baseinstalldir="Net" name="ric_CHANGELOG.html" role="doc" />
-     <file baseinstalldir="Net" name="ric_README.html" role="doc" />
+     <file name="classtrees_Net_SmartIRC.html" role="doc" />
+     <file name="elementindex.html" role="doc" />
+     <file name="elementindex_Net_SmartIRC.html" role="doc" />
+     <file name="errors.html" role="doc" />
+     <file name="index.html" role="doc" />
+     <file name="li_Net_SmartIRC.html" role="doc" />
+     <file name="ric_CHANGELOG.html" role="doc" />
+     <file name="ric_README.html" role="doc" />
     </dir> <!-- /docs/HTML -->
-    <file baseinstalldir="Net" name="DOCUMENTATION" role="doc" />
-    <file baseinstalldir="Net" name="HOWTO" role="doc" />
+    <file name="DOCUMENTATION" role="doc" />
+    <file name="HOWTO" role="doc" />
     <dir name="examples">
-     <file baseinstalldir="Net" name="example.php" role="doc" />
-     <file baseinstalldir="Net" name="example2.php" role="doc" />
-     <file baseinstalldir="Net" name="example3.php" role="doc" />
-     <file baseinstalldir="Net" name="example4.php" role="doc" />
-     <file baseinstalldir="Net" name="example5.php" role="doc" />
-     <file baseinstalldir="Net" name="example6.php" role="doc" />
-     <file baseinstalldir="Net" name="example7.php" role="doc" />
-    </dir> <!-- /examples -->
+     <file name="example.php" role="doc" />
+     <file name="example2.php" role="doc" />
+     <file name="example3.php" role="doc" />
+     <file name="example4.php" role="doc" />
+     <file name="example5.php" role="doc" />
+     <file name="example6.php" role="doc" />
+     <file name="example7.php" role="doc" />
+    </dir> <!-- /docs/examples -->
    </dir> <!-- /docs -->
-   <dir name="SmartIRC">
-    <file baseinstalldir="Net" name="defines.php" role="php" />
-    <file baseinstalldir="Net" name="irccommands.php" role="php" />
-    <file baseinstalldir="Net" name="messagehandler.php" role="php" />
-   </dir> <!-- /SmartIRC -->
-   <file baseinstalldir="Net" name="SmartIRC.php" role="php" />
-   <file baseinstalldir="Net" name="CREDITS" role="doc" />
-   <file baseinstalldir="Net" name="FEATURES" role="doc" />
-   <file baseinstalldir="Net" name="LICENSE" role="doc" />
-   <file baseinstalldir="Net" name="README.md" role="doc" />
+   <dir name="Net">
+    <dir name="SmartIRC">
+     <file name="defines.php" role="php" />
+     <file name="irccommands.php" role="php" />
+     <file name="messagehandler.php" role="php" />
+    </dir> <!-- /Net/SmartIRC -->
+    <file name="SmartIRC.php" role="php" />
+   </dir> <!-- /Net -->
+   <file name="CREDITS" role="doc" />
+   <file name="FEATURES" role="doc" />
+   <file name="LICENSE" role="doc" />
+   <file name="README.md" role="doc" />
   </dir> <!-- / -->
  </contents>
  <dependencies>
@@ -802,7 +805,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2015-01-23</date>
+   <date>2015-04-18</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
  * Added fluency (some methods now return $this) [garrettw]

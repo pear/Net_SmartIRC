@@ -106,12 +106,12 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">146</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">144</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">104</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">102</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-54918946"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2113086496"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-54918946" class="accordion-body collapse in">
+            <div id="namespace-2113086496" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -1915,7 +1915,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">message()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">message(integer  <span class="argument">$type</span>, string  <span class="argument">$destination</span>,   <span class="argument">$messagearray</span>,   <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">message(integer  <span class="argument">$type</span>, string  <span class="argument">$destination</span>, mixed  <span class="argument">$messagearray</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : boolean|\Net_SmartIRC</pre>
                 <p><em>sends a new message</em></p>
                 <p>Sends a message to a channel or user.</p>
 
@@ -1932,20 +1932,20 @@ $irc->user['meebey']->host;</p>
                                 <td><p>can be a user or channel</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>mixed</td>
                                 <td>$messagearray </td>
-                                <td></td>
+                                <td><p>the message</p></td>
                             </tr>
                                                     <tr>
-                                <td></td>
+                                <td>integer</td>
                                 <td>$priority </td>
-                                <td></td>
+                                <td><p>the priority level of the message</p></td>
                             </tr>
                                             </table>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -1977,7 +1977,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">join()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">join(mixed  <span class="argument">$channelarray</span>, string  <span class="argument">$key = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">join(mixed  <span class="argument">$channelarray</span>, string  <span class="argument">$key = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>Joins one or more IRC channels with an optional key.</em></p>
                 
 
@@ -2001,7 +2001,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2030,7 +2032,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">part()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">part(mixed  <span class="argument">$channelarray</span>, string  <span class="argument">$reason = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">part(mixed  <span class="argument">$channelarray</span>, string  <span class="argument">$reason = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>parts from one or more IRC channels with an optional reason</em></p>
                 
 
@@ -2054,7 +2056,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2083,7 +2087,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">kick()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">kick(string  <span class="argument">$channel</span>, mixed  <span class="argument">$nicknamearray</span>, string  <span class="argument">$reason = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">kick(string  <span class="argument">$channel</span>, mixed  <span class="argument">$nicknamearray</span>, string  <span class="argument">$reason = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>Kicks one or more user from an IRC channel with an optional reason.</em></p>
                 
 
@@ -2112,7 +2116,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2141,7 +2147,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">getList()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getList(mixed  <span class="argument">$channelarray = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">getList(mixed  <span class="argument">$channelarray = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>gets a list of one ore more channels</em></p>
                 <p>Requests a full channellist if $channelarray is not given.
 (use it with care, usualy its a looooong list)</p>
@@ -2161,7 +2167,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2190,7 +2198,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">names()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">names(mixed  <span class="argument">$channelarray = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">names(mixed  <span class="argument">$channelarray = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>requests all nicknames of one or more channels</em></p>
                 <p>The requested nickname list also includes op and voice state</p>
 
@@ -2209,7 +2217,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2238,7 +2248,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">setTopic()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">setTopic(string  <span class="argument">$channel</span>, string  <span class="argument">$newtopic</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">setTopic(string  <span class="argument">$channel</span>, string  <span class="argument">$newtopic</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>sets a new topic of a channel</em></p>
                 
 
@@ -2262,7 +2272,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2291,7 +2303,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">getTopic()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getTopic(string  <span class="argument">$channel</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">getTopic(string  <span class="argument">$channel</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>gets the topic of a channel</em></p>
                 
 
@@ -2310,7 +2322,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2339,7 +2353,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">mode()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">mode(string  <span class="argument">$target</span>, string  <span class="argument">$newmode = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">mode(string  <span class="argument">$target</span>, string  <span class="argument">$newmode = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>sets or gets the mode of an user or channel</em></p>
                 <p>Changes/requests the mode of the given target.</p>
 
@@ -2363,7 +2377,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2392,7 +2408,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">founder()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">founder(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">founder(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>founders an user in the given channel</em></p>
                 
 
@@ -2416,7 +2432,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2445,7 +2463,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">defounder()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">defounder(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">defounder(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>defounders an user in the given channel</em></p>
                 
 
@@ -2469,7 +2487,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2498,7 +2518,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">admin()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">admin(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">admin(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>admins an user in the given channel</em></p>
                 
 
@@ -2522,7 +2542,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2551,7 +2573,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">deadmin()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">deadmin(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">deadmin(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>deadmins an user in the given channel</em></p>
                 
 
@@ -2575,7 +2597,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2604,7 +2628,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">op()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">op(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">op(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>ops an user in the given channel</em></p>
                 
 
@@ -2628,7 +2652,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2657,7 +2683,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">deop()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">deop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">deop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>deops an user in the given channel</em></p>
                 
 
@@ -2681,7 +2707,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2710,7 +2738,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">hop()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">hop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">hop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>hops an user in the given channel</em></p>
                 
 
@@ -2734,7 +2762,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2763,7 +2793,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">dehop()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">dehop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">dehop(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>dehops an user in the given channel</em></p>
                 
 
@@ -2787,7 +2817,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2816,7 +2848,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">voice()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">voice(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">voice(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>voice a user in the given channel</em></p>
                 
 
@@ -2840,7 +2872,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2869,7 +2903,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">devoice()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">devoice(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">devoice(string  <span class="argument">$channel</span>, string  <span class="argument">$nickname</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>devoice a user in the given channel</em></p>
                 
 
@@ -2893,7 +2927,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2922,7 +2958,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">ban()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">ban(string  <span class="argument">$channel</span>, string  <span class="argument">$hostmask = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">ban(string  <span class="argument">$channel</span>, string  <span class="argument">$hostmask = null</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>bans a hostmask for the given channel or requests the current banlist</em></p>
                 <p>The banlist will be requested if no hostmask is specified</p>
 
@@ -2946,7 +2982,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -2975,7 +3013,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">unban()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">unban(string  <span class="argument">$channel</span>, string  <span class="argument">$hostmask</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">unban(string  <span class="argument">$channel</span>, string  <span class="argument">$hostmask</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>unbans a hostmask on the given channel</em></p>
                 
 
@@ -2999,7 +3037,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -3028,7 +3068,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">invite()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">invite(string  <span class="argument">$nickname</span>, string  <span class="argument">$channel</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">invite(string  <span class="argument">$nickname</span>, string  <span class="argument">$channel</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>invites a user to the specified channel</em></p>
                 
 
@@ -3052,7 +3092,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -3081,7 +3123,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">changeNick()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">changeNick(string  <span class="argument">$newnick</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">changeNick(string  <span class="argument">$newnick</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>changes the own nickname</em></p>
                 <p>Trys to set a new nickname, nickcollisions are handled.</p>
 
@@ -3100,7 +3142,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -3129,7 +3173,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">who()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">who(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">who(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>requests a &#039;WHO&#039; from the specified target</em></p>
                 
 
@@ -3148,7 +3192,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -3177,7 +3223,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">whois()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">whois(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">whois(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>requests a &#039;WHOIS&#039; from the specified target</em></p>
                 
 
@@ -3196,7 +3242,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -3225,7 +3273,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">whowas()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">whowas(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">whowas(string  <span class="argument">$target</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : \Net_SmartIRC</pre>
                 <p><em>requests a &#039;WHOWAS&#039; from the specified target
 (if he left the IRC network)</em></p>
                 
@@ -3245,7 +3293,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -3274,7 +3324,7 @@ $irc->user['meebey']->host;</p>
             <article class="method">
                 <h3 class="public ">quit()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">quit(string  <span class="argument">$quitmessage = null</span>, integer  <span class="argument">$priority = SMARTIRC_CRITICAL</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">quit(string  <span class="argument">$quitmessage = null</span>, integer  <span class="argument">$priority = SMARTIRC_CRITICAL</span>) : \Net_SmartIRC</pre>
                 <p><em>sends QUIT to IRC server and disconnects</em></p>
                 
 
@@ -3293,7 +3343,9 @@ $irc->user['meebey']->host;</p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -4263,13 +4315,15 @@ notice are tracked in the $irc->user array. This is very handy for botcoding.</p
             <article class="method">
                 <h3 class="public ">startBenchmark()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">startBenchmark() : void</pre>
+                <pre class="signature" style="margin-right: 54px;">startBenchmark() : \Net_SmartIRC</pre>
                 <p><em>Starts the benchmark (sets the counters).</em></p>
                 
 
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -4296,13 +4350,15 @@ notice are tracked in the $irc->user array. This is very handy for botcoding.</p
             <article class="method">
                 <h3 class="public ">stopBenchmark()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">stopBenchmark() : void</pre>
+                <pre class="signature" style="margin-right: 54px;">stopBenchmark() : \Net_SmartIRC</pre>
                 <p><em>Stops the benchmark and displays the result.</em></p>
                 
 
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -4329,13 +4385,15 @@ notice are tracked in the $irc->user array. This is very handy for botcoding.</p
             <article class="method">
                 <h3 class="public ">showBenchmark()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">showBenchmark() : void</pre>
+                <pre class="signature" style="margin-right: 54px;">showBenchmark() : \Net_SmartIRC</pre>
                 <p><em>Shows the benchmark result.</em></p>
                 
 
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -4597,9 +4655,9 @@ SMARTIRC_DEBUG_ALL</p>
             <article class="method">
                 <h3 class="public ">connect()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">connect(string  <span class="argument">$addr</span>, integer  <span class="argument">$port = 6667</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">connect(string  <span class="argument">$addr</span>, integer  <span class="argument">$port = 6667</span>) : boolean|\Net_SmartIRC</pre>
                 <p><em>Creates the sockets and connects to the IRC server on the given port.</em></p>
-                
+                <p>Returns this SmartIRC object on success, and false on failure.</p>
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
@@ -4617,7 +4675,7 @@ SMARTIRC_DEBUG_ALL</p>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -4645,7 +4703,7 @@ SMARTIRC_DEBUG_ALL</p>
             <article class="method">
                 <h3 class="public ">disconnect()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">disconnect(boolean  <span class="argument">$quick = false</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">disconnect(boolean  <span class="argument">$quick = false</span>) : boolean|\Net_SmartIRC</pre>
                 <p><em>Disconnects from the IRC server nicely with a QUIT or just destroys the socket.</em></p>
                 <p>Disconnects from the IRC server in the given quickness mode.
 $quick:</p>
@@ -4666,7 +4724,7 @@ closing the socket</li>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -4694,7 +4752,7 @@ closing the socket</li>
             <article class="method">
                 <h3 class="public ">reconnect()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">reconnect() : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">reconnect() : boolean|\Net_SmartIRC</pre>
                 <p><em>Reconnects to the IRC server with the same login info,
 it also rejoins the channels</em></p>
                 
@@ -4702,7 +4760,7 @@ it also rejoins the channels</em></p>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -4730,7 +4788,7 @@ it also rejoins the channels</em></p>
             <article class="method">
                 <h3 class="public ">login()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">login(string  <span class="argument">$nick</span>, string  <span class="argument">$realname</span>, integer  <span class="argument">$usermode</span>, string  <span class="argument">$username = null</span>, string  <span class="argument">$password = null</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">login(string  <span class="argument">$nick</span>, string  <span class="argument">$realname</span>, integer  <span class="argument">$usermode</span>, string  <span class="argument">$username = null</span>, string  <span class="argument">$password = null</span>) : \Net_SmartIRC</pre>
                 <p><em>login and register nickname on the IRC network</em></p>
                 <p>Registers the nickname and user information on the IRC network.</p>
 
@@ -4764,7 +4822,9 @@ it also rejoins the channels</em></p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -4791,7 +4851,7 @@ it also rejoins the channels</em></p>
             <article class="method">
                 <h3 class="public ">perform()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">perform(string  <span class="argument">$cmd</span>) : void</pre>
+                <pre class="signature" style="margin-right: 54px;">perform(string  <span class="argument">$cmd</span>) : \Net_SmartIRC</pre>
                 <p><em>adds a command to the list of commands to be sent after login() info</em></p>
                 
 
@@ -4805,7 +4865,9 @@ it also rejoins the channels</em></p>
                                             </table>
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -4832,7 +4894,7 @@ it also rejoins the channels</em></p>
             <article class="method">
                 <h3 class="public ">send()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">send(string  <span class="argument">$data</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">send(string  <span class="argument">$data</span>, integer  <span class="argument">$priority = SMARTIRC_MEDIUM</span>) : boolean|\Net_SmartIRC</pre>
                 <p><em>sends an IRC message</em></p>
                 <p>Adds a message to the messagequeue, with the optional priority.
 $priority:
@@ -4857,7 +4919,7 @@ SMARTIRC_LOW</p>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -5322,14 +5384,16 @@ ChannelSyncing is required for this.</em></p>
             <article class="method">
                 <h3 class="public ">listen()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">listen() : void</pre>
+                <pre class="signature" style="margin-right: 54px;">listen() : \Net_SmartIRC</pre>
                 <p><em>goes into receive mode</em></p>
                 <p>Goes into receive and idle mode. Only call this if you want to "spawn" the bot.
 No further lines of PHP code will be processed after this call, only the bot methods!</p>
 
                 
                 
-                				
+                                    <h4>Returns</h4>
+                    <a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
+                                    				
                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -5356,7 +5420,7 @@ No further lines of PHP code will be processed after this call, only the bot met
             <article class="method">
                 <h3 class="public ">listenOnce()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">listenOnce() : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">listenOnce() : boolean|\Net_SmartIRC</pre>
                 <p><em>goes into receive mode _only_ for one pass</em></p>
                 <p>Goes into receive mode. It will return when one pass is complete.
 Use this when you want to connect to multiple IRC servers.</p>
@@ -5364,7 +5428,7 @@ Use this when you want to connect to multiple IRC servers.</p>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -5708,7 +5772,7 @@ The timehandler id is needed for unregistering the timehandler.</p>
             <article class="method">
                 <h3 class="public ">loadModule()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">loadModule(string  <span class="argument">$name</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">loadModule(string  <span class="argument">$name</span>) : boolean|\Net_SmartIRC</pre>
                 <p><em>loads a module using preset path and given name</em></p>
                 
 
@@ -5723,7 +5787,7 @@ The timehandler id is needed for unregistering the timehandler.</p>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -5751,7 +5815,7 @@ The timehandler id is needed for unregistering the timehandler.</p>
             <article class="method">
                 <h3 class="public ">unloadModule()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">unloadModule(string  <span class="argument">$name</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">unloadModule(string  <span class="argument">$name</span>) : boolean|\Net_SmartIRC</pre>
                 <p><em>unloads a module by the name originally loaded with</em></p>
                 
 
@@ -5766,7 +5830,7 @@ The timehandler id is needed for unregistering the timehandler.</p>
                 
                 
                                     <h4>Returns</h4>
-                    boolean
+                    boolean|<a href="../classes/Net_SmartIRC.html">\Net_SmartIRC</a>
                                     				
                             </article>
         </div>
@@ -6732,7 +6796,7 @@ The timehandler id is needed for unregistering the timehandler.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on January 17th, 2015 at 11:41.
+                    on April 17th, 2015 at 17:54.
                 </section>
             </section>
         </section>
