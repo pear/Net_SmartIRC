@@ -45,9 +45,9 @@ Full feature list:
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2015-04-18</date>
+ <date>2015-07-30</date>
  <version>
-  <release>1.1.7</release>
+  <release>1.1.8</release>
   <api>1.1.4</api>
  </version>
  <stability>
@@ -56,12 +56,8 @@ Full feature list:
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Added fluency (some methods now return $this) [garrettw]
- * Unknown message codes can now be handled instead of failing [garrettw]
- * Improved setRunAsDaemon() [garrettw]
- * Fix strict warning on stream_select [markcarver]
- * Tweaked package structure
- * Updated HTML documentation [garrettw]
+ * Fix Bug #20522:	Bug in messagehandler.php on line 521 [garrettw]
+ * Fix Bug #20524:	Bug in messagehandler.php on line 141 [garrettw]
  </notes>
  <contents>
   <dir name="/">
@@ -813,6 +809,22 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Improved setRunAsDaemon() [garrettw]
  * Fix strict warning on stream_select [markcarver]
  * Updated HTML documentation [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.8</release>
+    <api>1.1.4</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2015-07-30</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix Bug #20522:	Bug in messagehandler.php on line 521 [garrettw]
+ * Fix Bug #20524:	Bug in messagehandler.php on line 141 [garrettw]
    </notes>
   </release>
  </changelog>

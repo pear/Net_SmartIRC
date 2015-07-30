@@ -43,7 +43,7 @@
 require_once 'Net/SmartIRC/defines.php';
 require_once 'Net/SmartIRC/irccommands.php';
 require_once 'Net/SmartIRC/messagehandler.php';
-define('SMARTIRC_VERSION', '1.1.7');
+define('SMARTIRC_VERSION', '1.1.8');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
@@ -51,7 +51,7 @@ define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
  *
  * @category Net
  * @package Net_SmartIRC
- * @version 1.1.7
+ * @version 1.1.8
  * @author clockwerx
  * @author Mirco 'meebey' Bauer <meebey@meebey.net>
  * @author garrettw
@@ -395,6 +395,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function __construct($params = array())
     {
+        // can't stop using the global without potentially breaking BC
         $this->nreplycodes = &$GLOBALS['SMARTIRC_nreplycodes'];
 
         if (isset($_SERVER['REQUEST_METHOD'])) {
