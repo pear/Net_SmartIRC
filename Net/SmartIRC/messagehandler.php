@@ -38,7 +38,6 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     protected function _event_error($ircdata)
     {
         if ($this->_autoretry) {
-            $this->_delayReconnect();
             $this->reconnect();
         } else {
             $this->disconnect(true);
