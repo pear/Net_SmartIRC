@@ -1049,7 +1049,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @param integer $port
      * @return boolean|Net_SmartIRC
      */
-    public function connect($addr, $port = 6667)
+    public function connect($addr, $port = 6667, $reconnecting = false)
     {
         ob_implicit_flush();
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: connecting',
@@ -1102,12 +1102,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         );
         $this->throwError($error_msg);
 
-        if ($this->_autoretry && $this->_autoretrycount < $this->_autoretrymax) {
-             $this->_autoretrycount++;
-             return $this->reconnect();
-        }
-
-        return false;
+        return ($reconnecting) ? false : $this->reconnect();
     }
 
     /**
@@ -1176,23 +1171,6 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function reconnect()
     {
-        if ($this->_reconnectdelay > 0) {
-            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying '
-                .'reconnect for '.$this->_reconnectdelay.' ms',
-                __FILE__, __LINE__
-            );
-
-            for ($i = 0; $i < $this->_reconnectdelay; $i++) {
-                $this->_callTimeHandlers();
-                usleep(1000);
-            }
-        }
-
-        $this->_callTimeHandlers();
-        $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: reconnecting...',
-            __FILE__, __LINE__
-        );
-
         // remember in which channels we are joined
         $channels = array();
         foreach ($this->_channels as $value) {
@@ -1205,7 +1183,35 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
         $this->disconnect(true);
 
-        if (!$this->connect($this->_address, $this->_port)) {
+        while ($this->_autoretry === true
+            && ($this->_autoretrymax == 0 || $this->_autoretrycount < $this->_autoretrymax)
+            && $this->_updatestate() != SMARTIRC_STATE_CONNECTED
+        ) {
+            $this->_autoretrycount++;
+
+            if ($this->_reconnectdelay > 0) {
+                $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: delaying '
+                    .'reconnect for '.$this->_reconnectdelay.' ms',
+                    __FILE__, __LINE__
+                );
+
+                for ($i = 0; $i < $this->_reconnectdelay; $i++) {
+                    $this->_callTimeHandlers();
+                    usleep(1000);
+                }
+            }
+
+            $this->_callTimeHandlers();
+            $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: reconnecting...',
+                __FILE__, __LINE__
+            );
+
+            if ($this->connect($this->_address, $this->_port, true) !== false) {
+                break;
+            }
+        }
+
+        if ($this->_updatestate() != SMARTIRC_STATE_CONNECTED) {
             return false;
         }
 
