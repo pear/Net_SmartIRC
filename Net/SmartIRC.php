@@ -1181,9 +1181,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 .'reconnect for '.$this->_reconnectdelay.' ms',
                 __FILE__, __LINE__
             );
-            usleep($this->_reconnectdelay * 1000);
+
+            for ($i = 0; $i < $this->_reconnectdelay; $i++) {
+                $this->_callTimeHandlers();
+                usleep(1000);
+            }
         }
 
+        $this->_callTimeHandlers();
         $this->log(SMARTIRC_DEBUG_CONNECTION, 'DEBUG_CONNECTION: reconnecting...',
             __FILE__, __LINE__
         );
@@ -1600,24 +1605,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         // before we listen...
         if ($this->_loggedin) {
             // see if any timehandler needs to be called
-            foreach ($this->_timehandler as &$handlerinfo) {
-                $microtimestamp = microtime(true);
-                if ($microtimestamp >= $handlerinfo['lastmicrotimestamp']
-                    + ($handlerinfo['interval'] / 1000.0)
-                ) {
-                    $methodobject = &$handlerinfo['object'];
-                    $method = $handlerinfo['method'];
-                    $handlerinfo['lastmicrotimestamp'] = $microtimestamp;
-
-                    if (method_exists($methodobject, $method)) {
-                        $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
-                            .'calling method "'.get_class($methodobject).'->'
-                            .$method.'"', __FILE__, __LINE__
-                        );
-                        $methodobject->$method($this);
-                    }
-                }
-            }
+            $this->_callTimeHandlers();
 
             // also let's send any queued messages
             if ($this->_lastsentmsgtime == 0) {
@@ -2470,6 +2458,34 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             }
         }
         return $this;
+    }
+
+    /**
+     * looks for any time handlers that have timed out and calls them if valid
+     *
+     * @internal
+     * @return void
+     */
+    protected function _callTimeHandlers()
+    {
+        foreach ($this->_timehandler as &$handlerinfo) {
+            $microtimestamp = microtime(true);
+            if ($microtimestamp >= $handlerinfo['lastmicrotimestamp']
+                + ($handlerinfo['interval'] / 1000.0)
+            ) {
+                $methodobject = &$handlerinfo['object'];
+                $method = $handlerinfo['method'];
+                $handlerinfo['lastmicrotimestamp'] = $microtimestamp;
+
+                if (method_exists($methodobject, $method)) {
+                    $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
+                        .'calling method "'.get_class($methodobject).'->'
+                        .$method.'"', __FILE__, __LINE__
+                    );
+                    $methodobject->$method($this);
+                }
+            }
+        }
     }
 
     /**
