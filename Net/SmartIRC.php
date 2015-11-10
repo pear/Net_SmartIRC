@@ -1260,11 +1260,19 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         }
 
         if (!is_numeric($usermode)) {
-            $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: login() usermode ('
-                .$usermode.') is not valid, will use 0 instead',
-                __FILE__, __LINE__
-            );
-            $usermode = 0;
+            $ipos = strpos($usermode, 'i');
+            $wpos = strpos($usermode, 'w');
+            $val = 0;
+            if ($ipos) $val += 8;
+            if ($wpos) $val += 4;
+
+            if ($val == 0) {
+                $this->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: login() usermode ('
+                    .$usermode.') is not valid, using 0 instead',
+                    __FILE__, __LINE__
+                );
+            }
+            $usermode = $val;
         }
 
         $this->send('NICK '.$this->_nick, SMARTIRC_CRITICAL);
