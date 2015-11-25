@@ -60,6 +60,7 @@ Full feature list:
  * Fix Bug #20972: added usermode parsing on reconnect [garrettw]
  * Fix Bug #20973: added time handler calls to reconnect() [garrettw]
  * Fix Bug #20974: improved reconnect() to avoid recursion/stack overflows [garrettw]
+ * Updated HTML documentation [garrettw]
  </notes>
  <contents>
   <dir name="/">
@@ -845,6 +846,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Fix Bug #20972: added usermode parsing on reconnect [garrettw]
  * Fix Bug #20973: added time handler calls to reconnect() [garrettw]
  * Fix Bug #20974: improved reconnect() to avoid recursion/stack overflows [garrettw]
+ * Updated HTML documentation [garrettw]
    </notes>
   </release>
  </changelog>
