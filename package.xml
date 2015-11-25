@@ -45,9 +45,9 @@ Full feature list:
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2015-07-30</date>
+ <date>2015-11-25</date>
  <version>
-  <release>1.1.8</release>
+  <release>1.1.9</release>
   <api>1.1.4</api>
  </version>
  <stability>
@@ -56,8 +56,10 @@ Full feature list:
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Fix Bug #20522:	Bug in messagehandler.php on line 521 [garrettw]
- * Fix Bug #20524:	Bug in messagehandler.php on line 141 [garrettw]
+ * Fix Bug #20971: forgot to remove deprecated method call [garrettw]
+ * Fix Bug #20972: added usermode parsing on reconnect [garrettw]
+ * Fix Bug #20973: added time handler calls to reconnect() [garrettw]
+ * Fix Bug #20974: improved reconnect() to avoid recursion/stack overflows [garrettw]
  </notes>
  <contents>
   <dir name="/">
@@ -825,6 +827,24 @@ Req #16526 Colour and bold codes are not supported - giggsey
    <notes>
  * Fix Bug #20522:	Bug in messagehandler.php on line 521 [garrettw]
  * Fix Bug #20524:	Bug in messagehandler.php on line 141 [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.9</release>
+    <api>1.1.4</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2015-11-25</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix Bug #20971: forgot to remove deprecated method call [garrettw]
+ * Fix Bug #20972: added usermode parsing on reconnect [garrettw]
+ * Fix Bug #20973: added time handler calls to reconnect() [garrettw]
+ * Fix Bug #20974: improved reconnect() to avoid recursion/stack overflows [garrettw]
    </notes>
   </release>
  </changelog>
