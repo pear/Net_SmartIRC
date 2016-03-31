@@ -38,14 +38,23 @@ class MyBot
     {
         $this->irc = $irc;
         $this->timeids = array(
-            // register saytime() to be called every 30 sec. (30,000 milliseconds)
-            $irc->registerTimeHandler(30000, $this, 'saytime'),
+            // register this to be called every 30 sec. (30,000 milliseconds)
+            $irc->registerTimeHandler(30000, function($irc)
+                {
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', 'the time is: '.date('H:i:s'));
+                }
+            ),
 
             // register saytime_once() to be called in 10 sec. (10,000 milliseconds) and save the assigned id
             // which is needed for unregistering the timehandler.
-            $irc->registerTimeHandler(10000, $this, 'saytime_once'),
+            $irc->registerTimeHandler(10000, array($this, 'saytime_once')),
         );
-        $this->actionid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!quit', $this, 'quit');
+
+        $this->actionid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!quit', function($irc)
+            {
+                $irc->quit("time to say goodbye...");
+            }
+        );
     }
 
     public function __destruct()
@@ -59,16 +68,6 @@ class MyBot
         $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', '(once) the time is: '.date('H:i:s'));
         $irc->unregisterTimeId($this->timeids[1]);
         unset($this->timeids[1]);
-    }
-
-    public function saytime($irc)
-    {
-        $irc->message(SMARTIRC_TYPE_CHANNEL, '#smartirc-test', 'the time is: '.date('H:i:s'));
-    }
-
-    public function quit($irc)
-    {
-        $irc->quit("time to say goodbye...");
     }
 }
 

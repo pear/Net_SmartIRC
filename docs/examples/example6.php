@@ -35,22 +35,21 @@ class MyBot
     public function __construct($irc)
     {
         $this->irc = $irc;
-        $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_JOIN, '.*', $this, 'onjoin_greeting');
+        $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_JOIN, '.*', function($irc, $data)
+            {
+                // if _we_ join, don't greet ourself
+                // then check if this is the right channel
+                if (!$irc->isMe($data->nick) && $data->channel == '#test') {
+                    // it is, lets greet the joint user
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, '#test', 'hi '.$data->nick);
+                }
+            }
+        );
     }
 
     public function __destruct()
     {
         $this->irc->unregisterActionId($this->handlerid);
-    }
-
-    public function onjoin_greeting($irc, $data)
-    {
-        // if _we_ join, don't greet ourself
-        // then check if this is the right channel
-        if (!$irc->isMe($data->nick) && $data->channel == '#test') {
-            // it is, lets greet the joint user
-            $irc->message(SMARTIRC_TYPE_CHANNEL, '#test', 'hi '.$data->nick);
-        }
     }
 }
 

@@ -35,7 +35,7 @@ class MyBot
     public function __construct($irc)
     {
         $this->irc = $irc;
-        $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!realnamecheck', $this, 'realname_check');
+        $this->handlerid = $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^!realnamecheck', array($this, 'realname_check'));
     }
 
     public function __destruct()

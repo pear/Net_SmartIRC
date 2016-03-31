@@ -2001,7 +2001,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 }
 
                 // now the actionhandlers are coming
-                foreach ($this->_actionhandler as $i => &$handlerinfo) {
+                foreach ($this->_actionhandler as $i => $handlerinfo) {
 
                     $hmsg = $handlerinfo['message'];
                     $regex = ($hmsg{0} == $hmsg{strlen($hmsg) - 1})
@@ -2017,20 +2017,24 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                             ."\" regex: \"$regex\"", __FILE__, __LINE__
                         );
 
-                        $methodobject = &$handlerinfo['object'];
-                        $method = $handlerinfo['method'];
+                        $callback = $handlerinfo['callback'];
 
-                        if (method_exists($methodobject, $method)) {
+                        $cbstring = (is_array($callback))
+                            ? (is_object($callback[0])
+                                ? get_class($callback[0])
+                                : $callback[0]
+                              ) . '->' . $callback[1]
+                            : '(anonymous function)';
+
+                        if (is_callable($callback)) {
                             $this->log(SMARTIRC_DEBUG_ACTIONHANDLER,
-                                'DEBUG_ACTIONHANDLER: calling method "'
-                                .get_class($methodobject).'->'.$method.'"',
+                                'DEBUG_ACTIONHANDLER: calling "'.$cbstring.'"',
                                 __FILE__, __LINE__
                             );
-                            $methodobject->$method($this, $ircdata);
+                            call_user_func($callback, $this, $ircdata);
                         } else {
                             $this->log(SMARTIRC_DEBUG_ACTIONHANDLER,
-                                'DEBUG_ACTIONHANDLER: method doesn\'t exist! "'
-                                .get_class($methodobject).'->'.$method.'"',
+                                'DEBUG_ACTIONHANDLER: callback is invalid! "'.$cbstring.'"',
                                 __FILE__, __LINE__
                             );
                         }
@@ -2067,7 +2071,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     public function listenFor($messagetype, $regex = '.*')
     {
         $listenfor = new Net_SmartIRC_listenfor();
-        $this->registerActionHandler($messagetype, $regex, $listenfor, 'handler');
+        $this->registerActionHandler($messagetype, $regex, array($listenfor, 'handler'));
         $this->listen();
         return $listenfor->result;
     }
@@ -2082,12 +2086,12 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @see example.php
      * @param integer $handlertype bits constants, see in this documentation Message Types
      * @param string $regexhandler the message that has to be in the IRC message in regex syntax
-     * @param object $object a reference to the objects of the method
+     * @param object|callable $object either an object with the method, or a callable
      * @param string $methodname the methodname that will be called when the handler happens
      * @return integer assigned actionhandler id
      */
-    public function registerActionHandler($handlertype, $regexhandler, &$object,
-        $methodname
+    public function registerActionHandler($handlertype, $regexhandler, $object,
+        $methodname = ''
     ) {
         // precheck
         if (!($handlertype & SMARTIRC_TYPE_ALL)) {
@@ -2097,13 +2101,16 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return false;
         }
 
+        if (!empty($methodname)) {
+            $object = array($object, $methodname);
+        }
+
         $id = $this->_actionhandlerid++;
         $this->_actionhandler[] = array(
             'id' => $id,
             'type' => $handlertype,
             'message' => $regexhandler,
-            'object' => &$object,
-            'method' => $methodname,
+            'callback' => $object,
         );
         $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: '
             .'actionhandler('.$id.') registered', __FILE__, __LINE__
@@ -2122,7 +2129,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @return boolean
      */
     public function unregisterActionHandler($handlertype, $regexhandler,
-        &$object, $methodname
+        $object, $methodname = ''
     ) {
         // precheck
         if (!($handlertype & SMARTIRC_TYPE_ALL)) {
@@ -2132,10 +2139,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             return false;
         }
 
+        if (!empty($methodname)) {
+            $object = array($object, $methodname);
+        }
+
         foreach ($this->_actionhandler as $i => &$handlerinfo) {
             if ($handlerinfo['type'] == $handlertype
                 && $handlerinfo['message'] == $regexhandler
-                && $handlerinfo['method'] == $methodname
+                && $handlerinfo['callback'] == $object
             ) {
                 $id = $handlerinfo['id'];
                 unset($this->_actionhandler[$i]);
@@ -2150,8 +2161,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
         $this->log(SMARTIRC_DEBUG_ACTIONHANDLER, 'DEBUG_ACTIONHANDLER: could '
             .'not find actionhandler type: "'.$handlertype.'" message: "'
-            .$regexhandler.'" method: "'.$methodname.'" from object "'
-            .get_class($object).'" _not_ unregistered', __FILE__, __LINE__
+            .$regexhandler.'" matching callback. Nothing unregistered', __FILE__, __LINE__
         );
         return false;
     }
@@ -2204,15 +2214,19 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @param string $methodname the methodname that will be called when the handler happens
      * @return integer assigned timehandler id
      */
-    public function registerTimeHandler($interval, &$object, $methodname)
+    public function registerTimeHandler($interval, $object, $methodname = '')
     {
         $id = $this->_timehandlerid++;
+
+        if (!empty($methodname)) {
+            $object = array($object, $methodname);
+        }
+
 
         $this->_timehandler[] = array(
             'id' => $id,
             'interval' => $interval,
-            'object' => &$object,
-            'method' => $methodname,
+            'callback' => $object,
             'lastmicrotimestamp' => microtime(true),
         );
         $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: timehandler('

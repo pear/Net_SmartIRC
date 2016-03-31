@@ -41,19 +41,18 @@ class Net_SmartIRC_module_MyBot
     {
         $this->irc = $irc;
         $this->handlerids = array(
-            $irc->registerActionHandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^test', $this, 'query_test'),
-            $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^test', $this, 'channel_test'),
+            $irc->registerActionHandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^test', array($this, 'query_test')),
+            $irc->registerActionHandler(SMARTIRC_TYPE_CHANNEL, '^test', function($irc, $data)
+                {
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $data->nick.': I dont like tests!');
+                }
+            ),
         );
     }
 
     public function __destruct()
     {
         $this->irc->unregisterActionId($this->handlerids);
-    }
-
-    public function channel_test($irc, $data)
-    {
-        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $data->nick.': I dont like tests!');
     }
 
     public function query_test($irc, $data)
@@ -68,7 +67,7 @@ $irc = new Net_SmartIRC(array(
     'DebugLevel' => SMARTIRC_DEBUG_ALL,
 ));
 $irc->loadModule('MyBot')
-    ->connect('chat.freenode.net', 6667)
+    ->connect('ssl://chat.freenode.net', 6697)
     ->login('Net_SmartIRC', 'example.php', 0, 'Net_SmartIRC')
     ->join(array('#smartirc-test'))
     ->listen()
