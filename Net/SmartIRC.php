@@ -2455,8 +2455,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 __FILE__, __LINE__
             );
 
-            // he is new just add the reference to him
-            $channel->users[$lowerednick] = &$newuser;
+            $channel->users[$lowerednick] = $newuser;
         }
 
         $user = &$channel->users[$lowerednick];
