@@ -2554,14 +2554,14 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
         $result = fwrite($this->_socket, $data.SMARTIRC_CRLF);
 
-        if ($result === false) {
+        if (!$result) {
             // writing to the socket failed, means the connection is broken
             $this->_connectionerror = true;
         } else {
             $this->_lasttx = time();
         }
 
-        return ($result !== false);
+        return $result;
     }
 
     /**
