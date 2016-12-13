@@ -45,10 +45,10 @@ Full feature list:
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2015-11-25</date>
+ <date>2015-12-25</date>
  <version>
-  <release>1.1.9</release>
-  <api>1.1.4</api>
+  <release>1.1.10</release>
+  <api>1.1.5</api>
  </version>
  <stability>
   <release>stable</release>
@@ -56,10 +56,9 @@ Full feature list:
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Fix Bug #20971: forgot to remove deprecated method call [garrettw]
- * Fix Bug #20972: added usermode parsing on reconnect [garrettw]
- * Fix Bug #20973: added time handler calls to reconnect() [garrettw]
- * Fix Bug #20974: improved reconnect() to avoid recursion/stack overflows [garrettw]
+ * Fix Bug #21018: removed reference pointer in _adduser() [garrettw]
+ * Fix Bug #21109: corrected for a bug in official docs for fwrite() [garrettw]
+ * Tweaked API for action/time handlers; you can pass callables now [garrettw]
  * Updated HTML documentation [garrettw]
  </notes>
  <contents>
@@ -846,6 +845,24 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Fix Bug #20972: added usermode parsing on reconnect [garrettw]
  * Fix Bug #20973: added time handler calls to reconnect() [garrettw]
  * Fix Bug #20974: improved reconnect() to avoid recursion/stack overflows [garrettw]
+ * Updated HTML documentation [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.10</release>
+    <api>1.1.5</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2016-12-25</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix Bug #21018: removed reference assignment in _adduser() [garrettw]
+ * Fix Bug #21109: corrected for error in official fwrite() docs [garrettw]
+ * Tweaked API for action/time handlers; you can pass callables now [garrettw]
  * Updated HTML documentation [garrettw]
    </notes>
   </release>

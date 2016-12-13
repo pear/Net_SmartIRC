@@ -111,7 +111,7 @@
                             </li>
                             <li>
                                 <a href="../reports/markers.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">103</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">102</span>
                                 </a>
                             </li>
                             <li>
@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1251602849"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-941836148"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1251602849" class="accordion-body collapse in">
+            <div id="namespace-941836148" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -5512,7 +5512,7 @@ Made for showing IRC statistics on your homepage, or other IRC related informati
             <article class="method">
                 <h3 class="public ">registerActionHandler()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">registerActionHandler(integer  <span class="argument">$handlertype</span>, string  <span class="argument">$regexhandler</span>, object  <span class="argument">$object</span>, string  <span class="argument">$methodname</span>) : integer</pre>
+                <pre class="signature" style="margin-right: 54px;">registerActionHandler(integer  <span class="argument">$handlertype</span>, string  <span class="argument">$regexhandler</span>, object|callable  <span class="argument">$object</span>, string  <span class="argument">$methodname = &#039;&#039;</span>) : integer</pre>
                 <p><em>registers a new actionhandler and returns the assigned id</em></p>
                 <p>Registers an actionhandler in Net_SmartIRC for calling it later.
 The actionhandler id is needed for unregistering the actionhandler.</p>
@@ -5530,9 +5530,9 @@ The actionhandler id is needed for unregistering the actionhandler.</p>
                                 <td><p>the message that has to be in the IRC message in regex syntax</p></td>
                             </tr>
                                                     <tr>
-                                <td>object</td>
+                                <td>object|callable</td>
                                 <td>$object </td>
-                                <td><p>a reference to the objects of the method</p></td>
+                                <td><p>either an object with the method, or a callable</p></td>
                             </tr>
                                                     <tr>
                                 <td>string</td>
@@ -5574,7 +5574,7 @@ The actionhandler id is needed for unregistering the actionhandler.</p>
             <article class="method">
                 <h3 class="public ">unregisterActionHandler()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">unregisterActionHandler(integer  <span class="argument">$handlertype</span>, string  <span class="argument">$regexhandler</span>, object  <span class="argument">$object</span>, string  <span class="argument">$methodname</span>) : boolean</pre>
+                <pre class="signature" style="margin-right: 54px;">unregisterActionHandler(integer  <span class="argument">$handlertype</span>, string  <span class="argument">$regexhandler</span>, object  <span class="argument">$object</span>, string  <span class="argument">$methodname = &#039;&#039;</span>) : boolean</pre>
                 <p><em>unregisters an existing actionhandler</em></p>
                 
 
@@ -5675,7 +5675,7 @@ The actionhandler id is needed for unregistering the actionhandler.</p>
             <article class="method">
                 <h3 class="public ">registerTimeHandler()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">registerTimeHandler(integer  <span class="argument">$interval</span>, object  <span class="argument">$object</span>, string  <span class="argument">$methodname</span>) : integer</pre>
+                <pre class="signature" style="margin-right: 54px;">registerTimeHandler(integer  <span class="argument">$interval</span>, object  <span class="argument">$object</span>, string  <span class="argument">$methodname = &#039;&#039;</span>) : integer</pre>
                 <p><em>registers a timehandler and returns the assigned id</em></p>
                 <p>Registers a timehandler in Net_SmartIRC, which will be called in the specified interval.
 The timehandler id is needed for unregistering the timehandler.</p>
@@ -6801,7 +6801,7 @@ The timehandler id is needed for unregistering the timehandler.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on November 25th, 2015 at 21:05.
+                    on December 13th, 2016 at 03:10.
                 </section>
             </section>
         </section>
