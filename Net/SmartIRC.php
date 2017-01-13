@@ -2685,7 +2685,8 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
     protected function &throwError($message)
     {
-        return new Net_SmartIRC_Error($message);
+        $var = new Net_SmartIRC_Error($message);
+        return $var;
     }
 }
 
