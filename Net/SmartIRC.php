@@ -2517,7 +2517,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     call_user_func($callback, $this);
                 } else {
                     $this->log(SMARTIRC_DEBUG_TIMEHANDLER,
-                        'DEBUG_ACTIONHANDLER: callback is invalid! "'.$cbstring.'"',
+                        'DEBUG_TIMEHANDLER: callback is invalid! "'.$cbstring.'"',
                         __FILE__, __LINE__
                     );
                 }
