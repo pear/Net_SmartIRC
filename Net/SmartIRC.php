@@ -2500,7 +2500,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             if ($microtimestamp >= $handlerinfo['lastmicrotimestamp']
                 + ($handlerinfo['interval'] / 1000.0)
             ) {
-                $callback = &$handlerinfo['callback'];
+                $callback = $handlerinfo['callback'];
                 $handlerinfo['lastmicrotimestamp'] = $microtimestamp;
 
                 $cbstring = (is_array($callback))
