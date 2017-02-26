@@ -2210,7 +2210,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      * @api
      * @see example7.php
      * @param integer $interval interval time in milliseconds
-     * @param object $object a reference to the objects of the method
+     * @param object|callable $object either an object with the method, or a callable
      * @param string $methodname the methodname that will be called when the handler happens
      * @return integer assigned timehandler id
      */
@@ -2221,7 +2221,6 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
         if (!empty($methodname)) {
             $object = array($object, $methodname);
         }
-
 
         $this->_timehandler[] = array(
             'id' => $id,
@@ -2501,16 +2500,26 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
             if ($microtimestamp >= $handlerinfo['lastmicrotimestamp']
                 + ($handlerinfo['interval'] / 1000.0)
             ) {
-                $methodobject = &$handlerinfo['object'];
-                $method = $handlerinfo['method'];
+                $callback = $handlerinfo['callback'];
                 $handlerinfo['lastmicrotimestamp'] = $microtimestamp;
 
-                if (method_exists($methodobject, $method)) {
-                    $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: '
-                        .'calling method "'.get_class($methodobject).'->'
-                        .$method.'"', __FILE__, __LINE__
+                $cbstring = (is_array($callback))
+                    ? (is_object($callback[0])
+                        ? get_class($callback[0])
+                        : $callback[0]
+                      ) . '->' . $callback[1]
+                    : '(anonymous function)';
+
+                if (is_callable($callback)) {
+                    $this->log(SMARTIRC_DEBUG_TIMEHANDLER, 'DEBUG_TIMEHANDLER: calling "'.$cbstring.'"',
+                        __FILE__, __LINE__
                     );
-                    $methodobject->$method($this);
+                    call_user_func($callback, $this);
+                } else {
+                    $this->log(SMARTIRC_DEBUG_TIMEHANDLER,
+                        'DEBUG_TIMEHANDLER: callback is invalid! "'.$cbstring.'"',
+                        __FILE__, __LINE__
+                    );
                 }
             }
         }
