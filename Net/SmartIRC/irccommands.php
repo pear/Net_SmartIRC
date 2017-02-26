@@ -68,7 +68,7 @@ abstract class Net_SmartIRC_irccommands
                 }
                 break;
 
-            case SMARTIRC_TYPE_CTCP: // backwards compatibilty
+            case SMARTIRC_TYPE_CTCP: // backwards compatibility
             case SMARTIRC_TYPE_CTCP_REPLY:
                 foreach ($messagearray as $message) {
                     $this->send('NOTICE '.$destination.' :'.chr(1).$message
@@ -180,7 +180,7 @@ abstract class Net_SmartIRC_irccommands
      * gets a list of one ore more channels
      *
      * Requests a full channellist if $channelarray is not given.
-     * (use it with care, usualy its a looooong list)
+     * (use it with care, usually its a looooong list)
      *
      * @param mixed $channelarray
      * @param integer $priority message priority, default is SMARTIRC_MEDIUM

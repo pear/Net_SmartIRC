@@ -46,6 +46,6 @@ if (is_array($resultarr)) {
     <?php
 } else {
     ?>
-        <B>An error occured, please check the specified server and settings<B>
+        <B>An error occurred, please check the specified server and settings<B>
     <?php
 }
