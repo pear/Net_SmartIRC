@@ -45,9 +45,9 @@ Full feature list:
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2016-12-25</date>
+ <date>2017-06-15</date>
  <version>
-  <release>1.1.10</release>
+  <release>1.1.11</release>
   <api>1.1.5</api>
  </version>
  <stability>
@@ -56,10 +56,8 @@ Full feature list:
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Fix Bug #21018: removed reference pointer in _adduser() [garrettw]
- * Fix Bug #21109: corrected for a bug in official docs for fwrite() [garrettw]
- * Tweaked API for action/time handlers; you can pass callables now [garrettw]
- * Updated HTML documentation [garrettw]
+ * Fix regression: Allow time handlers to be invoked correctly [timdream]
+ * Fixed old spelling mistakes in documentation [klemens]
  </notes>
  <contents>
   <dir name="/">
@@ -864,6 +862,22 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Fix Bug #21109: corrected for error in official fwrite() docs [garrettw]
  * Tweaked API for action/time handlers; you can pass callables now [garrettw]
  * Updated HTML documentation [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.11</release>
+    <api>1.1.5</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2017-06-15</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Fix regression: Allow time handlers to be invoked correctly [timdream]
+ * Fixed old spelling mistakes in documentation [klemens]
    </notes>
   </release>
  </changelog>
