@@ -1,0 +1,5 @@
+# exclude paths from git export (and composer prefer-dist installs)
+/composer.json export-ignore
+/docs/ export-ignore
+/package.xml export-ignore
+/phpdoc.dist.xml export-ignore
