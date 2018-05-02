@@ -40,7 +40,7 @@ class MyBot
                 // if _we_ join, don't greet ourself
                 // then check if this is the right channel
                 if (!$irc->isMe($data->nick) && $data->channel == '#test') {
-                    // it is, lets greet the joint user
+                    // it is, lets greet the joined user
                     $irc->message(SMARTIRC_TYPE_CHANNEL, '#test', 'hi '.$data->nick);
                 }
             }
