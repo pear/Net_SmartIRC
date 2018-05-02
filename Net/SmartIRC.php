@@ -998,22 +998,23 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function &getChannel($channelname)
     {
+        $result = null;
+
         if (!$this->_channelsyncing) {
             $this->log(SMARTIRC_DEBUG_NOTICE,
                 'WARNING: getChannel() is called and the required Channel '
                 .'Syncing is not activated!', __FILE__, __LINE__
             );
-            return;
-        }
-
-        if (isset($this->_channels[strtolower($channelname)])) {
-            return $this->_channels[strtolower($channelname)];
+        } elseif (isset($this->_channels[strtolower($channelname)])) {
+            $result = $this->_channels[strtolower($channelname)];
         } else {
             $this->log(SMARTIRC_DEBUG_NOTICE,
                 'WARNING: getChannel() is called and the required channel '
                 .$channelname.' has not been joined!', __FILE__, __LINE__
             );
         }
+
+        return $result;
     }
 
     /**
@@ -1900,7 +1901,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
                     case 'JOIN':
                         $ircdata->type = SMARTIRC_TYPE_JOIN;
-                        $ircdata->channel = $params[0] ?: $ircdata->message;
+                        $ircdata->channel = (isset($params[0]) && $params[0]) ? $params[0] : $ircdata->message;
                         break;
 
                     case 'TOPIC':
