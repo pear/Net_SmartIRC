@@ -43,7 +43,7 @@
 require_once 'Net/SmartIRC/defines.php';
 require_once 'Net/SmartIRC/irccommands.php';
 require_once 'Net/SmartIRC/messagehandler.php';
-define('SMARTIRC_VERSION', '1.1.12');
+define('SMARTIRC_VERSION', '1.1.13');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
@@ -1364,7 +1364,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
      */
     public function isConnected()
     {
-        return $this->_updatestate();
+        return ($this->_updatestate() === SMARTIRC_STATE_CONNECTED);
     }
 
     /**

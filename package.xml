@@ -47,8 +47,8 @@ Full feature list:
  </contributor>
  <date>2018-05-09</date>
  <version>
-  <release>1.1.12</release>
-  <api>1.1.6</api>
+  <release>1.1.13</release>
+  <api>1.1.7</api>
  </version>
  <stability>
   <release>stable</release>
@@ -56,10 +56,7 @@ Full feature list:
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Fix composer autoload path [glen]
- * Fix PHP notices [glen]
- * Implement Feature #23746: added method to get connection status [garrettw]
- * Updated HTML documentation [garrettw]
+ * Corrected return value of isConnected() to match docs [garrettw]
  </notes>
  <contents>
   <dir name="/">
@@ -898,6 +895,21 @@ Req #16526 Colour and bold codes are not supported - giggsey
  * Fix PHP notices [glen]
  * Implement Feature #23746: added method to get connection status [garrettw]
  * Updated HTML documentation [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.13</release>
+    <api>1.1.7</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2018-05-09</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Corrected return value of isConnected() to match docs [garrettw]
    </notes>
   </release>
  </changelog>
