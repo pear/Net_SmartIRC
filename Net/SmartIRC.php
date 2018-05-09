@@ -43,7 +43,7 @@
 require_once 'Net/SmartIRC/defines.php';
 require_once 'Net/SmartIRC/irccommands.php';
 require_once 'Net/SmartIRC/messagehandler.php';
-define('SMARTIRC_VERSION', '1.1.10');
+define('SMARTIRC_VERSION', '1.1.12');
 define('SMARTIRC_VERSIONSTRING', 'Net_SmartIRC '.SMARTIRC_VERSION);
 
 /**
