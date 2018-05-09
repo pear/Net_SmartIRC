@@ -1357,6 +1357,17 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
     }
 
     /**
+     * checks if the bot is connected
+     *
+     * @api
+     * @return boolean
+     */
+    public function isConnected()
+    {
+        return $this->_updatestate();
+    }
+
+    /**
      * checks if the passed nickname is our own nickname
      *
      * @api

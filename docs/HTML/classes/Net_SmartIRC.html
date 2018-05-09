@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-941836148"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2104294581"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-941836148" class="accordion-body collapse in">
+            <div id="namespace-2104294581" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -265,6 +265,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
                                                                     <a href="../classes/Net_SmartIRC.html#method_login" class="">login()</a><br />
                                                                     <a href="../classes/Net_SmartIRC.html#method_perform" class="">perform()</a><br />
                                                                     <a href="../classes/Net_SmartIRC.html#method_send" class="">send()</a><br />
+                                                                    <a href="../classes/Net_SmartIRC.html#method_isConnected" class="">isConnected()</a><br />
                                                                     <a href="../classes/Net_SmartIRC.html#method_isMe" class="">isMe()</a><br />
                                                                     <a href="../classes/Net_SmartIRC.html#method_isJoined" class="">isJoined()</a><br />
                                                                     <a href="../classes/Net_SmartIRC.html#method_isFounder" class="">isFounder()</a><br />
@@ -4948,6 +4949,41 @@ SMARTIRC_LOW</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method_isConnected" name="method_isConnected" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">isConnected()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">isConnected() : boolean</pre>
+                <p><em>checks if the bot is connected</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_isMe" name="method_isMe" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">isMe()</h3>
@@ -5675,7 +5711,7 @@ The actionhandler id is needed for unregistering the actionhandler.</p>
             <article class="method">
                 <h3 class="public ">registerTimeHandler()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">registerTimeHandler(integer  <span class="argument">$interval</span>, object  <span class="argument">$object</span>, string  <span class="argument">$methodname = &#039;&#039;</span>) : integer</pre>
+                <pre class="signature" style="margin-right: 54px;">registerTimeHandler(integer  <span class="argument">$interval</span>, object|callable  <span class="argument">$object</span>, string  <span class="argument">$methodname = &#039;&#039;</span>) : integer</pre>
                 <p><em>registers a timehandler and returns the assigned id</em></p>
                 <p>Registers a timehandler in Net_SmartIRC, which will be called in the specified interval.
 The timehandler id is needed for unregistering the timehandler.</p>
@@ -5688,9 +5724,9 @@ The timehandler id is needed for unregistering the timehandler.</p>
                                 <td><p>interval time in milliseconds</p></td>
                             </tr>
                                                     <tr>
-                                <td>object</td>
+                                <td>object|callable</td>
                                 <td>$object </td>
-                                <td><p>a reference to the objects of the method</p></td>
+                                <td><p>either an object with the method, or a callable</p></td>
                             </tr>
                                                     <tr>
                                 <td>string</td>
@@ -6801,7 +6837,7 @@ The timehandler id is needed for unregistering the timehandler.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on December 13th, 2016 at 03:10.
+                    on May 9th, 2018 at 00:30.
                 </section>
             </section>
         </section>
