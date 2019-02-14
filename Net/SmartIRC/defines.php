@@ -87,6 +87,7 @@ define('SMARTIRC_TYPE_CTCP_REPLY',     536870912);
 //define('SMARTIRC_TYPE_DCC',            536870912);
 define('SMARTIRC_TYPE_ALL',            1073741823);
 
+global $SMARTIRC_nreplycodes;
 // see https://www.alien.net.au/irc/irc2numerics.html
 $SMARTIRC_nreplycodes = array(
 '001' =>              'RPL_WELCOME',
