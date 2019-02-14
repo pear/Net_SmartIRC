@@ -45,9 +45,9 @@ Full feature list:
   <email>nicos@php.net</email>
   <active>no</active>
  </contributor>
- <date>2018-05-09</date>
+ <date>2019-02-14</date>
  <version>
-  <release>1.1.13</release>
+  <release>1.1.14</release>
   <api>1.1.7</api>
  </version>
  <stability>
@@ -56,7 +56,7 @@ Full feature list:
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
  <notes>
- * Corrected return value of isConnected() to match docs [garrettw]
+ * Merge PR #10: (Composer fix) Added global keyword for $SMARTIRC_nreplycodes [diddledan]
  </notes>
  <contents>
   <dir name="/">
@@ -910,6 +910,21 @@ Req #16526 Colour and bold codes are not supported - giggsey
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>
  * Corrected return value of isConnected() to match docs [garrettw]
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.14</release>
+    <api>1.1.7</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2019-02-14</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+ * Merge PR #10: (Composer fix) Added global keyword for $SMARTIRC_nreplycodes [diddledan]
    </notes>
   </release>
  </changelog>
