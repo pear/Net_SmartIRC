@@ -25,7 +25,7 @@
     "include-path": [
         "./"
     ],
-    "license": "LGPL",
+    "license": "LGPL-2.1-only",
     "name": "pear/net_smartirc",
     "support": {
         "issues": "http://pear.php.net/package/Net_SmartIRC/bugs",

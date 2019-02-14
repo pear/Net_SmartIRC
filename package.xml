@@ -54,7 +54,7 @@ Full feature list:
   <release>stable</release>
   <api>stable</api>
  </stability>
- <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+ <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
  <notes>
  * Merge PR #10: (Composer fix) Added global keyword for $SMARTIRC_nreplycodes [diddledan]
  </notes>
@@ -227,7 +227,7 @@ Full feature list:
     <api>beta</api>
    </stability>
    <date>2002-09-02</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 v0.2.5
 ------
@@ -248,7 +248,7 @@ v0.2.5
     <api>beta</api>
    </stability>
    <date>2002-10-12</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 v0.2.6
 ------
@@ -283,7 +283,7 @@ v0.2.6
     <api>beta</api>
    </stability>
    <date>2002-10-23</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 v0.3.0
 -----
@@ -315,7 +315,7 @@ v0.3.0
     <api>stable</api>
    </stability>
    <date>2002-11-05</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 v0.3.2
 ------
@@ -376,7 +376,7 @@ v0.3.2
     <api>stable</api>
    </stability>
    <date>2002-11-26</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 v0.4.0
 ------
@@ -444,7 +444,7 @@ v0.4.0
     <api>stable</api>
    </stability>
    <date>2003-01-07</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 v0.5.0
 ------
@@ -492,7 +492,7 @@ new:
     <api>stable</api>
    </stability>
    <date>2003-01-17</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 v0.5.1:
 -------
@@ -529,7 +529,7 @@ new:
     <api>stable</api>
    </stability>
    <date>2003-07-23</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 v0.5.5:
 -------
@@ -617,7 +617,7 @@ new:
     <api>stable</api>
    </stability>
    <date>2009-07-18</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 QA release
 Updated to package 2.0
@@ -643,7 +643,7 @@ Request #13056		Allow multiple actionhandlers to execute	amir
     <api>stable</api>
    </stability>
    <date>2010-10-25</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
 Automatically built QA release
 Req #16526 Colour and bold codes are not supported - giggsey
@@ -659,7 +659,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2014-09-03</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #12539: Flaw in timeout detection. [garrettw]
  * Fix Bug #13079: Does not support founder/admin/half-op modes [garrettw]
@@ -690,7 +690,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2014-10-02</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #20419: Need a getter for the current bot nick [garrettw]
  * Tweaked a few execution modifiers [garrettw]
@@ -709,7 +709,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2014-10-03</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Corrected package structure [garrettw]
    </notes>
@@ -724,7 +724,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2014-10-23</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #20428: setBindAddress sets wrong variable [garrettw]
  * Fix untracked bug: loadModule() and unloadModule() don't work right [garrettw]
@@ -742,7 +742,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2014-11-02</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #2309: Channel list message parsing error [garrettw]
  * Implement Feature #7321: Please Add SSL support [garrettw]
@@ -763,7 +763,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2014-12-25</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #20469: array syntax mismatch [garrettw]
    </notes>
@@ -778,7 +778,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2015-01-17</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #20475: NAMREPLY/WHOREPLY being parsed incorrectly [garrettw]
  * Fix Bug #20485: odd case where stream_select() has data and fgets() doesn't [garrettw]
@@ -801,7 +801,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2015-04-18</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Added fluency (some methods now return $this) [garrettw]
  * Unknown message codes can now be handled instead of failing [garrettw]
@@ -820,7 +820,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2015-07-30</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #20522:	Bug in messagehandler.php on line 521 [garrettw]
  * Fix Bug #20524:	Bug in messagehandler.php on line 141 [garrettw]
@@ -836,7 +836,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2015-11-25</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #20971: forgot to remove deprecated method call [garrettw]
  * Fix Bug #20972: added usermode parsing on reconnect [garrettw]
@@ -855,7 +855,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2016-12-25</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix Bug #21018: removed reference assignment in _adduser() [garrettw]
  * Fix Bug #21109: corrected for error in official fwrite() docs [garrettw]
@@ -873,7 +873,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2017-06-15</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix regression: Allow time handlers to be invoked correctly [timdream]
  * Fixed old spelling mistakes in documentation [klemens]
@@ -889,7 +889,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2018-05-09</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Fix composer autoload path [glen]
  * Fix PHP notices [glen]
@@ -907,7 +907,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2018-05-09</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Corrected return value of isConnected() to match docs [garrettw]
    </notes>
@@ -922,7 +922,7 @@ Req #16526 Colour and bold codes are not supported - giggsey
     <api>stable</api>
    </stability>
    <date>2019-02-14</date>
-   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL 2.1</license>
    <notes>
  * Merge PR #10: (Composer fix) Added global keyword for $SMARTIRC_nreplycodes [diddledan]
    </notes>
