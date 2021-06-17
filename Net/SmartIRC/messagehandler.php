@@ -169,7 +169,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             $remove = false;
             $modelength = strlen($mode);
             for ($i = 0; $i < $modelength; $i++) {
-                switch($mode{$i}) {
+                switch($mode[$i]) {
                     case '-':
                         $remove = true;
                         $add = false;
@@ -334,7 +334,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
 
                     default:
                         // channel modes
-                        if ($mode{$i} == 'b') {
+                        if ($mode[$i] == 'b') {
                             $hostmask = array_shift($parameters);
                             if ($add) {
                                 $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
@@ -355,14 +355,14 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                         } else {
                             $this->log(SMARTIRC_DEBUG_CHANNELSYNCING,
                                 'DEBUG_CHANNELSYNCING: updating unknown channelmode ('
-                                .$mode{$i}.') in channel->mode for: '
+                                .$mode[$i].') in channel->mode for: '
                                 .$channel->name, __FILE__, __LINE__
                             );
                             if ($add) {
-                                $channel->mode .= $mode{$i};
+                                $channel->mode .= $mode[$i];
                             }
                             if ($remove) {
-                                $channel->mode = str_replace($mode{$i}, '',
+                                $channel->mode = str_replace($mode[$i], '',
                                     $channel->mode
                                 );
                             }
@@ -487,7 +487,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
 
                 $usermodelength = strlen($usermode);
                 for ($i = 0; $i < $usermodelength; $i++) {
-                    switch ($usermode{$i}) {
+                    switch ($usermode[$i]) {
                         case 'H':
                             $user->away = false;
                             break;
@@ -522,7 +522,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
                 }
 
                 $user->hopcount = $ircdata->messageex[0];
-                $user->realname = implode(array_slice($ircdata->messageex, 1), ' ');
+                $user->realname = implode(' ', array_slice($ircdata->messageex, 1));
 
                 $channel = &$this->getChannel($ircdata->channel);
                 $this->_adduser($channel, $user);
@@ -538,7 +538,7 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
             for ($i = 0; $i < $userarraycount; $i++) {
                 $user = new Net_SmartIRC_channeluser();
 
-                switch ($userarray[$i]{0}) {
+                switch ($userarray[$i][0]) {
                     case '~':
                         $user->founder = true;
                         $user->nick = substr($userarray[$i], 1);
@@ -611,6 +611,9 @@ abstract class Net_SmartIRC_messagehandler extends Net_SmartIRC_irccommands
     {
         if ($this->_channelsyncing) {
             $channel = &$this->getChannel($ircdata->channel);
+            if ($channel === null) {
+                return;
+            }
             $channel->topic = $ircdata->message;
         }
     }
