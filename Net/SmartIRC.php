@@ -2281,7 +2281,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
                 $timerarray = array();
                 foreach ($this->_timehandler as $values) {
-                    $timerarray[] = $values->interval;
+                    $timerarray[] = $values['interval'];
                 }
 
                 $this->_mintimer = (
