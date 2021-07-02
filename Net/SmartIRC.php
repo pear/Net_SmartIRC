@@ -1694,7 +1694,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                     $rawdata .= $get;
                 endif;
                 $rawlen = strlen($rawdata);
-            } while ($rawlen && $rawdata{$rawlen - 1} != "\n");
+            } while ($rawlen && $rawdata[$rawlen - 1] != "\n");
 
         } else if ($result === false) {
             // panic! panic! something went wrong! maybe received a signal.
@@ -1744,7 +1744,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 $prefixEnd = -1;
 
                 // parse out the prefix
-                if ($rawline{0} == ':') {
+                if ($rawline[0] == ':') {
                     $prefixEnd = strpos($rawline, ' ');
                     $prefix = substr($rawline, 1, $prefixEnd - 1);
                 }
@@ -1886,7 +1886,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                             $ircdata->channel = $params[0];
                             break;
                         }
-                        if ($ircdata->message{0} == chr(1)) {
+                        if ($ircdata->message[0] == chr(1)) {
                             if (preg_match("/^\1ACTION .*\1\$/", $ircdata->message)) {
                                 $ircdata->type = SMARTIRC_TYPE_ACTION;
                                 $ircdata->channel = $params[0];
@@ -2018,7 +2018,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
                 foreach ($this->_actionhandler as $i => $handlerinfo) {
 
                     $hmsg = $handlerinfo['message'];
-                    $regex = ($hmsg{0} == $hmsg{strlen($hmsg) - 1})
+                    $regex = ($hmsg[0] == $hmsg[strlen($hmsg) - 1])
                         ? $hmsg
                         : '/' . $hmsg . '/';
 
@@ -2281,7 +2281,7 @@ class Net_SmartIRC extends Net_SmartIRC_messagehandler
 
                 $timerarray = array();
                 foreach ($this->_timehandler as $values) {
-                    $timerarray[] = $values->interval;
+                    $timerarray[] = $values['interval'];
                 }
 
                 $this->_mintimer = (
